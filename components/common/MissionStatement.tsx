@@ -56,7 +56,7 @@ export default function MissionStatement() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {profiles.map((profile, idx) => (
             <div key={idx} className="group block">
-              <div className="max-w-sm rounded overflow-hidden shadow-lg brightness-70 hover:brightness-50 transition duration-300 rounded-lg bg-green shadow-md p-6 border-t-4 border-green-500 border-solid p-4">
+              <div className="max-w-lg rounded overflow-hidden shadow-lg brightness-70 hover:brightness-50 transition duration-300 rounded-lg bg-green shadow-md p-6 border-t-4 border-green-500 border-solid p-4">
                 <img
                   className="w-full"
                   src={profile.image}
@@ -66,16 +66,16 @@ export default function MissionStatement() {
                   <div>
                     <Link
                       href={profile.href}
-                      className="text-xl font-semibold text-gray-900 mb-3 block hover:text-green-700 transition-colors"
+                      className="text-l font-semibold text-gray-900 mb-3 block hover:text-green-700 transition-colors"
                     >
                       {profile.title}
                     </Link>
                   </div>
-                  <p className="text-gray-700 text-base ">
+                  <p className="text-sm text-gray-700 text-base ">
                     {profile.description}
                   </p>
                 </div>
-                <div className="px-6 pt-4 pb-2 bg-green-800 rounded-lg bg-green shadow-md p-6"></div>
+                <div className="px-2 pt-1 pb-2 bg-green-400 rounded-lg bg-green shadow-md p-6"></div>
               </div>
             </div>
           ))}
