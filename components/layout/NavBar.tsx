@@ -12,7 +12,7 @@ const navItems = [
       title: "About YASCON",
       links: [
         { href: "/", label: "Home" },
-        { href: "/about", label: "Our Story" },
+        { href: "/#story", label: "Our Story" },
         { href: "/#profile", label: "Mission & Vision" },
         { href: "/#objective", label: "Objectives" },
         { href: "/contact", label: "Contact Us" },

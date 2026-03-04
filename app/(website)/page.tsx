@@ -8,11 +8,13 @@ import MissionStatement from "@/components/common/MissionStatement";
 import KeyObjectives from "@/components/common/keyObjectives";
 import SloganVideo from "@/components/common/VideoSlogan";
 import NationalStatistics from "@/components/common/NationalStatistics";
+import OurStory from "@/components/common/OurStory";
 export default function Home() {
   return (
     <div>
       <Hero />
       <About />
+      <OurStory />
       <OurWork />
       <MissionStatement />
       <KeyObjectives />
