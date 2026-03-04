@@ -13,8 +13,8 @@ const navItems = [
       links: [
         { href: "/", label: "Home" },
         { href: "/about", label: "Our Story" },
-        { href: "/about#mission", label: "Mission & Vision" },
-        { href: "/about#objectives", label: "Objectives" },
+        { href: "/#profile", label: "Mission & Vision" },
+        { href: "/#objective", label: "Objectives" },
         { href: "/contact", label: "Contact Us" },
       ],
     },
@@ -88,7 +88,7 @@ export default function Navbar() {
         } `}
       >
         {/* Top info bar */}
-         {/* {!scrolled && (
+        {/* {!scrolled && (
           <div className=" text-white text-xs py-4 px-4 hidden md:block">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
               <div className="flex gap-6">
@@ -108,9 +108,14 @@ export default function Navbar() {
           </div>
         )}  */}
 
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between ${scrolled ? "h-16" : "h-20"} transition-all duration-300`}>
+        <div
+          className={`max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between ${scrolled ? "h-16" : "h-20"} transition-all duration-300`}
+        >
           {/* Logo */}
-          <Link href="/" className="hidden items-center gap-3 shrink-0  sm:flex">
+          <Link
+            href="/"
+            className="hidden items-center gap-3 shrink-0  sm:flex"
+          >
             <div className="relative w-16 h-16 ">
               <Image
                 src="/yascon-logo.png"
@@ -120,10 +125,14 @@ export default function Navbar() {
               />
             </div>
             <div className={`hidden sm:block transition-all duration-300`}>
-              <div className={`font-bold tracking-widest ${useTransparentStyle ? "text-white text-sm" : "text-green-600 text-sm"}`}>
+              <div
+                className={`font-bold tracking-widest ${useTransparentStyle ? "text-white text-sm" : "text-green-600 text-sm"}`}
+              >
                 YASCON
               </div>
-              <div className={`text-xs ${useTransparentStyle ? "text-white/80" : "text-gray-500"} leading-tight max-w-[160px]`}>
+              <div
+                className={`text-xs ${useTransparentStyle ? "text-white/80" : "text-gray-500"} leading-tight max-w-[160px]`}
+              >
                 Youth Conservation Malawi
               </div>
             </div>
@@ -134,7 +143,7 @@ export default function Navbar() {
             {navItems.map((item, idx) => (
               <div
                 key={idx}
-              className={`relative`}
+                className={`relative`}
                 onMouseEnter={() => handleMouseEnter(idx)}
                 onMouseLeave={handleMouseLeave}
               >
@@ -146,9 +155,16 @@ export default function Navbar() {
                   {item.label}
                   <svg
                     className={`w-5 h-5 transition-transform duration-200 ${activeDropdown === idx ? "rotate-180" : ""}`}
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
 
@@ -156,7 +172,9 @@ export default function Navbar() {
                 {activeDropdown === idx && (
                   <div className="dropdown-enter absolute top-full left-1/2 mt-2 w-64 translate-x-[+25%] bg-white  shadow-2xl border border-gray-100 overflow-hidden z-50">
                     <div className=" px-4 pt-4">
-                      <p className="text-gray-800 text-xs font-bold uppercase tracking-widest">{item.dropdown.title}</p>
+                      <p className="text-gray-800 text-xs font-bold uppercase tracking-widest">
+                        {item.dropdown.title}
+                      </p>
                     </div>
                     <div className="py-2">
                       {item.dropdown.links.map((link, li) => (
@@ -201,9 +219,15 @@ export default function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
-            <div className={`w-6 h-0.5 mb-1.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <div className={`w-6 h-0.5 mb-1.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "opacity-0" : ""}`} />
-            <div className={`w-6 h-0.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            <div
+              className={`w-6 h-0.5 mb-1.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
+            />
+            <div
+              className={`w-6 h-0.5 mb-1.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "opacity-0" : ""}`}
+            />
+            <div
+              className={`w-6 h-0.5 transition-all ${useTransparentStyle ? "bg-white" : "bg-[#1a2e1a]"} ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
+            />
           </button>
         </div>
       </nav>
@@ -214,7 +238,9 @@ export default function Navbar() {
           <div className="p-6">
             {navItems.map((item, idx) => (
               <div key={idx} className="border-b border-white/10 pb-4 mb-4">
-                <p className="text-[#d4a017] font-bold uppercase tracking-widest text-xs mb-3">{item.label}</p>
+                <p className="text-[#d4a017] font-bold uppercase tracking-widest text-xs mb-3">
+                  {item.label}
+                </p>
                 {item.dropdown.links.map((link, li) => (
                   <Link
                     key={li}
@@ -228,10 +254,18 @@ export default function Navbar() {
               </div>
             ))}
             <div className="flex flex-col gap-3 mt-6">
-              <Link href="/get-involved" className="text-center border-2 border-white text-white py-3 rounded-full font-bold hover:bg-white hover:text-green-700 transition-colors" onClick={() => setMobileOpen(false)}>
+              <Link
+                href="/get-involved"
+                className="text-center border-2 border-white text-white py-3 rounded-full font-bold hover:bg-white hover:text-green-700 transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
                 Get Involved
               </Link>
-              <Link href="/donate" className="text-center bg-yellow-600 text-white py-3 rounded-full font-bold hover:bg-yellow-700 transition-colors" onClick={() => setMobileOpen(false)}>
+              <Link
+                href="/donate"
+                className="text-center bg-yellow-600 text-white py-3 rounded-full font-bold hover:bg-yellow-700 transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
                 Donate
               </Link>
             </div>
