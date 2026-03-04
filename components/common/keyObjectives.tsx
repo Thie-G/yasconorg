@@ -54,12 +54,12 @@ export default function Objective() {
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
                   <Link
                     href="#"
-                    className="text-xl font-bold text-gray-900 mb-3 block hover:text-green-700 transition-colors"
+                    className="text-l font-bold text-gray-900 mb-3 block hover:text-green-700 transition-colors"
                   >
                     {Objective.title}
                   </Link>
                 </h2>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {Objective.description}
                 </p>
               </div>
