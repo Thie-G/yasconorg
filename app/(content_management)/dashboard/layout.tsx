@@ -7,7 +7,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-[#1a2e1a] text-white border-b border-white/10">
+      <header className="fixed top-0 left-0  right-0 z-40 bg-[#1a2e1a] text-white border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-[#d4a017]">

@@ -1,11 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import NewsDisplay from "@/components/cms/NewsDisplay";
+import BlogsDisplay from "@/components/cms/BlogsDisplay";
+import VideosDisplay from "@/components/cms/VideosDisplay";
+import AnnouncementsDisplay from "@/components/cms/AnnouncementsDisplay";
 
 const quickLinks = [
+  { href: "/impact/central#announcements", label: "Announcements" },
   { href: "/impact/central#partners", label: "Our Partners" },
   { href: "/impact/central#team", label: "Our Team" },
   { href: "/impact/central#districts", label: "Districts" },
   { href: "/impact/central#activities", label: "Activities" },
+  { href: "/impact/central#news", label: "News" },
+  { href: "/impact/central#videos", label: "Videos" },
   { href: "/impact/central#blogs", label: "Blogs" },
   { href: "/impact/central#stats", label: "Regional Statistical Data" },
 ];
@@ -39,6 +46,15 @@ export default function CentralRegionPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Announcements Section */}
+      <section id="announcements" className="max-w-6xl mx-auto px-6 py-12 border-b-2 border-orange-200">
+        <h2 className="text-2xl font-bold text-[#1a2e1a]">Latest Announcements</h2>
+        <p className="text-[#2e3d35] mt-3">
+          Important announcements and updates from Central Region.
+        </p>
+        <AnnouncementsDisplay region="central" limit={3} />
       </section>
 
       <section id="partners" className="max-w-6xl mx-auto px-6 py-12">
@@ -201,55 +217,25 @@ export default function CentralRegionPage() {
         <p className="text-[#2e3d35] mt-3">
           Stories and updates from Central Region initiatives.
         </p>
-        <div className="grid md:grid-cols-3 gap-6 mt-6">
-          {[
-            {
-              title: "Community Seedbanks",
-              image: "/blog/blog-1.svg",
-              date: "Nov 2024",
-              excerpt: "How village seedbanks are protecting indigenous trees.",
-            },
-            {
-              title: "Youth Voices",
-              image: "/blog/blog-2.svg",
-              date: "Dec 2024",
-              excerpt: "Student leaders share climate action stories.",
-            },
-            {
-              title: "River Cleanup",
-              image: "/blog/blog-3.svg",
-              date: "Jan 2025",
-              excerpt: "Community groups restoring riverbanks in Salima.",
-            },
-          ].map((post) => (
-            <div
-              key={post.title}
-              className="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
-            >
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={420}
-                height={240}
-                className="w-full h-40 object-cover"
-              />
-              <div className="p-5">
-                <p className="text-xs font-semibold text-green-700">
-                  {post.date}
-                </p>
-                <p className="font-semibold text-[#1a2e1a] mt-2">
-                  {post.title}
-                </p>
-                <p className="text-sm text-[#2e3d35] mt-2">
-                  {post.excerpt}
-                </p>
-                <button className="text-sm font-semibold text-green-700 mt-3">
-                  Read more
-                </button>
-              </div>
-            </div>
-          ))}
+        <BlogsDisplay region="central" limit={3} />
+      </section>
+
+      <section id="news" className="bg-[#f7f3ea]">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <h2 className="text-2xl font-bold text-[#1a2e1a]">News</h2>
+          <p className="text-[#2e3d35] mt-3">
+            Latest news from the Central Region.
+          </p>
+          <NewsDisplay region="central" limit={3} />
         </div>
+      </section>
+
+      <section id="videos" className="max-w-6xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-bold text-[#1a2e1a]">Videos</h2>
+        <p className="text-[#2e3d35] mt-3">
+          Video content from Central Region conservation activities.
+        </p>
+        <VideosDisplay region="central" limit={3} />
       </section>
 
       <section id="stats" className="bg-[#1a2e1a] text-white">

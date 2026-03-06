@@ -1,60 +1,50 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  CMS_CATEGORIES,
-  CMS_CONTENT_TYPES,
-  CMS_LEVELS,
-  CMS_REGIONS,
-  type CmsCategory,
-  type CmsContentType,
-  type CmsLevel,
-  type CmsRegion,
-  type CmsRole,
-  type CmsUserRecord,
-} from "@/lib/cms/constants";
+import DashboardSidebar from "@/components/cms/DashboardSidebar";
+import UnifiedContentForm from "@/components/cms/UnifiedContentForm";
+import { type CmsUserRecord } from "@/lib/cms/constants";
+import { FileText, MapPin, User, CheckCircle, Trash2, Edit } from "lucide-react";
 
-type ContentItem = {
+interface ContentItem {
   id: number;
   title: string;
   slug: string;
-  content_type: CmsContentType;
-  category: CmsCategory;
-  level: CmsLevel;
-  region: CmsRegion | null;
-  body: string;
-  updated_at: string;
-};
+  excerpt: string;
+  contentType: string;
+  region: string;
+  status: string;
+  updatedAt: string;
+  createdBy: { name: string };
+}
 
 type Props = {
   initialUser: CmsUserRecord;
 };
 
+const REGIONS = ["central", "northern", "southern", "eastern", "national"];
+
 export default function CmsClient({ initialUser }: Props) {
   const [user, setUser] = useState(initialUser);
-  const [items, setItems] = useState<ContentItem[]>([]);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [allContent, setAllContent] = useState<ContentItem[]>([]);
+  const [filteredContent, setFilteredContent] = useState<ContentItem[]>([]);
   const [users, setUsers] = useState<CmsUserRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error">("success");
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [contentType, setContentType] = useState<CmsContentType>("news");
-  const [category, setCategory] = useState<CmsCategory>("news");
-  const [level, setLevel] = useState<CmsLevel>(
-    user.role === "super_admin" ? "national" : "regional"
-  );
-  const [region, setRegion] = useState<CmsRegion>(
-    user.role === "super_admin" ? "central" : user.region
-  );
-  const [body, setBody] = useState("");
+  // Filter state
+  const [contentTypeFilter, setContentTypeFilter] = useState("all");
 
+  // User creation
   const [newUserName, setNewUserName] = useState("");
   const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserPassword, setNewUserPassword] = useState("");
-  const [newUserRole, setNewUserRole] = useState<CmsRole>("regional_admin");
-  const [newUserRegion, setNewUserRegion] = useState<CmsRegion>("central");
+  const [newUserRole, setNewUserRole] = useState<"regional_admin" | "super_admin">("regional_admin");
+  const [newUserRegion, setNewUserRegion] = useState(REGIONS[0]);
 
   const canManageUsers = useMemo(() => user.role === "super_admin", [user.role]);
 
@@ -65,6 +55,10 @@ export default function CmsClient({ initialUser }: Props) {
       void refreshUsers();
     }
   }, [canManageUsers]);
+
+  useEffect(() => {
+    filterContent();
+  }, [allContent, contentTypeFilter]);
 
   async function refreshMe() {
     const res = await fetch("/api/auth/me");
@@ -78,14 +72,45 @@ export default function CmsClient({ initialUser }: Props) {
 
   async function refreshContent() {
     setLoading(true);
-    const res = await fetch("/api/cms/content");
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      setMessage(data.error || "Unable to load content.");
-      return;
+    try {
+      // Fetch all content types
+      const [announcementsRes, newsRes, briefingsRes, videosRes, blogsRes] = await Promise.all([
+        fetch("/api/cms/announcements"),
+        fetch("/api/cms/news"),
+        fetch("/api/cms/press-briefings"),
+        fetch("/api/cms/videos"),
+        fetch("/api/cms/blogs"),
+      ]);
+
+      const announcements = announcementsRes.ok ? await announcementsRes.json() : [];
+      const news = newsRes.ok ? await newsRes.json() : [];
+      const briefings = briefingsRes.ok ? await briefingsRes.json() : [];
+      const videos = videosRes.ok ? await videosRes.json() : [];
+      const blogs = blogsRes.ok ? await blogsRes.json() : [];
+
+      const allItems: ContentItem[] = [
+        ...announcements.map((item: any) => ({ ...item, contentType: "announcement" })),
+        ...news.map((item: any) => ({ ...item, contentType: "news" })),
+        ...briefings.map((item: any) => ({ ...item, contentType: "press_briefing" })),
+        ...videos.map((item: any) => ({ ...item, contentType: "video" })),
+        ...blogs.map((item: any) => ({ ...item, contentType: "blog" })),
+      ];
+
+      setAllContent(allItems);
+    } catch (error) {
+      setMessage("Failed to load content");
+      setMessageType("error");
+    } finally {
+      setLoading(false);
     }
-    setItems(data.items || []);
+  }
+
+  function filterContent() {
+    if (contentTypeFilter === "all") {
+      setFilteredContent(allContent);
+    } else {
+      setFilteredContent(allContent.filter((item) => item.contentType === contentTypeFilter));
+    }
   }
 
   async function refreshUsers() {
@@ -93,105 +118,116 @@ export default function CmsClient({ initialUser }: Props) {
     const data = await res.json();
     if (!res.ok) {
       setMessage(data.error || "Unable to load users.");
+      setMessageType("error");
       return;
     }
     setUsers(data.items || []);
   }
 
-  function resetContentForm() {
-    setTitle("");
-    setSlug("");
-    setContentType("news");
-    setCategory("news");
-    setLevel(user.role === "super_admin" ? "national" : "regional");
-    setRegion(user.role === "super_admin" ? "central" : user.region);
-    setBody("");
-    setEditingId(null);
-  }
-
-  async function submitContent(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setMessage(null);
-
-    const payload = {
-      title,
-      slug,
-      contentType,
-      category,
-      level,
-      region,
-      body,
-    };
-
-    const res = await fetch(
-      editingId ? `/api/cms/content/${editingId}` : "/api/cms/content",
-      {
-        method: editingId ? "PATCH" : "POST",
+  async function handleContentSubmit(data: any) {
+    setIsSubmitting(true);
+    try {
+      const endpoint = `/api/cms/${getEndpointForType(data.contentType)}`;
+      
+      const response = await fetch(endpoint, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        setMessage(result.error || "Failed to save content");
+        setMessageType("error");
+        return;
       }
-    );
-    const data = await res.json();
-    if (!res.ok) {
-      setMessage(data.error || "Unable to save content.");
-      return;
-    }
 
-    setMessage(editingId ? "Content updated." : "Content created.");
-    resetContentForm();
-    await refreshContent();
+      setMessage(
+        editingId
+          ? "Content updated successfully!"
+          : "Content created successfully!"
+      );
+      setMessageType("success");
+      setEditingId(null);
+      await refreshContent();
+    } catch (error) {
+      setMessage("An error occurred while saving content");
+      setMessageType("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  function beginEdit(item: ContentItem) {
-    setEditingId(item.id);
-    setTitle(item.title);
-    setSlug(item.slug);
-    setContentType(item.content_type);
-    setCategory(item.category);
-    setLevel(item.level);
-    setRegion(item.region ?? (user.region === "national" ? "central" : user.region));
-    setBody(item.body);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  function getEndpointForType(type: string): string {
+    const typeMap: Record<string, string> = {
+      announcement: "announcements",
+      news: "news",
+      press_briefing: "press-briefings",
+      blog: "blogs",
+      video: "videos",
+    };
+    return typeMap[type] || "news";
   }
 
-  async function removeContent(id: number) {
-    const ok = window.confirm("Delete this record?");
-    if (!ok) return;
-    const res = await fetch(`/api/cms/content/${id}`, { method: "DELETE" });
-    const data = await res.json();
-    if (!res.ok) {
-      setMessage(data.error || "Unable to delete.");
-      return;
+  async function deleteContent(id: number, type: string) {
+    if (!window.confirm("Are you sure you want to delete this content?")) return;
+
+    try {
+      const endpoint = `/api/cms/${getEndpointForType(type)}/${id}`;
+      const response = await fetch(endpoint, { method: "DELETE" });
+
+      if (!response.ok) {
+        setMessage("Failed to delete content");
+        setMessageType("error");
+        return;
+      }
+
+      setMessage("Content deleted successfully!");
+      setMessageType("success");
+      await refreshContent();
+    } catch (error) {
+      setMessage("An error occurred while deleting content");
+      setMessageType("error");
     }
-    await refreshContent();
   }
 
   async function createUser(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage(null);
-    const res = await fetch("/api/cms/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: newUserName,
-        email: newUserEmail,
-        password: newUserPassword,
-        role: newUserRole,
-        region: newUserRegion,
-      }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setMessage(data.error || "Unable to create user.");
-      return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/cms/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newUserName,
+          email: newUserEmail,
+          password: newUserPassword,
+          role: newUserRole,
+          region: newUserRegion,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage(data.error || "Failed to create user");
+        setMessageType("error");
+        return;
+      }
+
+      setNewUserName("");
+      setNewUserEmail("");
+      setNewUserPassword("");
+      setNewUserRole("regional_admin");
+      setNewUserRegion(REGIONS[0]);
+      setMessage("User created successfully!");
+      setMessageType("success");
+      await refreshUsers();
+    } catch (error) {
+      setMessage("An error occurred while creating user");
+      setMessageType("error");
+    } finally {
+      setIsSubmitting(false);
     }
-    setNewUserName("");
-    setNewUserEmail("");
-    setNewUserPassword("");
-    setNewUserRole("regional_admin");
-    setNewUserRegion("central");
-    setMessage("User created.");
-    await refreshUsers();
   }
 
   async function logout() {
@@ -200,274 +236,254 @@ export default function CmsClient({ initialUser }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f3ea] pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-[#1a2e1a]">Content Management</h1>
-            <p className="text-sm text-[#4a5a4a] mt-1">
-              Signed in as {user.name} ({user.role}, {user.region})
-            </p>
-          </div>
-          <button
-            onClick={logout}
-            className="bg-[#1a2e1a] text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-[#2d4a2d]"
-          >
-            Sign out
-          </button>
-        </div>
+    <div className="flex min-h-screen  bg-slate-50">
+      {/* Sidebar */}
+      <DashboardSidebar
+        user={user}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLogout={logout}
+        canManageUsers={canManageUsers}
+      />
 
+      {/* Main Content */}
+      <main className="flex-1 md:ml-64 p-6 md:p-8">
+        {/* Message Alert */}
         {message && (
-          <div className="mb-6 p-3 rounded-md bg-[#fff8e1] text-[#5f4b00] border border-[#f1d995] text-sm">
+          <div
+            className={`mb-6 p-4 rounded-lg border ${
+              messageType === "success"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                : "bg-red-50 border-red-200 text-red-700"
+            }`}
+          >
             {message}
           </div>
         )}
 
-        <section className="bg-white border border-[#ede8d8] rounded-md p-5 mb-8">
-          <h2 className="text-xl font-bold text-[#1a2e1a] mb-4">
-            {editingId ? "Edit Content" : "Create Content"}
-          </h2>
-          <form onSubmit={submitContent} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Title</label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+        {/* Overview Tab */}
+        {activeTab === "overview" && (
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">Dashboard</h1>
+            <p className="text-slate-600 mb-8">Content management overview and statistics</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: "Total Content", value: allContent.length, icon: FileText, color: "bg-blue-50 border-blue-200" },
+                { label: "Your Region", value: user.region.toUpperCase(), icon: MapPin, color: "bg-emerald-50 border-emerald-200" },
+                { label: "Your Role", value: user.role.replace("_", " "), icon: User, color: "bg-purple-50 border-purple-200" },
+                { label: "Status", value: "Active", icon: CheckCircle, color: "bg-emerald-50 border-emerald-200" },
+              ].map((stat, idx) => {
+                const IconComponent = stat.icon;
+                return (
+                  <div
+                    key={idx}
+                    className={`border rounded-lg p-6 ${stat.color}`}
+                  >
+                    <IconComponent className="text-blue-600 mb-3" size={24} />
+                    <p className="text-xs text-slate-600 mb-2">{stat.label}</p>
+                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Create Content Tab */}
+        {activeTab === "create" && (
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-6">Create New Content</h1>
+            <div className="bg-white border border-slate-200 rounded-lg p-8">
+              <UnifiedContentForm
+                regions={REGIONS}
+                onSubmit={handleContentSubmit}
+                isLoading={isSubmitting}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Slug</label>
-              <input
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                placeholder="optional-auto-generated"
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Type</label>
+          </div>
+        )}
+
+        {/* Manage Content Tab */}
+        {activeTab === "manage" && (
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-6">Manage Content</h1>
+
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Filter by Type
+              </label>
               <select
-                value={contentType}
-                onChange={(e) => setContentType(e.target.value as CmsContentType)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                value={contentTypeFilter}
+                onChange={(e) => setContentTypeFilter(e.target.value)}
+                className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                {CMS_CONTENT_TYPES.map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
+                <option value="all">All Content</option>
+                <option value="announcement">Announcements</option>
+                <option value="news">News</option>
+                <option value="press_briefing">Press Briefings</option>
+                <option value="blog">Blogs</option>
+                <option value="video">Videos</option>
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as CmsCategory)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              >
-                {CMS_CATEGORIES.map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
+
+            {loading ? (
+              <p className="text-slate-600">Loading content...</p>
+            ) : filteredContent.length === 0 ? (
+              <p className="text-slate-600">No content found.</p>
+            ) : (
+              <div className="space-y-4">
+                {filteredContent.map((item) => (
+                  <div
+                    key={`${item.contentType}-${item.id}`}
+                    className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
+                            {item.contentType.replace("_", " ").toUpperCase()}
+                          </span>
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                              item.status === "published"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : item.status === "draft"
+                                  ? "bg-amber-100 text-amber-700"
+                                  : "bg-slate-100 text-slate-700"
+                            }`}
+                          >
+                            {item.status.toUpperCase()}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
+                        <p className="text-sm text-slate-600 mt-1">{item.excerpt}</p>
+                        <p className="text-xs text-slate-500 mt-2">
+                          Region: <span className="font-semibold">{item.region}</span> • By{" "}
+                          <span className="font-semibold">{item.createdBy.name}</span> •{" "}
+                          {new Date(item.updatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors">
+                          <Edit size={18} />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          onClick={() => deleteContent(item.id, item.contentType)}
+                          className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors"
+                        >
+                          <Trash2 size={18} />
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Level</label>
-              <select
-                value={level}
-                onChange={(e) => setLevel(e.target.value as CmsLevel)}
-                disabled={user.role !== "super_admin"}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-100"
-              >
-                {CMS_LEVELS.map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Region</label>
-              <select
-                value={region}
-                onChange={(e) => setRegion(e.target.value as CmsRegion)}
-                disabled={user.role !== "super_admin" || level === "national"}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-100"
-              >
-                {CMS_REGIONS.filter((r) => r !== "national").map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Body</label>
-              <textarea
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                rows={6}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              />
-            </div>
-            <div className="md:col-span-2 flex gap-3">
-              <button
-                type="submit"
-                className="bg-green-600 text-white px-5 py-2 rounded-md font-semibold hover:bg-green-700"
-              >
-                {editingId ? "Update" : "Create"}
-              </button>
-              {editingId && (
-                <button
-                  type="button"
-                  onClick={resetContentForm}
-                  className="bg-gray-200 text-gray-900 px-5 py-2 rounded-md font-semibold"
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Users Tab */}
+        {activeTab === "users" && (
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-6">Manage Users</h1>
+
+            {/* Create User Form */}
+            <div className="bg-white border border-slate-200 rounded-lg p-8 mb-8">
+              <h2 className="text-xl font-bold text-slate-900 mb-6">Create New User</h2>
+              <form onSubmit={createUser} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  value={newUserName}
+                  onChange={(e) => setNewUserName(e.target.value)}
+                  required
+                  placeholder="Full Name"
+                  className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="email"
+                  value={newUserEmail}
+                  onChange={(e) => setNewUserEmail(e.target.value)}
+                  required
+                  placeholder="Email"
+                  className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="password"
+                  value={newUserPassword}
+                  onChange={(e) => setNewUserPassword(e.target.value)}
+                  required
+                  placeholder="Password"
+                  className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <select
+                  value={newUserRole}
+                  onChange={(e) => setNewUserRole(e.target.value as "regional_admin" | "super_admin")}
+                  className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  Cancel
+                  <option value="regional_admin">Regional Admin</option>
+                  <option value="super_admin">Super Admin</option>
+                </select>
+                <select
+                  value={newUserRegion}
+                  onChange={(e) => setNewUserRegion(e.target.value)}
+                  className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  {REGIONS.map((region) => (
+                    <option key={region} value={region}>
+                      {region.charAt(0).toUpperCase() + region.slice(1)}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="md:col-span-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 font-semibold transition-colors"
+                >
+                  {isSubmitting ? "Creating..." : "Create User"}
                 </button>
+              </form>
+            </div>
+
+            {/* Users List */}
+            <div className="bg-white border border-slate-200 rounded-lg p-8">
+              <h2 className="text-xl font-bold text-slate-900 mb-6">All Users</h2>
+              {users.length === 0 ? (
+                <p className="text-slate-600">No users found.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="border-b border-slate-300">
+                      <tr>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Name</th>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Email</th>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Role</th>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Region</th>
+                        <th className="text-left py-3 px-4 font-semibold text-slate-700">Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.map((row) => (
+                        <tr key={row.id} className="border-b border-slate-100 hover:bg-slate-50">
+                          <td className="py-3 px-4">{row.name}</td>
+                          <td className="py-3 px-4">{row.email}</td>
+                          <td className="py-3 px-4 capitalize">{row.role.replace("_", " ")}</td>
+                          <td className="py-3 px-4 capitalize">{row.region}</td>
+                          <td className="py-3 px-4">
+                            {new Date(row.created_at).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
-          </form>
-        </section>
-
-        <section className="bg-white border border-[#ede8d8] rounded-md p-5 mb-8">
-          <h2 className="text-xl font-bold text-[#1a2e1a] mb-4">Content Records</h2>
-          {loading ? (
-            <p className="text-sm text-[#4a5a4a]">Loading...</p>
-          ) : items.length === 0 ? (
-            <p className="text-sm text-[#4a5a4a]">No records yet.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="text-left border-b border-gray-200">
-                    <th className="py-2 pr-4">Title</th>
-                    <th className="py-2 pr-4">Slug</th>
-                    <th className="py-2 pr-4">Type</th>
-                    <th className="py-2 pr-4">Category</th>
-                    <th className="py-2 pr-4">Level</th>
-                    <th className="py-2 pr-4">Region</th>
-                    <th className="py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item) => (
-                    <tr key={item.id} className="border-b border-gray-100">
-                      <td className="py-2 pr-4">{item.title}</td>
-                      <td className="py-2 pr-4">{item.slug}</td>
-                      <td className="py-2 pr-4">{item.content_type}</td>
-                      <td className="py-2 pr-4">{item.category}</td>
-                      <td className="py-2 pr-4">{item.level}</td>
-                      <td className="py-2 pr-4">{item.region ?? "-"}</td>
-                      <td className="py-2 flex gap-2">
-                        <button
-                          onClick={() => beginEdit(item)}
-                          className="text-green-700 font-semibold"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => removeContent(item.id)}
-                          className="text-red-700 font-semibold"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
-
-        {canManageUsers && (
-          <section className="bg-white border border-[#ede8d8] rounded-md p-5">
-            <h2 className="text-xl font-bold text-[#1a2e1a] mb-4">User Management</h2>
-            <form onSubmit={createUser} className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6">
-              <input
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-                required
-                placeholder="Name"
-                className="border border-gray-300 rounded-md px-3 py-2"
-              />
-              <input
-                type="email"
-                value={newUserEmail}
-                onChange={(e) => setNewUserEmail(e.target.value)}
-                required
-                placeholder="Email"
-                className="border border-gray-300 rounded-md px-3 py-2"
-              />
-              <input
-                type="password"
-                value={newUserPassword}
-                onChange={(e) => setNewUserPassword(e.target.value)}
-                required
-                placeholder="Password"
-                className="border border-gray-300 rounded-md px-3 py-2"
-              />
-              <select
-                value={newUserRole}
-                onChange={(e) => setNewUserRole(e.target.value as CmsRole)}
-                className="border border-gray-300 rounded-md px-3 py-2"
-              >
-                <option value="regional_admin">regional_admin</option>
-                <option value="super_admin">super_admin</option>
-              </select>
-              <select
-                value={newUserRegion}
-                onChange={(e) => setNewUserRegion(e.target.value as CmsRegion)}
-                className="border border-gray-300 rounded-md px-3 py-2"
-              >
-                {CMS_REGIONS.map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="submit"
-                className="md:col-span-5 bg-[#1a2e1a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#2d4a2d]"
-              >
-                Create User
-              </button>
-            </form>
-
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="text-left border-b border-gray-200">
-                    <th className="py-2 pr-4">Name</th>
-                    <th className="py-2 pr-4">Email</th>
-                    <th className="py-2 pr-4">Role</th>
-                    <th className="py-2 pr-4">Region</th>
-                    <th className="py-2 pr-4">Created</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((row) => (
-                    <tr key={row.id} className="border-b border-gray-100">
-                      <td className="py-2 pr-4">{row.name}</td>
-                      <td className="py-2 pr-4">{row.email}</td>
-                      <td className="py-2 pr-4">{row.role}</td>
-                      <td className="py-2 pr-4">{row.region}</td>
-                      <td className="py-2 pr-4">
-                        {new Date(row.created_at).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          </div>
         )}
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
 

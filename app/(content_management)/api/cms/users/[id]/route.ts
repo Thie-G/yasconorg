@@ -5,26 +5,10 @@ import {
   CMS_ROLES,
   type CmsRegion,
   type CmsRole,
-  type CmsUserRecord,
 } from "@/lib/cms/constants";
-import { ensureCmsSchema, query } from "@/lib/cms/db";
+import { ensureCmsSchema, getPrismaClient } from "@/lib/cms/db";
 import { canManageUsers } from "@/lib/cms/permissions";
 import { hashPassword } from "@/lib/cms/security";
-
-type UserRow = CmsUserRecord;
-
-async function getUserById(id: number) {
-  const result = await query<UserRow>(
-    `
-      SELECT id, name, email, role, region, created_at
-      FROM cms_users
-      WHERE id = $1
-      LIMIT 1
-    `,
-    [id]
-  );
-  return result.rows[0] ?? null;
-}
 
 export async function PATCH(
   req: NextRequest,
@@ -38,13 +22,17 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
   const id = Number((await context.params).id);
   if (!Number.isInteger(id) || id <= 0) {
     return NextResponse.json({ error: "Invalid id." }, { status: 400 });
   }
 
-  const existing = await getUserById(id);
+  const existing = await client.cmsUser.findUnique({
+    where: { id },
+  });
+
   if (!existing) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });
   }
@@ -57,8 +45,8 @@ export async function PATCH(
   };
 
   const name = body.name?.trim() || existing.name;
-  const role = body.role ?? existing.role;
-  const region = body.region ?? existing.region;
+  const role = (body.role ?? existing.role) as CmsRole;
+  const region = (body.region ?? existing.region) as CmsRegion;
 
   if (!CMS_ROLES.includes(role)) {
     return NextResponse.json({ error: "Invalid role." }, { status: 400 });
@@ -73,28 +61,26 @@ export async function PATCH(
     );
   }
 
+  const updateData: any = { name, role, region };
   if (body.password?.trim()) {
-    await query(
-      `
-        UPDATE cms_users
-        SET name = $1, role = $2, region = $3, password_hash = $4
-        WHERE id = $5
-      `,
-      [name, role, region, hashPassword(body.password), id]
-    );
-  } else {
-    await query(
-      `
-        UPDATE cms_users
-        SET name = $1, role = $2, region = $3
-        WHERE id = $4
-      `,
-      [name, role, region, id]
-    );
+    updateData.passwordHash = hashPassword(body.password);
   }
 
-  const updated = await getUserById(id);
-  return NextResponse.json({ item: updated });
+  const updated = await client.cmsUser.update({
+    where: { id },
+    data: updateData,
+  });
+
+  return NextResponse.json({
+    item: {
+      id: updated.id,
+      name: updated.name,
+      email: updated.email,
+      role: updated.role,
+      region: updated.region,
+      created_at: updated.createdAt.toISOString(),
+    },
+  });
 }
 
 export async function DELETE(
@@ -109,6 +95,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
   const id = Number((await context.params).id);
   if (!Number.isInteger(id) || id <= 0) {
@@ -121,7 +108,10 @@ export async function DELETE(
     );
   }
 
-  await query(`DELETE FROM cms_users WHERE id = $1`, [id]);
+  await client.cmsUser.delete({
+    where: { id },
+  });
+
   return NextResponse.json({ ok: true });
 }
 

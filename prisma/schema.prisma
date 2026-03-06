@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ===== CMS System Models =====
+
+enum CmsRole {
+  super_admin
+  regional_admin
+}
+
+enum CmsRegion {
+  national
+  northern
+  central
+  southern
+  eastern
+}
+
+enum CmsLevel {
+  national
+  regional
+}
+
+enum CmsContentType {
+  blog
+  news
+  announcement
+  press_briefing
+  video
+}
+
+enum CmsCategory {
+  news
+  impact
+  press_release
+  announcement
+  video
+  blog
+}
+
+enum PublishStatus {
+  draft
+  published
+  archived
+}
+
+model CmsUser {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  email              String    @unique
+  passwordHash       String    @map("password_hash")
+  role               CmsRole
+  region             CmsRegion
+  createdAt          DateTime  @default(now()) @map("created_at")
+  
+  sessions           CmsSession[]
+  createdContent     CmsContent[] @relation("CreatedBy")
+  updatedContent     CmsContent[] @relation("UpdatedBy")
+  
+  createdAnnouncements   CmsAnnouncement[] @relation("CreatedBy")
+  updatedAnnouncements   CmsAnnouncement[] @relation("UpdatedBy")
+  
+  createdNews        CmsNews[] @relation("CreatedBy")
+  updatedNews        CmsNews[] @relation("UpdatedBy")
+  
+  createdBriefings   CmsPressBreifing[] @relation("CreatedBy")
+  updatedBriefings   CmsPressBreifing[] @relation("UpdatedBy")
+  
+  createdVideos      CmsVideo[] @relation("CreatedBy")
+  updatedVideos      CmsVideo[] @relation("UpdatedBy")
+  
+  createdBlogs       CmsBlog[] @relation("CreatedBy")
+  updatedBlogs       CmsBlog[] @relation("UpdatedBy")
+
+  @@map("cms_users")
+}
+
+model CmsSession {
+  id                 Int       @id @default(autoincrement())
+  tokenHash          String    @unique @map("token_hash")
+  userId             Int       @map("user_id")
+  user               CmsUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt          DateTime  @map("expires_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  @@map("cms_sessions")
+}
+
+model CmsContent {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  contentType        CmsContentType @map("content_type")
+  category           CmsCategory
+  level              CmsLevel
+  region             CmsRegion?
+  body               String    @default("")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([level, region, contentType, category])
+  @@map("cms_content")
+}
+
+// ===== Enhanced Content Models with Media =====
+
+model CmsAnnouncement {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  excerpt            String
+  richContent        String    @map("rich_content")
+  coverImage         String?   @map("cover_image")
+  region             CmsRegion
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime? @map("published_at")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([region, status, publishedAt])
+  @@map("cms_announcements")
+}
+
+model CmsNews {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  excerpt            String
+  richContent        String    @map("rich_content")
+  coverImage         String?   @map("cover_image")
+  region             CmsRegion
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime? @map("published_at")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([region, status, publishedAt])
+  @@map("cms_news")
+}
+
+model CmsPressBreifing {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  excerpt            String
+  richContent        String    @map("rich_content")
+  coverImage         String?   @map("cover_image")
+  region             CmsRegion
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime? @map("published_at")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([region, status, publishedAt])
+  @@map("cms_press_briefings")
+}
+
+model CmsVideo {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  excerpt            String
+  richContent        String    @map("rich_content")
+  coverImage         String?   @map("cover_image")
+  videoUrl           String    @map("video_url")
+  videoDuration      Int?      @map("video_duration")
+  region             CmsRegion
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime? @map("published_at")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([region, status, publishedAt])
+  @@map("cms_videos")
+}
+
+model CmsBlog {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  excerpt            String
+  richContent        String    @map("rich_content")
+  coverImage         String?   @map("cover_image")
+  region             CmsRegion
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime? @map("published_at")
+  createdById        Int       @map("created_by")
+  createdBy          CmsUser   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById        Int       @map("updated_by")
+  updatedBy          CmsUser   @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@index([region, status, publishedAt])
+  @@map("cms_blogs")
+}
+
+// ===== Legacy Models (kept for reference) =====
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    Int
+  region    Region   @relation(fields: [regionId], references: [id])
+  regionId  Int
+  createdAt DateTime  @default(now())
+}
+
+model Role {
+  id    Int     @id @default(autoincrement())
+  name  String
+  users User[]
+}
+
+model Region {
+  id    Int     @id @default(autoincrement())
+  name  String
+  users User[]
+}

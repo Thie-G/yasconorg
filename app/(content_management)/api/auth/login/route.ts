@@ -4,9 +4,12 @@ import {
   authenticateUser,
   createSession,
 } from "@/lib/cms/auth";
+import { ensureCmsSchema } from "@/lib/cms/db";
 
 export async function POST(req: Request) {
   try {
+    await ensureCmsSchema();
+
     const body = (await req.json()) as {
       email?: string;
       password?: string;

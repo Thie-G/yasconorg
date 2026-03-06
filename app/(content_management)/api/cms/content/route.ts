@@ -10,23 +10,8 @@ import {
   type CmsLevel,
   type CmsRegion,
 } from "@/lib/cms/constants";
-import { ensureCmsSchema, query } from "@/lib/cms/db";
+import { ensureCmsSchema, getPrismaClient } from "@/lib/cms/db";
 import { getForcedScopeForUser, isSuperAdmin } from "@/lib/cms/permissions";
-
-type ContentRow = {
-  id: number;
-  title: string;
-  slug: string;
-  content_type: CmsContentType;
-  category: CmsCategory;
-  level: CmsLevel;
-  region: CmsRegion | null;
-  body: string;
-  created_at: string;
-  updated_at: string;
-  created_by: number;
-  updated_by: number;
-};
 
 function isValidEnumValue<T extends readonly string[]>(
   values: T,
@@ -51,63 +36,65 @@ export async function GET(req: NextRequest) {
   }
 
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
   const params = req.nextUrl.searchParams;
-  const filters: string[] = [];
-  const values: unknown[] = [];
+  const where: any = {};
 
   const search = params.get("search");
   if (search) {
-    values.push(`%${search.toLowerCase()}%`);
-    filters.push(`(LOWER(title) LIKE $${values.length} OR LOWER(slug) LIKE $${values.length})`);
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { slug: { contains: search, mode: "insensitive" } },
+    ];
   }
 
   const contentType = params.get("contentType");
   if (isValidEnumValue(CMS_CONTENT_TYPES, contentType)) {
-    values.push(contentType);
-    filters.push(`content_type = $${values.length}`);
+    where.contentType = contentType;
   }
 
   const category = params.get("category");
   if (isValidEnumValue(CMS_CATEGORIES, category)) {
-    values.push(category);
-    filters.push(`category = $${values.length}`);
+    where.category = category;
   }
 
   const scope = getForcedScopeForUser(user);
   if (scope) {
-    values.push(scope.level);
-    filters.push(`level = $${values.length}`);
-    values.push(scope.region);
-    filters.push(`region = $${values.length}`);
+    where.level = scope.level;
+    where.region = scope.region;
   } else {
     const level = params.get("level");
     if (isValidEnumValue(CMS_LEVELS, level)) {
-      values.push(level);
-      filters.push(`level = $${values.length}`);
+      where.level = level;
     }
     const region = params.get("region");
     if (isValidEnumValue(CMS_REGIONS, region) && region !== "national") {
-      values.push(region);
-      filters.push(`region = $${values.length}`);
+      where.region = region;
     }
   }
 
-  const where = filters.length ? `WHERE ${filters.join(" AND ")}` : "";
+  const items = await client.cmsContent.findMany({
+    where,
+    orderBy: { updatedAt: "desc" },
+  });
 
-  const result = await query<ContentRow>(
-    `
-      SELECT
-        id, title, slug, content_type, category, level, region, body,
-        created_at, updated_at, created_by, updated_by
-      FROM cms_content
-      ${where}
-      ORDER BY updated_at DESC
-    `,
-    values
-  );
-
-  return NextResponse.json({ items: result.rows });
+  return NextResponse.json({
+    items: items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      slug: item.slug,
+      content_type: item.contentType,
+      category: item.category,
+      level: item.level,
+      region: item.region,
+      body: item.body,
+      created_at: item.createdAt.toISOString(),
+      updated_at: item.updatedAt.toISOString(),
+      created_by: item.createdById,
+      updated_by: item.updatedById,
+    })),
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -117,6 +104,7 @@ export async function POST(req: NextRequest) {
   }
 
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
   const body = (await req.json()) as {
     title?: string;
@@ -172,23 +160,42 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = await query<ContentRow>(
-      `
-        INSERT INTO cms_content (
-          title, slug, content_type, category, level, region, body, created_by, updated_by
-        )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $8)
-        RETURNING
-          id, title, slug, content_type, category, level, region, body,
-          created_at, updated_at, created_by, updated_by
-      `,
-      [title, slug, contentType, category, level, region, bodyText, user.id]
-    );
+    const item = await client.cmsContent.create({
+      data: {
+        title,
+        slug,
+        contentType,
+        category,
+        level,
+        region,
+        body: bodyText,
+        createdById: user.id,
+        updatedById: user.id,
+      },
+    });
 
-    return NextResponse.json({ item: result.rows[0] }, { status: 201 });
+    return NextResponse.json(
+      {
+        item: {
+          id: item.id,
+          title: item.title,
+          slug: item.slug,
+          content_type: item.contentType,
+          category: item.category,
+          level: item.level,
+          region: item.region,
+          body: item.body,
+          created_at: item.createdAt.toISOString(),
+          updated_at: item.updatedAt.toISOString(),
+          created_by: item.createdById,
+          updated_by: item.updatedById,
+        },
+      },
+      { status: 201 }
+    );
   } catch (error) {
     const message =
-      error instanceof Error && error.message.includes("duplicate key")
+      error instanceof Error && error.message.includes("Unique constraint failed")
         ? "Slug already exists."
         : "Failed to create content.";
     return NextResponse.json({ error: message }, { status: 400 });

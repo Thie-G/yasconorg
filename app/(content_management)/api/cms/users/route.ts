@@ -7,13 +7,9 @@ import {
   type CmsRole,
   type CmsUserRecord,
 } from "@/lib/cms/constants";
-import { ensureCmsSchema, query } from "@/lib/cms/db";
+import { ensureCmsSchema, getPrismaClient } from "@/lib/cms/db";
 import { canManageUsers, canReadUserRecord } from "@/lib/cms/permissions";
 import { hashPassword } from "@/lib/cms/security";
-
-type UserRow = CmsUserRecord & {
-  password_hash?: string;
-};
 
 export async function GET(req: NextRequest) {
   const user = await getSessionUserFromRequest(req);
@@ -21,19 +17,26 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
-  const result = await query<UserRow>(
-    `
-      SELECT id, name, email, role, region, created_at
-      FROM cms_users
-      ORDER BY created_at DESC
-    `
-  );
+  const result = await client.cmsUser.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
-  const items = result.rows.filter((row) =>
+  const items = result.filter((row: any) =>
     canReadUserRecord(user, { role: row.role, region: row.region })
   );
-  return NextResponse.json({ items });
+  
+  return NextResponse.json({
+    items: items.map((u: any) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      role: u.role,
+      region: u.region,
+      created_at: u.createdAt.toISOString(),
+    })),
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -45,6 +48,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   await ensureCmsSchema();
+  const client = getPrismaClient();
 
   const body = (await req.json()) as {
     name?: string;
@@ -80,16 +84,30 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = await query<UserRow>(
-      `
-        INSERT INTO cms_users (name, email, password_hash, role, region)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING id, name, email, role, region, created_at
-      `,
-      [name, email, hashPassword(password), role, region]
+    const newUser = await client.cmsUser.create({
+      data: {
+        name,
+        email,
+        passwordHash: hashPassword(password),
+        role,
+        region,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        item: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+          region: newUser.region,
+          created_at: newUser.createdAt.toISOString(),
+        },
+      },
+      { status: 201 }
     );
-    return NextResponse.json({ item: result.rows[0] }, { status: 201 });
-  } catch {
+  } catch (error) {
     return NextResponse.json(
       { error: "User could not be created. Email may already exist." },
       { status: 400 }

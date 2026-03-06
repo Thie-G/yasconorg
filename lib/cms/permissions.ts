@@ -51,3 +51,13 @@ export function canReadUserRecord(
   return target.region === actor.region && target.role !== "super_admin";
 }
 
+export function canCreateOrEditContent(user: CmsUserRecord): boolean {
+  // Super admins can create/edit anything
+  if (isSuperAdmin(user)) {
+    return true;
+  }
+
+  // Regional admins can create/edit content in their region
+  return user.role === "regional_admin";
+}
+
