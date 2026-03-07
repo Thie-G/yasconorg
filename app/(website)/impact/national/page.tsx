@@ -56,7 +56,7 @@ export default function NationalPage() {
             {
               partner: "Department of Forestry",
               description:
-                "Provides funding and technical support for environmental conservation projects.",
+                "Collaborates on tree planting, forest restoration, and community forestry initiatives.",
             },
             {
               partner:
