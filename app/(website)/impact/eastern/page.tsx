@@ -76,7 +76,7 @@ function SectionHeader({ label, title }: { label: string; title: string }) {
   return (
     <div className="mb-10">
       <div className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: ACCENT }}>{label}</div>
-      <h2 className="text-3xl font-black text-gray-900">{title}</h2>
+      <h2 className="text-3xl font-black text-[#0f1a0f]">{title}</h2>
     </div>
   );
 }
@@ -113,8 +113,8 @@ function PartnersPanel() {
             </div>
             <div className="p-5">
               <Badge text={p.type} color={ACCENT} />
-              <h3 className="font-bold text-gray-900 mt-3 mb-2">{p.name}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{p.desc}</p>
+              <h3 className="font-bold text-[#0f1a0f] mt-3 mb-2">{p.name}</h3>
+              <p className="text-sm text-[#2e3d35] leading-relaxed">{p.desc}</p>
             </div>
           </div>
         ))}
@@ -140,9 +140,9 @@ function TeamPanel() {
             </div>
             <div className="p-5">
               <Badge text={m.role} color={ACCENT} />
-              <h3 className="font-bold text-gray-900 mt-3 mb-1">{m.name}</h3>
+              <h3 className="font-bold text-[#0f1a0f] mt-3 mb-1">{m.name}</h3>
               <div className="text-xs font-semibold text-gray-500 mb-3">{m.district}</div>
-              <p className="text-sm text-gray-600 leading-relaxed">{m.bio}</p>
+              <p className="text-sm text-[#2e3d35] leading-relaxed">{m.bio}</p>
             </div>
           </div>
         ))}
@@ -193,16 +193,16 @@ function DistrictsPanel() {
                   {([["Activities", d.activities],["Trees", d.trees.toLocaleString()],["Members", d.members]] as [string, string|number][]).map(([lbl, val]) => (
                     <div key={lbl} className="flex items-center justify-between">
                       <span className="text-xs font-semibold text-gray-800">{lbl}</span>
-                      <span className="text-sm font-black text-gray-900">{val}</span>
+                      <span className="text-sm font-black text-[#0f1a0f]">{val}</span>
                     </div>
                   ))}
                 </div>
                 <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1"><span className="font-semibold text-gray-800">Activity share</span><span className="font-semibold text-gray-900">{activityPct}%</span></div>
+                  <div className="flex justify-between text-xs mb-1"><span className="font-semibold text-gray-800">Activity share</span><span className="font-semibold text-[#0f1a0f]">{activityPct}%</span></div>
                   <div className="w-full h-1.5 rounded-full" style={{ background: "#d4f0d4" }}><div className="h-1.5 rounded-full" style={{ width: `${activityPct}%`, background: "#1a5c1a" }} /></div>
                 </div>
                 <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1"><span className="font-semibold text-gray-800">Trees share</span><span className="font-semibold text-gray-900">{treesPct}%</span></div>
+                  <div className="flex justify-between text-xs mb-1"><span className="font-semibold text-gray-800">Trees share</span><span className="font-semibold text-[#0f1a0f]">{treesPct}%</span></div>
                   <div className="w-full h-1.5 rounded-full" style={{ background: "#d4f0d4" }}><div className="h-1.5 rounded-full" style={{ width: `${treesPct}%`, background: "#0f4a1f" }} /></div>
                 </div>
               </div>
@@ -279,8 +279,8 @@ function ActivitiesPanel() {
               <div className="absolute bottom-3 left-4 z-10"><div className="text-white text-xs font-semibold opacity-80">{a.district}</div></div>
             </div>
             <div className="p-5">
-              <h3 className="font-black text-gray-900 text-base leading-snug mb-2">{a.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">{a.desc}</p>
+              <h3 className="font-black text-[#0f1a0f] text-base leading-snug mb-2">{a.title}</h3>
+              <p className="text-sm text-[#2e3d35] leading-relaxed mb-4">{a.desc}</p>
               <div className="flex flex-wrap gap-4 text-xs text-gray-400 font-semibold">
                 <span>{a.date}</span><span>{a.participants} participants</span>
               </div>
@@ -310,8 +310,8 @@ function BlogsPanel() {
               </div>
             </div>
             <div className="p-5">
-              <h3 className="font-black text-gray-900 text-lg leading-snug mb-3 group-hover:text-green-800 transition-colors">{b.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-5">{b.excerpt}</p>
+              <h3 className="font-black text-[#0f1a0f] text-lg leading-snug mb-3 group-hover:text-green-800 transition-colors">{b.title}</h3>
+              <p className="text-sm text-[#2e3d35] leading-relaxed mb-5">{b.excerpt}</p>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <div className="w-6 h-6 rounded-full overflow-hidden border border-white shadow-sm flex-shrink-0" style={{ background: ACCENT }}>
                   <img src={team.find(t => t.name === b.author)?.image ?? ""} alt={b.author} className="w-full h-full object-cover"
@@ -334,8 +334,8 @@ function StatsPanel() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {stats.map((s, i) => (
           <div key={i} className="bg-white p-6 shadow-sm text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5" style={{ borderRadius: "20px", border: "1.5px solid #e8f5e8" }}>
-            <div className="text-4xl font-black mb-1 text-gray-900"><CountUp target={s.value} suffix={s.suffix} /></div>
-            <div className="font-bold text-gray-900 mb-1">{s.label}</div>
+            <div className="text-4xl font-black mb-1 text-[#0f1a0f]"><CountUp target={s.value} suffix={s.suffix} /></div>
+            <div className="font-bold text-[#0f1a0f] mb-1">{s.label}</div>
             <div className="text-xs text-gray-400">{s.desc}</div>
           </div>
         ))}
@@ -364,35 +364,48 @@ export default function EasternRegionPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <div className="relative h-screen flex flex-col justify-start overflow-hidden">
+    <div className="min-h-screen bg-gray-50">
+      <div className="relative w-full h-svh min-h-[600px] overflow-hidden">
         {heroImages.map((img, idx) => (
-          <div key={idx} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: idx === currentImage ? 1 : 0, zIndex: idx === currentImage ? 1 : 0 }}>
-            <img src={img} alt={`Eastern Region hero ${idx+1}`} className="w-full h-full object-cover object-center" />
+          <div key={idx} className={`slide ${idx === currentImage ? "active" : ""}`}>
+            <div className="slide-bg" style={{ backgroundImage: `url('${img}')` }} />
+            <div className="slide-overlay" />
+            {idx === currentImage && (
+              <div className="relative inset-0 flex items-center z-10 pt-24">
+                <div className="max-w-7xl mx-auto px-6 sm:px-8 w-full">
+                  <div className="max-w-2xl">
+                    <div className="slide-label mb-5">
+                      <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-1.5"
+                        style={{ background: "rgba(212,160,23,.15)", border: "1px solid rgba(212,160,23,.4)", color: "#d4a017", borderRadius: "2px" }}>
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d4a017" }} />
+                        YASCON Regional Hub
+                      </span>
+                    </div>
+                    <h1 className="slide-h1 text-white text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.08] mb-6">
+                      Eastern Region
+                    </h1>
+                    <p className="slide-sub mb-9 leading-relaxed"
+                      style={{ color: "rgba(255,255,255,.75)", fontSize: "clamp(15px, 1.6vw, 17px)", maxWidth: "520px" }}>
+                      YASCON's Eastern Region brings together youth conservation clubs across Machinga, Mangochi, Balaka, Zomba, and Phalombe districts — on the frontlines of combating deforestation along Malawi's eastern escarpment.
+                    </p>
+                    <div className="slide-btns flex flex-wrap gap-8">
+                      {stats.slice(0, 4).map((s, i) => (
+                        <div key={i} className="text-white">
+                          <div className="text-3xl sm:text-4xl font-bold leading-none">{s.value.toLocaleString()}{s.suffix}</div>
+                          <div className="text-xs uppercase tracking-widest mt-1" style={{ color: "rgba(255,255,255,.55)" }}>{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ))}
-
-        <div className="absolute top-6 right-6 flex gap-2 z-20">
+        <div className="absolute z-20 flex gap-2" style={{ bottom: "120px", left: "50%", transform: "translateX(-50%)" }}>
           {heroImages.map((_, idx) => (
-            <button key={idx} onClick={() => setCurrentImage(idx)} className="w-2.5 h-2.5 rounded-full transition-all duration-300"
-              style={{ background: idx === currentImage ? "#fff" : "rgba(255,255,255,0.35)", transform: idx === currentImage ? "scale(1.3)" : "scale(1)" }} />
+            <button key={idx} className={`slider-dot ${idx === currentImage ? "active" : ""}`} onClick={() => setCurrentImage(idx)} aria-label={`Slide ${idx + 1}`} />
           ))}
-        </div>
-        <div className="relative z-20 px-8 md:px-16 pt-20 max-w-6xl">
-          <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: "#4ade80", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>YASCON Regional Hub</div>
-          <h1 className="font-black text-white leading-none mb-5" style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)", textShadow: "0 4px 32px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.9)", letterSpacing: "-0.02em" }}>Eastern Region</h1>
-          <p className="text-xl font-semibold text-white mb-3 max-w-2xl" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}>Restoring ecosystems from the Shire Highlands to the shores of Lake Chilwa.</p>
-          <p className="text-base text-white/80 max-w-2xl leading-relaxed mb-10" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}>
-            YASCON's Eastern Region brings together youth conservation clubs across Machinga, Mangochi, Balaka, Zomba, and Phalombe districts — on the frontlines of combating deforestation along Malawi's eastern escarpment.
-          </p>
-          <div className="flex flex-wrap gap-8">
-            {stats.slice(0, 4).map((s, i) => (
-              <div key={i} className="text-white">
-                <div className="text-3xl font-black leading-none" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}>{s.value.toLocaleString()}{s.suffix}</div>
-                <div className="text-xs text-white/60 uppercase tracking-wide mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
