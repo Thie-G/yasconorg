@@ -32,9 +32,9 @@ const Objectives = [
 
 export default function Objective() {
   return (
-    <section id="objective">
+    <section id="objective" className="mt-24 ">
       <div>
-        <h2 className="text-2xl md:text-4xl font-bold text-[#1a2e1a] text-center mb-12 mt-3 mb-4 ">
+        <h2 className="text-2xl md:text-4xl font-bold text-[#1a2e1a] text-center mb-4 ">
           KEY OBJECTIVES
         </h2>
         <div className="w-17 h-[2px] bg-[#d4a017] mt-2 mx-auto rounded-sm" />
