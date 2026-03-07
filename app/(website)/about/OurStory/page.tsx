@@ -18,8 +18,8 @@ const stories = [
 
 export default function Story() {
   return (
-    <section id="story" className="bg-white mt-8">
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <section id="story" className="bg-white">
+      <div className="max-w-7xl mx-auto py-16 px-4 mt-16 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
           <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
             Our Story

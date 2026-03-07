@@ -30,7 +30,7 @@ export default function MissionStatement() {
   return (
     <section id="profile" className="py-5 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 mt-22">
           <span className="text-xs font-bold uppercase tracking-widest text-[#d4a017]">
             - Profile -
           </span>

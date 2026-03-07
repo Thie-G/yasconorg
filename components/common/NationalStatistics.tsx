@@ -82,33 +82,37 @@ const AnimatedStat: React.FC<StatItemProps> = ({ value, suffix = "" }) => {
 
 export default function NationalStati() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        NATIONAL STATISTICS
-      </h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {NationalStatistics.map((stat) => (
-          <div
-            key={stat.id}
-            className="bg-white p-6 rounded-lg shadow-lg border border-gray-200"
-          >
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              {stat.icon}
-            </div>
+    <section id="statistics">
+      <div className="p-8">
+        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+          NATIONAL STATISTICS
+        </h1>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {NationalStatistics.map((stat) => (
+            <div
+              key={stat.id}
+              className="bg-white p-6 rounded-lg shadow-lg border border-gray-200"
+            >
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-gray-500">
+                  {stat.title}
+                </p>
+                {stat.icon}
+              </div>
 
-            <div className="mt-2 text-3xl font-semibold text-gray-900">
-              <AnimatedStat
-                key={stat.id}
-                value={stat.value}
-                suffix={stat.suffix}
-              />
-            </div>
+              <div className="mt-2 text-3xl font-semibold text-gray-900">
+                <AnimatedStat
+                  key={stat.id}
+                  value={stat.value}
+                  suffix={stat.suffix}
+                />
+              </div>
 
-            <p className="mt-2 text-sm text-gray-500">{stat.description}</p>
-          </div>
-        ))}
+              <p className="mt-2 text-sm text-gray-500">{stat.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
