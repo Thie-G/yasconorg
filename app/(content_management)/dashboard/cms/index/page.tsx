@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { getCurrentDashboardUser } from "@/lib/cms/auth";
 import { CmsUserRecord } from "@/lib/cms/constants";
