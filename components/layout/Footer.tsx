@@ -3,10 +3,10 @@ import Link from "next/link";
 
 const footerLinks = {
   About: [
-    { label: "Our Story", href: "/about" },
-    { label: "Mission & Vision", href: "/about#mission" },
-    { label: "Our Team", href: "/about#team" },
-    { label: "Our Partners", href: "/about#partners" },
+    { label: "Our Story", href: "/about/OurStory" },
+    { label: "Mission & Vision", href: "/about/Mission" },
+    { label: "Our Team", href: "/about/Team" },
+    { label: "Our Partners", href: "/impact/national/partners" },
     { label: "Contact Us", href: "/contact" },
     { label: "Careers", href: "/careers" },
   ],
@@ -66,8 +66,18 @@ const socials = [
     name: "Email",
     href: "mailto:yasconmw@outlook.com",
     icon: (
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
       </svg>
     ),
   },
@@ -75,13 +85,18 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-green-900 text-white" >
+    <footer className="bg-green-900 text-white">
       {/* Gold accent line */}
-      <div style={{ height: "3px", background: "linear-gradient(to right, #d4a017, rgba(212,160,23,.2), transparent)" }} />
+      <div
+        style={{
+          height: "3px",
+          background:
+            "linear-gradient(to right, #d4a017, rgba(212,160,23,.2), transparent)",
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
-
           {/* Brand column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-5">
@@ -94,20 +109,24 @@ export default function Footer() {
                 style={{ border: "2px solid rgba(212,160,23,.3)" }}
               />
               <div>
-                <div
-                  className="font-bold tracking-widest text-sm text-white"
-                >
+                <div className="font-bold tracking-widest text-sm text-white">
                   YASCON
                 </div>
-                <div className="text-xs" style={{ color: "rgba(255,255,255,.45)" }}>
-                  Youth Conservation Malawi
+                <div
+                  className="text-xs"
+                  style={{ color: "rgba(255,255,255,.45)" }}
+                >
+                  Youth Organization for Conservation of Nature and Environment
                 </div>
               </div>
             </div>
 
-            <p className="text-sm leading-relaxed mb-5 max-w-xs" style={{ color: "rgba(255,255,255,.45)" }}>
-              Mobilizing Malawian youth to protect nature, restore ecosystems, and build a sustainable
-              future for generations to come.
+            <p
+              className="text-sm leading-relaxed mb-5 max-w-xs"
+              style={{ color: "rgba(255,255,255,.45)" }}
+            >
+              Mobilizing Malawian youth to protect nature, restore ecosystems,
+              and build a sustainable future for generations to come.
             </p>
 
             {/* Social links — hover handled by CSS class */}
@@ -127,10 +146,10 @@ export default function Footer() {
             </div>
 
             <div className="space-y-1.5 text-xs text-gray-400">
-              <div> +265 (0) 885284321</div>
+              <div> +265 (0) 885284321</div>g
               <div> +265 (0) 986818697</div>
               <div> yasconmw@outlook.com</div>
-              <div> Lilongwe, Malawi</div>
+              <div> Blantyre, Malawi</div>
             </div>
           </div>
 
@@ -164,12 +183,17 @@ export default function Footer() {
       <div style={{ borderTop: "1px solid rgba(255,255,255,.06)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs" style={{ color: "rgba(255,255,255,.28)" }}>
-            © 2026 YASCON — Youth Association for Conservation of Nature and Environment. All rights reserved.
+            © 2026 YASCON — Youth Association for Conservation of Nature and
+            Environment. All rights reserved.
           </p>
           <div>
             {/* Pure CSS hover — no JS event handlers */}
-            <Link href="/privacy" className="footer-legal-link">Privacy Policy</Link>
-            <Link href="/terms" className="footer-legal-link">Terms of Use</Link>
+            <Link href="/privacy" className="footer-legal-link">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="footer-legal-link">
+              Terms of Use
+            </Link>
           </div>
         </div>
       </div>

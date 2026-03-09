@@ -17,7 +17,7 @@ interface StatItemProps {
 
 const NationalStatistics: NationalStat[] = [
   {
-    title: "Central Region",
+    title: "Northern Region",
     value: 879,
     description: "12% more trees planted",
     icon: <Trees className="text-green-500" />,
@@ -25,7 +25,7 @@ const NationalStatistics: NationalStat[] = [
     suffix: "",
   },
   {
-    title: "Northern Region",
+    title: "Central Region",
     value: 768,
     description: "5.4% more trees planted",
     icon: <Trees className="text-green-500" />,
@@ -83,15 +83,18 @@ const AnimatedStat: React.FC<StatItemProps> = ({ value, suffix = "" }) => {
 export default function NationalStati() {
   return (
     <section id="statistics">
-      <div className="p-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+      <div className="pt-28 p-8">
+        <h2 className="text-3xl font-bold text-[#1a2e1a]">
+          {" "}
           NATIONAL STATISTICS
-        </h1>
+        </h2>
+        <div className="w-11 h-[3px] bg-[#d4a017] mt-5 mb-6 rounded-sm" />
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {NationalStatistics.map((stat) => (
             <div
               key={stat.id}
-              className="bg-white p-6 rounded-lg shadow-lg border border-gray-200"
+              className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 brightness-98 hover:brightness-120"
             >
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-500">

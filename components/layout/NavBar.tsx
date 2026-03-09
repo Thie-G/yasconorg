@@ -12,12 +12,13 @@ const navItems = [
       title: "About YASCON",
       links: [
         { href: "/", label: "Home" },
-        { href: "/about/our-story", label: "Our Story" },
-        { href: "/#profile", label: "Mission & Vision" },
-        { href: "/#objective", label: "Objectives" },
+        { href: "/about/OurStory", label: "Our Story" },
+        { href: "/about/Mission", label: "Mission & Vision" },
+        { href: "/about/Objectives", label: "Objectives" },
+        { href: "/about/Location", label: "Where We Work" },
+        { href: "/about/Work", label: "Our Work" },
+        { href: "/about/Team", label: "Our Team" },
         { href: "/contact", label: "Contact Us" },
-        { href: "/about/where-we-work", label: "Where we Work" },
-        {href: "/about/our-team", label: "Our Team"}
       ],
     },
   },
@@ -26,10 +27,14 @@ const navItems = [
     dropdown: {
       title: "National Office",
       links: [
-        { href: "/work", label: "Our Work" },
-        { href: "/programs", label: "National Programs" },
-        { href: "/partners", label: "National Partners" },
-        { href: "/stats", label: "National Statistical Data" },
+        { href: "/impact/national/board", label: "Board" },
+        { href: "/impact/national/management", label: "Management" },
+        { href: "/impact/national/programs", label: "National Programs" },
+        { href: "/impact/national/partners", label: "National Partners" },
+        {
+          href: "/impact/national/statistics",
+          label: "National Statistical Data",
+        },
       ],
     },
   },
@@ -135,7 +140,7 @@ export default function Navbar() {
               <div
                 className={`text-xs ${useTransparentStyle ? "text-white/80" : "text-gray-500"} leading-tight max-w-[160px]`}
               >
-                Youth Conservation Malawi
+                 Youth Organization for Conservation of Nature and Environment
               </div>
             </div>
           </Link>

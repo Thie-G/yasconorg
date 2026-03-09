@@ -35,49 +35,11 @@ const programs = [
 export default function NationalPage() {
   return (
     <main className="pt-24">
-      <section id="partners" className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-[#1a2e1a]">Our Partners</h2>
-        <p className="text-[#2e3d35] mt-3">
-          National partners supporting Nature and Environmental conservation.
-        </p>
-        <div className="grid md:grid-cols-3 gap-6 mt-6">
-          {[
-            {
-              partner: "Ministry of Natural Resources and Climate Change",
-              description:
-                "Supports national environmental policies, climate action programs, and conservation initiatives.",
-            },
-            {
-              partner: "Non-governmental Organizations",
-              description:
-                "Provides funding and technical support for environmental conservation projects.",
-            },
-            {
-              partner: "Department of Forestry",
-              description:
-                "Provides funding and technical support for environmental conservation projects.",
-            },
-            {
-              partner:
-                "Coordination union for the REhabilitation of the Environment",
-              description:
-                "A network of NGOs working on environmental protection and advocacy.",
-            },
-          ].map((item) => (
-            <div
-              key={item.partner}
-              className="border border-gray-200 rounded-lg p-5 bg-white"
-            >
-              <p className="font-semibold text-[#1a2e1a]">{item.partner}</p>
-              <p className="text-sm text-[#2e3d35] mt-2">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="programs" className="bg-[#f7f3ea]">
+      <section id="programs" className="">
         <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-2xl font-bold text-[#1a2e1a]">Programs</h2>
+          <h2 className="text-4xl font-bold text-[#1a2e1a]">Programs</h2>
+          <div className="w-11 h-[3px] bg-[#d4a017] mt-5  rounded-sm" />
+
           <p className="text-[#2e3d35] mt-3">
             Programs carried Out by the YASCON Youth across Malawi
           </p>
@@ -85,7 +47,7 @@ export default function NationalPage() {
             {programs.map((program) => (
               <div
                 key={program.title}
-                className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm hover:shadow-lg transition-shadow"
+                className="border border-gray-200 rounded-xl 2px p-5 bg-white shadow-sm hover:shadow-lg transition-shadow "
               >
                 <div className="flex items-center justify-between text-xs text-[#2e3d35]">
                   <span className="font-semibold">{program.date}</span>

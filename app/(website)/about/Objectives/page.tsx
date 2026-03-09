@@ -4,35 +4,29 @@ import { Section } from "lucide-react";
 
 const Objectives = [
   {
-    title: "Youth Empowerment & Leadership",
+    title: "",
     description:
-      "Equip young people with knowledge, skills, and leadership opportunities to actively participate in environmental conservation and climate action.",
+      "Protection of nature and the environment through advocacy and policy influence.",
   },
   {
-    title: "Environmental Education & Awareness",
+    title: "",
     description:
-      "Promote environmental literacy through workshops, school programs, campaigns, and digital platforms that raise awareness of climate change, biodiversity, and sustainability.",
+      "Restoration of 500 000 hectares of degraded landscapes by 2063 through sustainable innovation and research.",
   },
   {
-    title: "Climate Action & Sustainability",
+    title: "",
     description:
-      "Support youth-led initiatives that promote climate resilience, renewable energy awareness, and sustainable use of natural resources.",
+      "Conservation of nature and the environment through community action and education of 5000 youth clubs by 2063.",
   },
   {
-    title: "Partnerships & Collaboration",
-    description:
-      "Build strong partnerships with schools, communities, government institutions, NGOs, and the private sector to strengthen conservation impact.",
-  },
-  {
-    title: "Biodiversity Protection",
-    description:
-      "Encourage the protection of ecosystems, wildlife, and natural habitats through advocacy, conservation projects, and responsible environmental practices.",
+    title: "",
+    description: "Creation of 3 million green jobs for the youth by 2063.",
   },
 ];
 
 export default function Objective() {
   return (
-    <section id="objective" className="mt-24 ">
+    <section id="objective" className="mt-30 ">
       <div>
         <h2 className="text-2xl md:text-4xl font-bold text-[#1a2e1a] text-center mb-4 ">
           KEY OBJECTIVES
@@ -49,6 +43,8 @@ export default function Objective() {
           </div>
 
           <div className="p-8 md:w-3/4">
+           <ol className="list-decimal list inside pl-5 ">
+          
             {Objectives.map((Objective, idx) => (
               <div key={idx} className="group block list-disk pb-4">
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -59,11 +55,16 @@ export default function Objective() {
                     {Objective.title}
                   </Link>
                 </h2>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {Objective.description}
-                </p>
+               
+                 
+                    <p className="text-md text-gray-600 leading-relaxed">
+                     <li> {Objective.description}  </li>
+                    </p>
+                
+                
               </div>
             ))}
+            </ol>
           </div>
         </div>
       </div>
