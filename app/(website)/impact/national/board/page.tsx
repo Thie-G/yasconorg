@@ -12,25 +12,25 @@ const boardMembers = [
   {
     name: "Clement Chiwambo",
     role: "Funding & Compliance Manager",
-    image: "/avatars/avatar-2.svg",
+    image: "/teampics/funding-officer.png",
     bio: "Clement, an economist from Lilongwe University of Agriculture and Natural Resources, holds a Bachelor of Science Degree in Agricultural Economics. He initially served as a Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in Balaka District.Clement brings to the organization strong skills in policy analysis, research, data analysis and rural development. He is a proven mobiliser, team worker and communicator.",
   },
   {
     name: "Rashid Mailos",
     role: "Extension Methodologies Manager",
-    image: "/avatars/avatar-2.svg",
+    image: "/teampics/extensions-officer.png",
     bio: "Rashid holds a Bachelor of Science Degree in Agricultural Extension from Lilongwe University of Agriculture and Natural Resources and a certification in GIS.He initially served as an Area Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in Chiradzulu District.Rashid brings to the organisation proven execution of extension methods, tools and techniques in rural and community development. He is also skilled in project planning, training and facilitation.",
   },
   {
     name: "Salomy Chivunga",
     role: "Public Relations & Events Manager",
-    image: "/avatars/avatar-2.svg",
+    image: "/teampics/public-relations.png",
     bio: "She is responsible for building and maintaining a positive image of an organization and organizing events that promote its activities and goals. She manages communication between the organization and the public, including the media, partners, and the community. works to strengthen relationships with stakeholders, handles public inquiries, and ensures that all events run smoothly and represent the organization professionally.",
   },
   {
     name: "Mussa John Witness",
     role: "Media Relations Manager",
-    image: "/avatars/avatar-2.svg",
+    image: "/teampics/mediarelations.png",
     bio: "He is responsible for building and maintaining good relationships with journalists, reporters, and media houses such as newspapers, television, radio, and online platforms. He help share the organization’s news, events, and achievements with the public through the media.He  writes press releases, organizes press conferences, and responds to media inquiries. He also monitor how the organization is presented in the media and help protect the organization’s reputation.",
   },
 ];
