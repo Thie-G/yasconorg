@@ -116,7 +116,7 @@ export default function Footer() {
                   className="text-xs"
                   style={{ color: "rgba(255,255,255,.45)" }}
                 >
-                  Youth Organization for Conservation of Nature and Environment
+                  Youth Association for Conservation of Nature and Environment
                 </div>
               </div>
             </div>
