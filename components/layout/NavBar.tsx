@@ -115,7 +115,7 @@ export default function Navbar() {
               <div
                 className={`text-xs ${useTransparentStyle ? "text-white/80" : "text-gray-500"} leading-tight max-w-[160px]`}
               >
-                Youth Organization for Conservation of Nature and Environment
+                Youth Association for Conservation of Nature and Environment
               </div>
             </div>
           </Link>
