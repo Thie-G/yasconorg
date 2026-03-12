@@ -6,7 +6,7 @@ const profiles = [
     title: "OUR VISION",
     description:
       "A world where young people lead in protecting, restoring, and sustaining nature and the environment for present and future generations.",
-    image: "/hero/hero5.png",
+    image: "/hero/mission1.jpg",
   },
   {
     title: "OUR MISSION",
@@ -19,7 +19,7 @@ const profiles = [
     title: "CORE VALUES",
     description:
       "Youth Empowerment, Environmental Education, Climate Action, and Biodiversity Protection.",
-    image: "/hero/hero.png",
+    image: "/hero/mission3.jpg",
   },
 ];
 
