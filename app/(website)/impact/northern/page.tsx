@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#b8860b";
-const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.png"];
+const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.jpg"];
 
 const stats = [
   { value: 6,    suffix: "",  label: "Districts",     desc: "Under Northern Coverage" },
@@ -26,18 +26,18 @@ const districts = [
 const partners = [
   { name: "Mzuzu City Council",            type: "Government",          image: "/Images/Eastern1.png", desc: "Urban greening and roadside tree planting across Mzuzu city, targeting all major arterial roads and public spaces." },
   { name: "Mzuzu University",              type: "Academic",            image: "/Images/Eastern2.png", desc: "Joint research on indigenous Miombo woodland restoration and carbon sequestration potential across Northern Region landscapes." },
-  { name: "Wildlife Conservation Society", type: "International NGO",   image: "/Images/Eastern3.png", desc: "Biodiversity corridor protection linking Nyika National Park and Vwaza Marsh Wildlife Reserve through community buffer zones." },
+  { name: "Wildlife Conservation Society", type: "International NGO",   image: "/Images/Eastern333.jpg", desc: "Biodiversity corridor protection linking Nyika National Park and Vwaza Marsh Wildlife Reserve through community buffer zones." },
   { name: "SNV Malawi",                    type: "Development Partner", image: "/Images/Eastern1.png", desc: "Sustainable land management and agroforestry integration for smallholder farmers in Rumphi and Chitipa highlands." },
   { name: "Department of Forestry – North",type: "Government",          image: "/Images/Eastern2.png", desc: "Seedling nursery operations and technical guidance for Miombo woodland restoration across Mzimba and Rumphi." },
-  { name: "Nature Conservancy Malawi",     type: "NGO",                 image: "/Images/Eastern3.png", desc: "Lake Malawi shoreline and lakebed ecosystem conservation with focus on Nkhata Bay's critical coral and fish habitats." },
+  { name: "Nature Conservancy Malawi",     type: "NGO",                 image: "/Images/Eastern33.jpg", desc: "Lake Malawi shoreline and lakebed ecosystem conservation with focus on Nkhata Bay's critical coral and fish habitats." },
   { name: "GIZ Malawi – Northern Office",  type: "Development Partner", image: "/Images/Eastern1.png", desc: "Climate-smart agriculture and land restoration training for youth coordinators in Karonga and Chitipa border districts." },
   { name: "Heifer International Malawi",   type: "NGO",                 image: "/Images/Eastern2.png", desc: "Integrating tree planting with livestock management to reduce overgrazing and restore pastureland in Mzimba district." },
 ];
 
 const team = [
-  { name: "James Zgambo",  initials: "JZ", role: "Regional Coordinator (Northern)", district: "Northern Region", image: "/Images/avatar-northern-1.png", bio: "James holds a BSc in Natural Resources Management from Mzuzu University. He oversees strategic conservation planning and multi-district coordination for YASCON's Northern hub." },
-  { name: "Lucia Mwale",   initials: "LM", role: "Programs Lead",                   district: "Rumphi",          image: "/Images/avatar-northern-2.png", bio: "Lucia coordinates highland conservation and climate education programmes across Rumphi and Chitipa, managing YASCON's border-district youth network." },
-  { name: "Thomas Gondwe", initials: "TG", role: "Community Liaison",               district: "Nkhata Bay",      image: "/Images/avatar-northern-3.png", bio: "Thomas manages lakeshore community engagement in Nkhata Bay and Likoma Island, linking fishing communities to wetland and aquatic habitat conservation." },
+  { name: "Martha Megan Phiri",  initials: "MP", role: "Regional Coordinator (Northern)", district: "Northern Region", image: "/teampics/northern-coordinator.png", bio: "Martha holds a Bachelor of Science Degree in Development Studies from University of Livingstonia.Prior to joining YASCON, she worked as a Facilitator and Documenter for an Agroecology project under Chitipa District Council.  Martha successfully led and implemented YASCON's conservation activities in the Northern region of Malawi as an Area Conservation " },
+  //{ name: "Lucia Mwale",   initials: "LM", role: "Programs Lead",                   district: "Rumphi",          image: "/Images/avatar-northern-2.png", bio: "Lucia coordinates highland conservation and climate education programmes across Rumphi and Chitipa, managing YASCON's border-district youth network." },
+  //{ name: "Thomas Gondwe", initials: "TG", role: "Community Liaison",               district: "Nkhata Bay",      image: "/Images/avatar-northern-3.png", bio: "Thomas manages lakeshore community engagement in Nkhata Bay and Likoma Island, linking fishing communities to wetland and aquatic habitat conservation." },
 ];
 
 const activities = [

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#b8860b";
-const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.png"];
+const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.jpg"];
 
 const stats = [
   { value: 7,    suffix: "",  label: "Districts",     desc: "Under Southern Coverage" },
@@ -30,16 +30,16 @@ const partners = [
   { name: "WWF Malawi",                      type: "International NGO",   image: "/Images/Eastern3.png", desc: "Joint biodiversity conservation programming in Mulanje cedar forest and Thyolo tea estate buffer zones." },
   { name: "UNDP Malawi – Southern Office",   type: "Development Partner", image: "/Images/Eastern1.png", desc: "Climate resilience funding supporting community-based adaptation in flood-prone Nsanje and Phalombe lowlands." },
   { name: "Department of Forestry – South", type: "Government",          image: "/Images/Eastern2.png", desc: "Seedling nursery support and technical guidance for cedar and indigenous species reforestation on Mulanje Mountain." },
-  { name: "ActionAid Malawi",                type: "NGO",                 image: "/Images/Eastern3.png", desc: "Gender and youth inclusion framework ensuring equitable participation of girls in Southern Region conservation clubs." },
+  { name: "ActionAid Malawi",                type: "NGO",                 image: "/Images/Eastern333.jpg", desc: "Gender and youth inclusion framework ensuring equitable participation of girls in Southern Region conservation clubs." },
   { name: "USAID SCOPE",                     type: "Development Partner", image: "/Images/Eastern1.png", desc: "Sustainable conservation and productivity enhancement — funding riparian zone restoration along the Shire River valley." },
   { name: "Tearfund Malawi",                 type: "NGO",                 image: "/Images/Eastern2.png", desc: "Community disaster risk reduction and environmental stewardship programmes in Nsanje's flood-vulnerable communities." },
-  { name: "Malawi Tourism Authority",        type: "Government",          image: "/Images/Eastern3.png", desc: "Eco-tourism and conservation awareness initiatives promoting Mulanje Mountain and Zomba Plateau as green heritage sites." },
+  { name: "Malawi Tourism Authority",        type: "Government",          image: "/Images/Eastern33.jpg", desc: "Eco-tourism and conservation awareness initiatives promoting Mulanje Mountain and Zomba Plateau as green heritage sites." },
 ];
 
 const team = [
-  { name: "Grace Chirwa",  initials: "GC", role: "Regional Coordinator (Southern)", district: "Southern Region", image: "/Images/avatar-southern-1.png", bio: "Grace holds an MSc in Environmental Management from the University of Malawi. She leads strategic partnerships and conservation planning for YASCON's largest regional hub by district coverage." },
-  { name: "Patrick Msosa", initials: "PM", role: "Programs Lead",                   district: "Zomba",           image: "/Images/avatar-southern-2.png", bio: "Patrick manages youth eco-club networks and school outreach across Zomba and Chiradzulu, coordinating YASCON's flagship biodiversity education programme." },
-  { name: "Esther Nkosi",  initials: "EN", role: "Community Liaison",               district: "Mulanje",         image: "/Images/avatar-southern-3.png", bio: "Esther specialises in community mobilisation and grassroots conservation in Mulanje and Phalombe, engaging smallholder farmers in sustainable land management." },
+  { name: "Bridget Namakhwa",  initials: "BN", role: "Regional Coordinator (Southern)", district: "Southern Region", image: "/teampics/southern-coordinator.png", bio: "Bridget holds a Bachelor of Science Degree in Education, majoring in Geography from the Catholic University of Malawi and a certificate in Introduction to Child Protection.She initially served as a Conservation Coordinator when she successfully led and implemented YASCON's conservation activities in the Southern region of Malawi.Bridget, a passionate and enthusiastic youth brings to the organisation proven communication, community mobilization, organisation, project management, leadership and coordination skills." },
+  //{ name: "Patrick Msosa", initials: "PM", role: "Programs Lead",                   district: "Zomba",           image: "/Images/avatar-southern-2.png", bio: "Patrick manages youth eco-club networks and school outreach across Zomba and Chiradzulu, coordinating YASCON's flagship biodiversity education programme." },
+  //{ name: "Esther Nkosi",  initials: "EN", role: "Community Liaison",               district: "Mulanje",         image: "/Images/avatar-southern-3.png", bio: "Esther specialises in community mobilisation and grassroots conservation in Mulanje and Phalombe, engaging smallholder farmers in sustainable land management." },
 ];
 
 const activities = [

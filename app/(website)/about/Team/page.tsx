@@ -1,18 +1,21 @@
 import Image from "next/image";
 
-const team = [
-  { name: "Mwai Mtayamanja", role: "National Coordinator", avatar: "/avatars/avatar-1.svg" },
-  { name: "Clement Chiwambo", role: "Funding & Compliance Manager", avatar: "/avatars/avatar-2.svg" },
-  { name: "Rashid Mailos", role: "Extension Methodologies Manager", avatar: "/avatars/avatar-3.svg" },
-  { name: "Salomy Chivunga", role: "Public Relations & Events Manager", avatar: "/avatars/avatar-3.svg" },
-  { name: "Mussa John Witness", role: "Media Relations Manager", avatar: "/avatars/avatar-3.svg" },
-  { name: "Martha Megan Phiri", role: "Regional Coordinator — Northern Region", avatar: "/avatars/avatar-1.svg" },
-  { name: "Chisomo Nyirenda", role: "Regional Coordinator — Central Region", avatar: "/avatars/avatar-2.svg" },
-  { name: "Prince Magombo", role: "Regional Coordinator — Eastern Region", avatar: "/avatars/avatar-3.svg" },
-  { name: "Bridget Namakhwa", role: "Regional Coordinator — Southern Region", avatar: "/avatars/avatar-3.svg" },
+const management = [
+  { name: "Mwai Mtayamanja", role: "National Coordinator", avatar: "/teampics/national-coordinator.png" },
+  { name: "Clement Chiwambo", role: "Funding & Compliance Manager", avatar: "/teampics/funding-officer.png" },
+  { name: "Rashid Mailos", role: "Extension Methodologies Manager", avatar: "/teampics/extensions-officer.png" },
+  { name: "Salomy Chivunga", role: "Public Relations & Events Manager", avatar: "/teampics/public-relations.png" },
+  { name: "Mussa John Witness", role: "Media Relations Manager", avatar: "/teampics/mediarelations.png" },
 ];
 
-function MemberCard({ name, role, avatar }: { name: string; role: string; avatar: string }) {
+const coordinators = [
+  { name: "Martha Megan Phiri", role: "Regional Coordinator", focus: "Northern Region", avatar: "/teampics/northern-coordinator.png" },
+  { name: "Chisomo Nyirenda", role: "Regional Coordinator", focus: "Central Region", avatar: "/teampics/central-coordinator.png" },
+  { name: "Prince Magombo", role: "Regional Coordinator", focus: "Eastern Region", avatar: "/teampics/eastern-coordinator.png" },
+  { name: "Bridget Namakhwa", role: "Regional Coordinator", focus: "Southern Region", avatar: "/teampics/southern-coordinator.png" },
+];
+
+function MemberCard({ name, role, focus, avatar }: { name: string; role: string; focus?: string; avatar: string }) {
   return (
     <div className="border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-lg transition-shadow">
       <div className="p-5 flex items-center gap-4">
@@ -20,6 +23,7 @@ function MemberCard({ name, role, avatar }: { name: string; role: string; avatar
         <div>
           <p className="text-lg font-semibold text-[#1a2e1a]">{name}</p>
           <p className="text-sm font-semibold text-green-700 mt-1">{role}</p>
+          {focus && <p className="text-sm text-[#2e3d35] mt-1">{focus}</p>}
         </div>
       </div>
     </div>
@@ -38,13 +42,20 @@ export default function TeamPage() {
       </section>
 
       <section className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-[#1a2e1a] mb-6">Our People</h2>
+        <h2 className="text-2xl font-bold text-[#1a2e1a]">Management</h2>
+        <p className="text-[#2e3d35] mt-1 mb-6">National Level</p>
         <div className="grid md:grid-cols-3 gap-6">
-          {team.map((m) => (
-            <MemberCard key={m.name} {...m} />
-          ))}
+          {management.map((m) => <MemberCard key={m.name} {...m} />)}
         </div>
       </section>
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-bold text-[#1a2e1a]">Coordinators</h2>
+        <p className="text-[#2e3d35] mt-1 mb-6">Regional Level</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {coordinators.map((m) => <MemberCard key={m.name} {...m} />)}
+        </div>
+      </section>
+
     </main>
   );
 }

@@ -24,15 +24,26 @@ export default function ObjectivesPage() {
           <div className="md:w-1/3 relative min-h-64">
             <Image src="/hero/hero1.png" alt="YASCON in Action" fill className="object-cover brightness-75" />
           </div>
-          <div className="p-8 md:w-2/3">
-            <h2 className="text-2xl font-bold text-[#1a2e1a] mb-6">Our Strategic Objectives</h2>
-            <ol className="space-y-6">
-              {objectives.map((obj, idx) => (
-                <li key={idx} className="flex gap-4 items-start">
-                  <span className="text-3xl font-black text-[#d4a017]/40 leading-none min-w-[40px]">{obj.num}</span>
-                  <p className="text-gray-700 leading-relaxed pt-1">{obj.description}</p>
-                </li>
-              ))}
+
+          <div className="p-8 md:w-3/4">
+           <ol className="list-decimal list inside pl-5 ">
+          
+            {objectives.map((Objective, idx) => (
+              <div key={idx} className="group block list-disk pb-4">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
+                 
+                    {Objective.num}
+           
+                </h2>
+               
+                 
+                    <p className="text-md text-gray-600 leading-relaxed">
+                    {Objective.description}  
+                    </p>
+                
+                
+              </div>
+            ))}
             </ol>
           </div>
         </div>

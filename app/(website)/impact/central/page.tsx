@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#b8860b";
-const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.png"];
+const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.jpg"];
 
 const stats = [
   { value: 5,    suffix: "",  label: "Districts",     desc: "Under Central Coverage" },
@@ -25,17 +25,17 @@ const districts = [
 const partners = [
   { name: "Lilongwe City Council",                   type: "Government",          image: "/Images/Eastern1.png", desc: "Urban greening and school tree-planting across all 4 Lilongwe Area Councils, targeting 500 trees per school." },
   { name: "LUANAR Bunda College",                    type: "Academic",            image: "/Images/Eastern2.png", desc: "Research partnership on soil conservation and agroforestry integration in Central Region farming communities." },
-  { name: "GIZ Malawi – Central Office",             type: "Development Partner", image: "/Images/Eastern3.png", desc: "Climate-smart land use training for youth coordinators in Dedza and Ntcheu." },
+  { name: "GIZ Malawi – Central Office",             type: "Development Partner", image: "/Images/Eastern333.jpg", desc: "Climate-smart land use training for youth coordinators in Dedza and Ntcheu." },
   { name: "Plan International Malawi",               type: "International NGO",   image: "/Images/Eastern1.png", desc: "Gender-inclusive conservation programming ensuring 50% female leadership in all Central Region clubs." },
   { name: "Department of Forestry – Central Region", type: "Government",          image: "/Images/Eastern2.png", desc: "Seedling supply and technical guidance for catchment reforestation across Kasungu and Ntcheu." },
-  { name: "USAID Feed the Future",                   type: "Development Partner", image: "/Images/Eastern3.png", desc: "Integrating conservation with food security — funding watershed management activities in Salima lakeshore areas." },
+  { name: "USAID Feed the Future",                   type: "Development Partner", image: "/Images/Eastern33.jpg", desc: "Integrating conservation with food security — funding watershed management activities in Salima lakeshore areas." },
   { name: "Malawi Red Cross Society",                type: "NGO",                 image: "/Images/Eastern1.png", desc: "Joint disaster risk reduction and environmental awareness campaigns in flood-prone communities around Salima." },
 ];
 
 const team = [
-  { name: "Agnes Phiri",  initials: "AP", role: "Regional Coordinator (Central)", district: "Central Region", image: "/Images/avatar-central-1.png", bio: "Agnes holds a BSc in Geography from Chancellor College. She leads community conservation strategy and partner relations for YASCON's Central hub, Malawi's capital-city base." },
-  { name: "Kelvin Banda", initials: "KB", role: "Programs Lead",                  district: "Salima",         image: "/Images/avatar-central-2.png", bio: "Kelvin coordinates youth climate education and school outreach across Salima and Dedza, managing YASCON's largest school eco-club network in the Central Region." },
-  { name: "Ruth Mbewe",   initials: "RM", role: "Community Liaison",              district: "Kasungu",        image: "/Images/avatar-central-3.png", bio: "Ruth manages district engagement and volunteer mobilisation in Kasungu and Ntcheu, building community ownership of conservation activities at the grassroots level." },
+  { name: "Chisomo Nyirenda",  initials: "CN", role: "Regional Coordinator (Central)", district: "Central Region", image: "/teampics/central-coordinator.png", bio: "Chisomo holds a Bachelor of Science Degree in Value Chain Agriculture from Mzuzu University.He initially served as a Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in the central region of Malawi.Chisomo brings to the organization proven community mobilization, organization, project management, leadership and coordination skills." },
+  //{ name: "Kelvin Banda", initials: "KB", role: "Programs Lead",                  district: "Salima",         image: "/Images/avatar-central-2.png", bio: "Kelvin coordinates youth climate education and school outreach across Salima and Dedza, managing YASCON's largest school eco-club network in the Central Region." },
+  //{ name: "Ruth Mbewe",   initials: "RM", role: "Community Liaison",              district: "Kasungu",        image: "/Images/avatar-central-3.png", bio: "Ruth manages district engagement and volunteer mobilisation in Kasungu and Ntcheu, building community ownership of conservation activities at the grassroots level." },
 ];
 
 const activities = [

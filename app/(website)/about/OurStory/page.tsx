@@ -7,7 +7,7 @@ const stories = [
   },
   {
     description:
-      "YASCON's theory of change is grounded in the premise that strengthening youth capacity and leadership leads to improved environmental outcomes and increased community resilience. Through environmental education, community-based conservation, and nature-based solutions, the organization delivers measurable outputs that contribute to ecosystem restoration, climate change mitigation, and climate adaptation. Since its establishment, YASCON has implemented tree planting and ecosystem restoration initiatives in communities across Mangochi, Lilongwe, and Mzuzu, translating global goals into tangible local impact.",
+      "YASCON’s theory of change is grounded in the premise that strengthening youth capacity and leadership leads to improved environmental outcomes and increased community resilience. Through environmental education, community-based conservation, and nature-based solutions, the organization delivers measurable outputs that contribute to ecosystem restoration, climate change mitigation, and climate adaptation. Since its establishment, YASCON has implemented tree planting and ecosystem restoration initiatives in communities across Northern, Central, Eastern and Southern region translating global goals into tangible local impact.",
   },
   {
     description:

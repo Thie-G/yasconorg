@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#b8860b";
-const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.png"];
+const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.jpg"];
 
 const stats = [
   { value: 6,    suffix: "",  label: "Districts",     desc: "Under Eastern Coverage" },
@@ -26,16 +26,16 @@ const districts = [
 const partners = [
   { name: "Zomba City Council",                 type: "Government",         image: "/Images/Eastern1.png", desc: "Urban greening and school tree-planting in partnership with Zomba City Council across all wards." },
   { name: "Chancellor College (UNIMA)",         type: "Academic",           image: "/Images/Eastern2.png", desc: "Research collaboration on land-use change and biodiversity assessment in the Eastern highlands." },
-  { name: "Lake Chilwa Basin Climate Change",   type: "Development Partner",image: "/Images/Eastern3.png", desc: "Co-implementing wetland restoration and community resilience programmes around Lake Chilwa." },
+  { name: "Lake Chilwa Basin Climate Change",   type: "Development Partner",image: "/Images/Eastern333.jpg", desc: "Co-implementing wetland restoration and community resilience programmes around Lake Chilwa." },
   { name: "WWF Malawi – Eastern Programme",     type: "International NGO",  image: "/Images/Eastern1.png", desc: "Capacity building for biodiversity monitoring and wetland conservation in Mangochi and Zomba." },
   { name: "Department of Forestry – East",      type: "Government",         image: "/Images/Eastern2.png", desc: "Seedling supply and technical guidance for catchment reforestation in Machinga and Balaka." },
-  { name: "Concern Universal Malawi",           type: "NGO",                image: "/Images/Eastern3.png", desc: "Community-based natural resource management training and livelihoods integration in Phalombe." },
+  { name: "Concern Universal Malawi",           type: "NGO",                image: "/Images/Eastern33.jpg", desc: "Community-based natural resource management training and livelihoods integration in Phalombe." },
 ];
 
 const team = [
-  { name: "Thoko Banda",  initials: "TB", role: "Regional Coordinator (East)", district: "Eastern Region", image: "/Images/avatar-east-1.png", bio: "Thoko holds a BSc in Natural Resources from Lilongwe University of Agriculture. She leads conservation strategy and partner relations across YASCON's Eastern hub." },
-  { name: "Isaac Phiri",  initials: "IP", role: "Programs Lead",               district: "Mangochi",       image: "/Images/avatar-east-2.png", bio: "Isaac coordinates wetland conservation and school eco-club programmes across Mangochi and Phalombe, with a focus on Lake Malawi's eastern shoreline communities." },
-  { name: "Grace Mwale",  initials: "GM", role: "Community Liaison",           district: "Balaka",         image: "/Images/avatar-east-3.png", bio: "Grace manages district outreach and volunteer coordination in Balaka and Mulanje, building grassroots ownership of conservation programmes." },
+  { name: "Prince Magombo",  initials: "PM", role: "Regional Coordinator (East)", district: "Eastern Region", image: "/teampics/eastern-coordinator.png", bio: "Prince holds a Bachelor of Science Degree in Agricultural Extension from Lilongwe University of Agriculture and Natural Resources.He initially served as an Area Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in the Eastern region of Malawi." },
+  //{ name: "Isaac Phiri",  initials: "IP", role: "Programs Lead",               district: "Mangochi",       image: "/Images/avatar-east-2.png", bio: "Isaac coordinates wetland conservation and school eco-club programmes across Mangochi and Phalombe, with a focus on Lake Malawi's eastern shoreline communities." },
+  //{ name: "Grace Mwale",  initials: "GM", role: "Community Liaison",           district: "Balaka",         image: "/Images/avatar-east-3.png", bio: "Grace manages district outreach and volunteer coordination in Balaka and Mulanje, building grassroots ownership of conservation programmes." },
 ];
 
 const activities = [

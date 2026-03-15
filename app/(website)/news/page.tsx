@@ -24,13 +24,23 @@ const featuredStory: NewsItem = {
 
 const stories: NewsItem[] = [
   {
+    slug: "Social Enterprise training",
+    title: "YASCON attending two days Social Enterprise training ",
+    excerpt:
+      "On March 10th and 11th, YASCON has been attending a Social Enterprise Training at Crossroads Hotel in Blantyre.The two day Social Enterprise training was organized by the Council for Non-Governmental Organizations in Malawi (CONGOMA) and the NGO- Regulatory Authority (NGORA).",
+    date: "March 11, 2026",
+    tag: "Blog",
+    image: "/our-work/work4.jpg",
+    author: "National Office Team",
+  },
+  {
     slug: "youth-clubs-theatre",
     title: "Youth Clubs Across Malawi Embrace Conservation Theatre",
     excerpt:
       "Through drama and creative arts, youth clubs are communicating urgent environmental messages in local communities.",
     date: "February 10, 2026",
     tag: "Blog",
-    image: "/our-work/work2.avif",
+    image: "/our-work/work5.jpg",
     author: "Field Programs Team",
   },
   {
