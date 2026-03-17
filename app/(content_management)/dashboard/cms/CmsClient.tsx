@@ -51,6 +51,7 @@ export default function CmsClient({ initialUser }: Props) {
   useEffect(() => {
     void refreshMe();
     void refreshContent();
+    setMessage(null);
     if (canManageUsers) {
       void refreshUsers();
     }
@@ -97,6 +98,7 @@ export default function CmsClient({ initialUser }: Props) {
       ];
 
       setAllContent(allItems);
+      setMessage(null);
     } catch (error) {
       setMessage("Failed to load content");
       setMessageType("error");
@@ -248,33 +250,18 @@ export default function CmsClient({ initialUser }: Props) {
 
       {/* Main Content */}
       <main className="flex-1 md:ml-64 pt-16 p-6 mt-7 md:p-8">
-            <header className="fixed top-0 left-0  right-0 z-40 bg-[#1a2e1a] text-white border-b  border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-[#d4a017]">
-              YASCON
-            </p>
-            <p className="text-sm font-semibold">Content Management</p>
-          </div>
-          <Link
-            href="/"
-            className="text-sm font-medium text-white/85 hover:text-white"
-          >
-            Back to Website
-          </Link>
-        </div>
-      </header>
-      
+         
         {/* Message Alert */}
         {message && (
           <div
-            className={`mb-6 p-4 rounded-lg border ${
+            className={`mb-6 p-4 rounded-lg border space-between ${
               messageType === "success"
                 ? "bg-emerald-50 border-emerald-200 text-emerald-700"
                 : "bg-red-50 border-red-200 text-red-700"
             }`}
           >
             {message}
+            <button onClick={() => setMessage(null)} className="ml-4 text-sm font-semibold text-red-500">X</button>  
           </div>
         )}
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import NewsDisplay from "@/components/cms/NewsDisplay";
+import VideosDisplay from "@/components/cms/VideosDisplay";
 
 type NewsItem = {
   slug: string;
@@ -211,6 +212,7 @@ export default function NewsroomPage() {
           ))}
         </div>
       </section>
+      <VideosDisplay region="national" limit={3} />
     </main>
   );
 }

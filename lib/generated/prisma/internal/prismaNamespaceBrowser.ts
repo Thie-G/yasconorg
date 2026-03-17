@@ -58,10 +58,7 @@ export const ModelName = {
   CmsNews: 'CmsNews',
   CmsPressBreifing: 'CmsPressBreifing',
   CmsVideo: 'CmsVideo',
-  CmsBlog: 'CmsBlog',
-  User: 'User',
-  Role: 'Role',
-  Region: 'Region'
+  CmsBlog: 'CmsBlog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -217,35 +214,6 @@ export const CmsBlogScalarFieldEnum = {
 } as const
 
 export type CmsBlogScalarFieldEnum = (typeof CmsBlogScalarFieldEnum)[keyof typeof CmsBlogScalarFieldEnum]
-
-
-export const UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  roleId: 'roleId',
-  regionId: 'regionId',
-  createdAt: 'createdAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const RoleScalarFieldEnum = {
-  id: 'id',
-  name: 'name'
-} as const
-
-export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
-
-
-export const RegionScalarFieldEnum = {
-  id: 'id',
-  name: 'name'
-} as const
-
-export type RegionScalarFieldEnum = (typeof RegionScalarFieldEnum)[keyof typeof RegionScalarFieldEnum]
 
 
 export const SortOrder = {

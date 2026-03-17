@@ -81,18 +81,3 @@ export type CmsVideo = Prisma.CmsVideoModel
  * 
  */
 export type CmsBlog = Prisma.CmsBlogModel
-/**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
- * Model Role
- * 
- */
-export type Role = Prisma.RoleModel
-/**
- * Model Region
- * 
- */
-export type Region = Prisma.RegionModel

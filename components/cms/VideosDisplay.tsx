@@ -53,40 +53,29 @@ export default function VideosDisplay({
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-6 mt-6">
+    <div className="grid md:grid-cols-3 gap-6 mt-4 mb-4 px-6">
+
       {videos.map((video) => (
         <div
           key={video.id}
-          className="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow group"
+          className="flex flex-col  border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow group"
         >
-          <div className="relative w-full h-40 bg-gray-900">
-            {video.coverImage ? (
-              <Image
-                src={video.coverImage}
-                alt={video.title}
-                fill
-                className="object-cover group-hover:opacity-75 transition-opacity"
-              />
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <svg
-                  className="w-12 h-12 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM4 9h12M4 13h12" />
-                </svg>
+          <div className=" w-full  bg-gray-900">
+            {video?.videoUrl && (
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Video</h3>
+                <div className="relative pt-[56.25%] rounded-lg overflow-hidden">
+                  <video
+                    controls
+                    className="absolute top-0 left-0 w-full h-full"
+                    poster={video.coverImage || undefined}
+                  >
+                    <source src={video.videoUrl} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
-            )}
-            <button className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/60 transition-colors">
-              <svg
-                className="w-16 h-16 text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-              </svg>
-            </button>
+              )}
           </div>
           <div className="p-5">
             <p className="text-xs font-semibold text-green-700">
@@ -98,8 +87,9 @@ export default function VideosDisplay({
             <p className="text-sm text-[#2e3d35] mt-2 line-clamp-3">
               {video.excerpt}
             </p>
+          
             <button className="text-sm font-semibold text-green-700 mt-3">
-              Watch
+              Watch  full Video
             </button>
           </div>
         </div>
