@@ -32,8 +32,8 @@ function MemberCard({ name, role, focus, avatar }: { name: string; role: string;
 
 export default function TeamPage() {
   return (
-    <main className="min-h-screen bg-[#f2f6f3] mt-20">
-      <section className="bg-[#1a2e1a] text-white py-16 px-4 text-center">
+    <main className=" bg-white">
+      <section className=" bg-[url(/team/our-team.avif)] bg-cover  text-white py-24 px-4 text-center mt-0.5">
         <span className="text-xs font-bold uppercase tracking-widest text-[#d4a017]">
           — The People Behind YASCON —
         </span>

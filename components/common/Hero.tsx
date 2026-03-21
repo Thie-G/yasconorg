@@ -56,17 +56,17 @@ export default function Hero() {
   }, [current, next]);
 
   return (
-    <section className="relative w-full min-h-[92vh] h-svh overflow-hidden">
+    <section className="relative w-full min-h-screen  overflow-hidden">
       {slides.map((slide, i) => (
         <div key={i} className={`slide ${i === current ? "active" : ""}`}>
           <div
             className="slide-bg absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
             style={{ backgroundImage: `url('${slide.bg}')` }}
           />
-          <div className="slide-overlay bg-gradient-to-b from-black/55 via-black/55 to-black/70" />
+          <div className="slide-overlay bg-black/35 absolute inset-0" />
 
           {i === current && (
-            <div className="relative inset-0 flex items-center justify-center z-10 pt-25 pb-24">
+            <div className="relative inset-0 flex items-center justify-center z-10 pt-8 pb-24">
               <div className="w-full max-w-6xl px-6 sm:px-10 text-center">
                
 

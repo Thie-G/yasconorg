@@ -10,8 +10,8 @@ const objectives = [
 
 export default function ObjectivesPage() {
   return (
-    <main className="min-h-screen bg-white mt-20">
-      <section className="bg-[#1a2e1a] text-white py-16 px-4 text-center">
+    <main className="min-h-screen bg-white mt-0.5">
+      <section className="bg-[url(/team/heavy-forest1.avif)] bg-cover text-[#1a2e1a] min-h-screen text-white py-24 px-4 text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-[#d4a017]">
           — What We Stand For —
         </span>

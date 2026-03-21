@@ -9,7 +9,7 @@ import { RiMailFill } from "react-icons/ri";
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gray-50 mt-16">
+    <div className="min-h-screen bg-gray-50 mt-0.5">
       {/* Hero Section */}
       <section className="bg-green-900 text-white py-16">
         <div className="max-w-6xl mx-auto px-6 text-center">

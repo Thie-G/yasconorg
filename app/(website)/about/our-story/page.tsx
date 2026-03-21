@@ -17,8 +17,8 @@ const stories = [
 
 export default function OurStoryPage() {
   return (
-    <main className="min-h-screen bg-white mt-20">
-      <section className="bg-[#1a2e1a] text-white py-16 px-4 text-center">
+    <main className="min-h-screen bg-white ">
+      <section className="bg-green-950 text-white py-20 px-4 text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-[#d4a017]">
           — Who We Are —
         </span>
