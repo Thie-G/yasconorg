@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 type Activity = {
   id: number;
@@ -163,11 +164,9 @@ const programs: Program[] = [
   },
 ];
 
-export default function Programs() {
+function Programs() {
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-8">Our Programs</h1>
-
+    <div className="min-h-screen p-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {programs.map((program) => (
           <div
@@ -212,5 +211,54 @@ export default function Programs() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function ProgramsPage() {
+  return (
+    <main className="relative min-h-screen text-white">
+      {/* ── Background: dark overlay over forest image ── */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/team/river-forest.avif"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Heavy dark overlay so cards are always readable */}
+        <div className="absolute inset-0 bg-[#0d1a0e]/80" />
+      </div>
+
+      {/* ── Hero header ── */}
+      <section className="py-24 px-4 text-center">
+        <div className="max-w-4xl mx-auto">
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.3em] text-[#d4a017] bg-black/40 px-3 py-2 rounded-full">
+            <span className="h-px w-5 bg-[#d4a017]" />
+            Programs and Activities
+            <span className="h-px w-5 bg-[#d4a017]/60" />
+          </span>
+          <h1 className="text-4xl md:text-5xl font-extrabold mt-4 mb-4 drop-shadow-lg">
+            PROGRAMS
+          </h1>
+          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/80">
+            The Programs and Activities carried out by YASCON
+          </p>
+          <div className="w-12 h-[3px] bg-[#d4a017] mt-8 mx-auto rounded-sm" />
+        </div>
+      </section>
+
+      {/* ── Programs Section ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 pb-20">
+        <div className="mb-8 flex items-center gap-3">
+          <span className="h-px flex-1 bg-white/20" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/60">
+            PROGRAMS
+          </span>
+          <span className="h-px flex-1 bg-white/20" />
+        </div>
+        <Programs />
+      </section>
+    </main>
   );
 }
