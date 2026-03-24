@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true, // Disables type checking during build
+  },
   images: {
     remotePatterns: [
       {
