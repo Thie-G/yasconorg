@@ -8,8 +8,13 @@ import type { ContentStatus } from "@/lib/cms/service";
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     await ensureCmsSchema();
-    const id = parseInt(params.id);
-    const item = await getTeamMemberById(id);
+  
+     const { id } = await params;           // ← await it
+  const numericId = parseInt(id);
+  if (isNaN(numericId)) {
+    return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+  }
+    const item = await getTeamMemberById(numericId);
     if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json(item);
   } catch (error) {
@@ -26,12 +31,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const { id } = await params;
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+    } 
     const body = await req.json();
-    const item = await getTeamMemberById(id);
+    const item = await getTeamMemberById(numericId);
     if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const updated = await updateTeamMember(id, body, user.id);
+    const updated = await updateTeamMember(numericId, body, user.id);
     return NextResponse.json(updated);
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Failed to update team member";
@@ -47,8 +56,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
-    await deleteTeamMember(id);
+    const { id } = await params;
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+    }
+    await deleteTeamMember(numericId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Team DELETE error:", error);

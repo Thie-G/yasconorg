@@ -1,5 +1,10 @@
 import Image from "next/image";
 import { getTeamMembers } from "@/lib/cms/service";
+import Team from "@/components/common/Team";
+
+export const metadata = {
+  title: "Management Team",
+};
 
 type Member = {
   id: number;
@@ -90,11 +95,7 @@ function MemberCard({ member }: { member: Member }) {
         <h3 className="text-base font-extrabold text-green-950 leading-tight">{member.name}</h3>
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d4a017] mt-1 mb-3">{member.role}</p>
         <p className="text-sm text-gray-600 leading-relaxed">{member.focus}</p>
-        {member.joined && (
-          <p className="text-xs text-gray-400 mt-4 pt-3 border-t border-gray-100">
-            Joined {member.joined}
-          </p>
-        )}
+      
       </div>
     </article>
   );
@@ -137,9 +138,9 @@ export default async function TeamPage() {
 
       {/* Empty state */}
       {!nationalCoordinator && team.length === 0 && (
-        <section className="max-w-2xl mx-auto px-4 py-20 text-center">
-          <p className="text-white/60 text-lg">Team information coming soon.</p>
-        </section>
+        <div>
+          <Team />
+          </div>
       )}
 
       {/* Management Team */}
