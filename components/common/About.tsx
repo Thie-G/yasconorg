@@ -36,8 +36,8 @@ export default function About() {
           <div className="w-11 h-[3px] bg-[#d4a017] mb-6 rounded-sm" />
           <p className="text-base text-[#4a5a4a] mb-4 leading-relaxed">
             The Youth Association for Conservation of Nature and Environment
-            (YASCON) is Malawi's premier youth-led conservation organization,
-            uniting thousands of young people across all 28 districts in the
+            (YASCON) is a premier youth-led conservation organization,
+            uniting thousands of young people  in the
             fight to protect our natural heritage.
           </p>
           <p className="text-base text-[#4a5a4a] mb-8 leading-relaxed">
@@ -47,7 +47,7 @@ export default function About() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
-              href="/about/OurStory"
+              href="/about/our-story"
               className="bg-green-600 text-white font-semibold px-7 py-3 rounded-sm text-center hover:bg-green-700 transition-shadow shadow-md hover:shadow-lg"
             >
               Our Story
