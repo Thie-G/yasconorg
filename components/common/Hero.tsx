@@ -11,16 +11,16 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    bg: "/hero/hero3.avif",
-    fallback: "/hero/hero1.png",
+    bg: "/hero/hero1.avif",
+    fallback: "/hero/hero1.avif",
     heading: "Protecting Nature,Empowering Malawi's Youth",
     sub: "YASCON unites young Malawians in grassroots conservation — planting trees, restoring ecosystems, and championing environmental stewardship for future generations.",
     cta1: { label: "Join the Movement", href: "/get-involved" },
     cta2: { label: "Learn More →", href: "/about" },
   },
   {
-    bg: "/hero/hero3.avif",
-    fallback: "/hero/hero4.png",
+    bg: "/hero/hero2.avif",
+    fallback: "/hero/hero3.avif",
     heading: "Together, Let's Grow a Greener Future",
     sub: "Every youth club across all 28 districts is called to lead tree-planting activities. The real impact happens when we act locally — starting this week.",
     cta1: { label: "Get Involved", href: "/get-involved" },
@@ -28,7 +28,7 @@ const slides: Slide[] = [
   },
   {
     bg: "/hero/hero3.avif",
-    fallback: "/hero/hero5.png",
+    fallback: "/hero/hero3.avif",
     heading: "The Most Energetic Force of Conservation",
     sub: "From biodiversity conservation to climate action, YASCON's nationwide network of youth clubs drives measurable environmental impact across Malawi.",
     cta1: { label: "Our Programs", href: "/programs" },

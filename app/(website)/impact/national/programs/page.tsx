@@ -19,7 +19,7 @@ const programs: Program[] = [
     id: 1,
     title: "Research and Development",
     description: "Empowering young people with skills and mentorship.",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Research and Development.avif",
     activities: [
       { id: 1, name: "Baseline Surveys" },
       { id: 2, name: "Species Surveys" },
@@ -34,7 +34,7 @@ const programs: Program[] = [
     id: 2,
     title: "Stakeholder Engagement",
     description: "Promoting Stakeholder wellness.",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Stakeholder Engagement.avif",
     activities: [
       { id: 1, name: "Annual general Meetings" },
       { id: 2, name: "Quarterly Meetings" },
@@ -44,7 +44,7 @@ const programs: Program[] = [
     id: 3,
     title: "Conservation Campaigns",
     description: "Protecting and preserving our environment.",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Conservation Campaigns.avif",
     activities: [
       { id: 1, name: "Clean-up campaigns" },
       { id: 2, name: "Football bonanza" },
@@ -57,7 +57,7 @@ const programs: Program[] = [
     id: 4,
     title: "Conservation Education",
     description: "Channels of communication in preserving our environment.",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Conservation Campaigns.avif",
     activities: [
       { id: 1, name: "Conservation Clubs" },
       { id: 2, name: "Conservation talks" },
@@ -72,7 +72,7 @@ const programs: Program[] = [
     id: 5,
     title: "Reforestation & Afforestation",
     description: "preserving Environment through planting trees",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Reforestation & Afforestation.avif",
     activities: [
       { id: 1, name: "Tree Nursery Establishment" },
       { id: 2, name: "Tree Planting" },
@@ -87,7 +87,7 @@ const programs: Program[] = [
     id: 6,
     title: "Skills Development",
     description: "Learning Technical Skills",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Stakeholder Engagement.avif",
     activities: [
       { id: 1, name: "Eco-Construction" },
       { id: 2, name: "Climate-Smart Livestock Production" },
@@ -106,7 +106,7 @@ const programs: Program[] = [
     id: 7,
     title: "Enterprise Development",
     description: "Developing Enterprise Skills",
-    image: "/Images/balaka.jpg",
+    image: "/programs/stakeholder.avif",
     activities: [
       { id: 1, name: "Livestock Production" },
       { id: 2, name: "Mushroom Production" },
@@ -119,7 +119,7 @@ const programs: Program[] = [
     id: 8,
     title: "Ecosystem Restoration",
     description: "Restoring the Ecosystem",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Reforestation & Afforestation.avif",
     activities: [
       { id: 1, name: "Watershed & catchment Rehabilitation" },
       { id: 2, name: "Gully reclaimation" },
@@ -131,7 +131,7 @@ const programs: Program[] = [
     title: "Biodiversity Conservation",
     description:
       "Protecting species to prevent extinction and maintain a healthy, balanced planet",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Research and Development.avif",
     activities: [
       { id: 1, name: "Bio-blitz events" },
       { id: 2, name: "Pollinator Protection" },
@@ -142,7 +142,7 @@ const programs: Program[] = [
     id: 10,
     title: "Tourism Development",
     description: "Promoting the Tourism Activities",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Stakeholder Engagement.avif",
     activities: [
       { id: 1, name: "Ecotourism Camps" },
       { id: 2, name: "Nature Trails" },
@@ -155,7 +155,7 @@ const programs: Program[] = [
     id: 11,
     title: "Conservation Policing",
     description: "making Policies to conserve Nature",
-    image: "/Images/balaka.jpg",
+    image: "/programs/Conservation Campaigns.avif",
     activities: [
       { id: 1, name: "Community Scouting" },
       { id: 2, name: "Conservation Hotline" },

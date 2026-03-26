@@ -6,69 +6,68 @@ const ACCENT = "#b8860b";
 const heroImages = ["/Images/Eastern1.png", "/Images/Eastern2.png", "/Images/Eastern3.jpg"];
 
 const stats = [
-  { value: 6,    suffix: "", label: "Districts",                   desc: "Under Eastern Coverage" },
+  { value: 5,    suffix: "", label: "Districts",                   desc: "Under Central Coverage" },
   { value: 6,    suffix: "", label: "Consultation Meetings",       desc: "Community Consultations Held" },
-  { value: 95,   suffix: "", label: "Youth Meetings",              desc: "Youth Engagement Sessions" },
-  { value: 191,  suffix: "", label: "Conservation Clubs",          desc: "Active Clubs in Eastern Region" },
+  { value: 97,   suffix: "", label: "Youth Meetings",              desc: "Youth Engagement Sessions" },
+  { value: 192,  suffix: "", label: "Conservation Clubs",          desc: "Active Clubs in Central Region" },
   { value: 4641, suffix: "", label: "Youths Registered",           desc: "Registered Under YASCON" },
-  { value: 1,    suffix: "", label: "Capacity Building Trainings", desc: "Training Sessions Facilitated" },
-  { value: 5,    suffix: "", label: "Clean-Up Campaigns",          desc: "Campaigns Facilitated" },
-  { value: 23,   suffix: "", label: "Conservation Talks",          desc: "Awareness Talks Delivered" },
-  { value: 0,    suffix: "", label: "Stakeholder Meetings",        desc: "Key Stakeholder Engagements" },
-  { value: 58,   suffix: "", label: "Tree Nurseries",              desc: "Nurseries Established" },
+  { value: 2,    suffix: "", label: "Capacity Building Trainings", desc: "Training Sessions Facilitated" },
+  { value: 6,    suffix: "", label: "Clean-Up Campaigns",          desc: "Campaigns Facilitated" },
+  { value: 22,   suffix: "", label: "Conservation Talks",          desc: "Awareness Talks Delivered" },
+  { value: 1,    suffix: "", label: "Stakeholder Meetings",        desc: "Key Stakeholder Engagements" },
+  { value: 59,   suffix: "", label: "Tree Nurseries",              desc: "Nurseries Established" },
   { value: 599,  suffix: "", label: "Tree Seedlings Raised",       desc: "Seedlings Grown for Planting" },
-  { value: 1696, suffix: "", label: "Trees Planted",               desc: "Trees Successfully Planted" },
-  { value: 66,   suffix: "", label: "Village Forest Areas",        desc: "Community Forest Areas Created" },
-  { value: 21,   suffix: "", label: "Forest Regeneration Areas",   desc: "Areas Under Active Management" },
+  { value: 1697, suffix: "", label: "Trees Planted",               desc: "Trees Successfully Planted" },
+  { value: 67,   suffix: "", label: "Village Forest Areas",        desc: "Community Forest Areas Created" },
+  { value: 22,   suffix: "", label: "Forest Regeneration Areas",   desc: "Areas Under Active Management" },
 ];
 
 const districts = [
-  { name: "Zomba",    coordinator: "Thoko Banda",    activities: 14, trees: 2100, members: 270 },
-  { name: "Mangochi", coordinator: "Isaac Phiri",    activities: 12, trees: 1800, members: 240 },
-  { name: "Machinga", coordinator: "Thoko Banda",    activities: 9,  trees: 1400, members: 190 },
-  { name: "Balaka",   coordinator: "Grace Mwale",    activities: 7,  trees: 1100, members: 165 },
-  { name: "Phalombe", coordinator: "Isaac Phiri",    activities: 4,  trees: 850,  members: 135 },
-  { name: "Mulanje",  coordinator: "Grace Mwale",    activities: 2,  trees: 550,  members: 100 },
+  { name: "Lilongwe", coordinator: "Agnes Phiri",  activities: 18, trees: 3200, members: 380 },
+  { name: "Dedza",    coordinator: "Kelvin Banda", activities: 12, trees: 2100, members: 270 },
+  { name: "Kasungu",  coordinator: "Ruth Mbewe",   activities: 10, trees: 1800, members: 230 },
+  { name: "Ntcheu",   coordinator: "Agnes Phiri",  activities: 8,  trees: 1400, members: 185 },
+  { name: "Salima",   coordinator: "Kelvin Banda", activities: 7,  trees: 900,  members: 155 },
 ];
 
 const partners = [
-  { name: "Zomba City Council",                 type: "Government",         image: "/Images/Eastern1.png", desc: "Urban greening and school tree-planting in partnership with Zomba City Council across all wards." },
-  { name: "Chancellor College (UNIMA)",         type: "Academic",           image: "/Images/Eastern2.png", desc: "Research collaboration on land-use change and biodiversity assessment in the Eastern highlands." },
-  { name: "Lake Chilwa Basin Climate Change",   type: "Development Partner",image: "/Images/Eastern333.jpg", desc: "Co-implementing wetland restoration and community resilience programmes around Lake Chilwa." },
-  { name: "WWF Malawi – Eastern Programme",     type: "International NGO",  image: "/Images/Eastern1.png", desc: "Capacity building for biodiversity monitoring and wetland conservation in Mangochi and Zomba." },
-  { name: "Department of Forestry – East",      type: "Government",         image: "/Images/Eastern2.png", desc: "Seedling supply and technical guidance for catchment reforestation in Machinga and Balaka." },
-  { name: "Concern Universal Malawi",           type: "NGO",                image: "/Images/Eastern33.jpg", desc: "Community-based natural resource management training and livelihoods integration in Phalombe." },
+  { name: "Lilongwe City Council",                   type: "Government",          image: "/Images/Eastern1.png", desc: "Urban greening and school tree-planting across all 4 Lilongwe Area Councils, targeting 500 trees per school." },
+  { name: "LUANAR Bunda College",                    type: "Academic",            image: "/Images/Eastern2.png", desc: "Research partnership on soil conservation and agroforestry integration in Central Region farming communities." },
+  { name: "GIZ Malawi – Central Office",             type: "Development Partner", image: "/Images/Eastern333.jpg", desc: "Climate-smart land use training for youth coordinators in Dedza and Ntcheu." },
+  { name: "Plan International Malawi",               type: "International NGO",   image: "/Images/Eastern1.png", desc: "Gender-inclusive conservation programming ensuring 50% female leadership in all Central Region clubs." },
+  { name: "Department of Forestry – Central Region", type: "Government",          image: "/Images/Eastern2.png", desc: "Seedling supply and technical guidance for catchment reforestation across Kasungu and Ntcheu." },
+  { name: "USAID Feed the Future",                   type: "Development Partner", image: "/Images/Eastern33.jpg", desc: "Integrating conservation with food security — funding watershed management activities in Salima lakeshore areas." },
+  { name: "Malawi Red Cross Society",                type: "NGO",                 image: "/Images/Eastern1.png", desc: "Joint disaster risk reduction and environmental awareness campaigns in flood-prone communities around Salima." },
 ];
 
 const team = [
-  { name: "Prince Magombo", initials: "PM", role: "Regional Coordinator (East)", district: "Eastern Region", image: "/teampics/eastern-coordinator.png", bio: "Prince holds a Bachelor of Science Degree in Agricultural Extension from Lilongwe University of Agriculture and Natural Resources.He initially served as an Area Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in the Eastern region of Malawi." },
+  { name: "Chisomo Nyirenda", initials: "CN", role: "Regional Coordinator (Central)", district: "Central Region", image: "/teampics/central-coordinator.png", bio: "Chisomo holds a Bachelor of Science Degree in Value Chain Agriculture from Mzuzu University.He initially served as a Conservation Coordinator when he successfully led and implemented YASCON's conservation activities in the central region of Malawi.Chisomo brings to the organization proven community mobilization, organization, project management, leadership and coordination skills." },
 ];
 
 const activities = [
-  { title: "Lake Chilwa Wetland Restoration",     date: "Feb 2025", district: "Zomba",    type: "Tree Planting", participants: 180, desc: "Youth clubs planted 2,100 trees along Lake Chilwa's shrinking shoreline to stabilise wetland edges and restore bird habitat." },
-  { title: "Mangochi Lakeshore Awareness Drive",  date: "Apr 2025", district: "Mangochi", type: "Awareness",     participants: 240, desc: "Community awareness on illegal fishing, plastic pollution, and wetland protection across 14 Lake Malawi lakeshore villages." },
-  { title: "Zomba Plateau Reforestation",         date: "Jun 2025", district: "Zomba",    type: "Tree Planting", participants: 160, desc: "1,800 indigenous tree seedlings planted across degraded sections of the Zomba Plateau with support from UNIMA forestry students." },
-  { title: "Machinga Climate Resilience Workshop",date: "Aug 2025", district: "Machinga", type: "Workshop",      participants: 120, desc: "120 youth and community leaders trained on climate-smart agriculture and natural resource management in flood-prone Machinga." },
-  { title: "Balaka River Clean-Up",               date: "Sep 2025", district: "Balaka",   type: "Clean-Up",      participants: 95,  desc: "Major riverbank clean-up along the Shire River tributary targeting plastic waste and invasive water plants in Balaka." },
-  { title: "Eastern Region Conservation Summit",  date: "Nov 2025", district: "Zomba",    type: "Workshop",      participants: 260, desc: "Annual gathering of all 20 Eastern Region club coordinators to review statistics and plan the upcoming conservation season." },
+  { title: "Peri-Urban Tree Planting Drive",      date: "Mar 2025", district: "Lilongwe", type: "Tree Planting", participants: 220, desc: "4,800 seedlings planted with 12 school clubs along Lilongwe's peri-urban green belt to reduce urban heat and improve air quality." },
+  { title: "Waste Sorting Awareness Week",        date: "May 2025", district: "Dedza",    type: "Awareness",     participants: 180, desc: "1,250 households reached through door-to-door demonstrations on waste sorting, composting, and plastic-free alternatives." },
+  { title: "Wetland Restoration Volunteer Day",   date: "Aug 2025", district: "Salima",   type: "Tree Planting", participants: 150, desc: "3 km of Lake Malawi shoreline cleared and replanted with native wetland vegetation to restore fish breeding habitat." },
+  { title: "Youth Climate Leadership Workshop",   date: "Oct 2025", district: "Kasungu",  type: "Workshop",      participants: 160, desc: "160 youth leaders trained on climate advocacy, policy engagement, and community-based adaptation strategies." },
+  { title: "Ntcheu Hillside Reforestation",       date: "Nov 2025", district: "Ntcheu",   type: "Tree Planting", participants: 130, desc: "Targeted reforestation of degraded hillsides in Ntcheu to prevent landslides and restore watershed function." },
+  { title: "Central Region Conservation Summit",  date: "Dec 2025", district: "Lilongwe", type: "Workshop",      participants: 320, desc: "Annual gathering of all 24 Central Region club coordinators to review statistics and plan for the upcoming conservation season." },
 ];
 
 const whereWeWork = [
-  { district: "Zomba",    description: "Home to the iconic Zomba Plateau — YASCON coordinates reforestation and youth eco-clubs focused on protecting this UNESCO-recognised landscape.", highlight: "2,100 trees planted" },
-  { district: "Mangochi", description: "Eastern Lake Malawi shoreline — wetland conservation and community awareness around fishing villages and lakeshore communities.", highlight: "14 villages reached" },
-  { district: "Machinga", description: "Flood-prone lowland district — climate resilience training and natural resource management are YASCON's primary focus here.", highlight: "Climate resilience hub" },
-  { district: "Balaka",   description: "Located on the Shire River corridor — riverbank clean-ups and riparian reforestation protect water quality for downstream communities.", highlight: "River restoration" },
-  { district: "Phalombe", description: "Flanked by Mulanje Mountain — conservation work focuses on buffer zone protection and biodiversity awareness with mountain communities.", highlight: "Buffer zone work" },
-  { district: "Mulanje",  description: "UNESCO-listed Mulanje Massif — YASCON supports patrol activities and rare species monitoring on Africa's highest peak south of Kilimanjaro.", highlight: "Massif conservation" },
+  { district: "Lilongwe", description: "Malawi's capital city and largest district — urban greening, school eco-clubs, and government partnership work are the primary focus.", highlight: "3,200 trees planted" },
+  { district: "Dedza",    description: "Highland district bordering Mozambique — reforestation and waste awareness campaigns across rural communities.", highlight: "1,250 households" },
+  { district: "Kasungu",  description: "Home to Kasungu National Park — youth rangers support wildlife corridor protection and climate leadership training.", highlight: "Youth leadership hub" },
+  { district: "Ntcheu",   description: "Hillside erosion and land degradation are major challenges — targeted reforestation and soil conservation are priorities.", highlight: "Hillside restoration" },
+  { district: "Salima",   description: "Central lakeshore district — wetland restoration and fish breeding habitat protection support both conservation and fishing livelihoods.", highlight: "3 km shoreline restored" },
 ];
 
 const ourWork = [
-  { title: "Wetland Conservation",      icon: "🦢", desc: "Protecting Lake Chilwa and Lake Malawi's eastern wetlands through riparian planting, shoreline stabilisation, and community awareness." },
-  { title: "Plateau Reforestation",     icon: "🌳", desc: "Restoring degraded sections of the Zomba Plateau and Mulanje Massif buffer zones through indigenous tree planting." },
-  { title: "Climate Resilience",        icon: "🌦️", desc: "Training communities in flood-prone Machinga and Balaka on climate-smart farming and natural resource management." },
-  { title: "Biodiversity Monitoring",   icon: "🔬", desc: "Youth ranger teams conduct seasonal surveys tracking bird populations, wetland species, and vegetation cover across Eastern districts." },
-  { title: "River Corridor Protection", icon: "💧", desc: "Riverbank clean-ups and riparian reforestation along Shire River tributaries to protect water quality and reduce sedimentation." },
-  { title: "Mountain Conservation",     icon: "⛰️", desc: "Supporting patrol and monitoring activities on the Mulanje Massif — Africa's highest mountain south of Kilimanjaro." },
+  { title: "Urban Greening",             icon: "🏙️", desc: "Partnering with city councils to plant trees along roads, in parks, and on school grounds across Lilongwe's expanding urban areas." },
+  { title: "Watershed Management",       icon: "💧", desc: "Restoring catchments and wetlands around Lake Malawi's central shoreline to protect water quality and fish breeding habitat." },
+  { title: "School Eco-Clubs",           icon: "📚", desc: "Running Malawi's largest network of school-based eco-clubs, reaching thousands of students with environmental education." },
+  { title: "Community Waste Management", icon: "♻️", desc: "Door-to-door waste sorting campaigns and composting demonstrations in rural and peri-urban households across Central districts." },
+  { title: "Hillside Reforestation",     icon: "⛰️", desc: "Targeted planting on degraded hillsides in Ntcheu and Dedza to prevent erosion, landslides, and downstream river sedimentation." },
+  { title: "Youth Policy Advocacy",      icon: "📣", desc: "Training youth leaders to engage local councils and national policy processes on climate, land use, and environmental governance." },
 ];
 
 const TYPE_COLORS: Record<string, string> = {
@@ -136,7 +135,7 @@ function PartnersPanel() {
 function TeamPanel() {
   return (
     <div>
-      <SectionHeader title="Meet The Eastern Region Team" />
+      <SectionHeader title="Meet The Central Region Team" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {team.map((m, i) => (
           <div key={i} className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -277,7 +276,7 @@ function ActivitiesPanel() {
 function StatsPanel() {
   return (
     <div>
-      <SectionHeader title="Eastern Region — By the Numbers" />
+      <SectionHeader title="Central Region — By the Numbers" />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {stats.map((s, i) => (
           <div key={i} className="bg-white p-6 shadow-sm text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5" style={{ borderRadius: "20px", border: "1.5px solid #f0e8c8" }}>
@@ -302,7 +301,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "partners",    label: "Our Partners"        },
 ];
 
-export default function EasternRegionPage() {
+export default function CentralRegionPage() {
   const [activeTab, setActiveTab] = useState<Tab>("activities");
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -329,9 +328,9 @@ export default function EasternRegionPage() {
                         YASCON Regional Hub
                       </span>
                     </div>
-                    <h1 className="slide-h1 text-white text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.08] mb-6">Eastern Region</h1>
+                    <h1 className="slide-h1 text-white text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.08] mb-6">Central Region</h1>
                     <p className="slide-sub mb-9 leading-relaxed" style={{ color: "rgba(255,255,255,.75)", fontSize: "clamp(15px, 1.6vw, 17px)", maxWidth: "520px" }}>
-                      YASCON's Eastern Region covers Zomba, Mangochi, Machinga, Balaka, Phalombe and Mulanje — protecting wetlands, the Zomba Plateau, and the iconic Mulanje Massif from deforestation and climate impacts.
+                      YASCON&apos;s Central Region covers Lilongwe, Dedza, Kasungu, Ntcheu and Salima — addressing urban deforestation, wetland degradation, and hillside erosion across Malawi&apos;s heartland and lakeshore.
                     </p>
                     <div className="slide-btns flex flex-wrap gap-8">
                       {stats.slice(0, 4).map((s, i) => (

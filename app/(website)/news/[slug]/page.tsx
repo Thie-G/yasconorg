@@ -60,7 +60,7 @@ export default function NewsSlugPage({ params }: PageProps) {
         <div className="max-w-4xl mx-auto px-6 py-20 text-center">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">News not found</h1>
           <Link href="/news" className="text-green-600 hover:text-green-700 font-semibold">
-            ← Back to News
+            ← Back to Newsroom
           </Link>
         </div>
       </main>

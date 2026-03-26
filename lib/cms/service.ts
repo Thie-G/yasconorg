@@ -483,6 +483,7 @@ export async function getTeamMemberById(id: number) {
 
 export async function createTeamMember(data: {
   name: string;
+  slug: string;
   role: string;
   joined?: string | null;
   avatar?: string | null;

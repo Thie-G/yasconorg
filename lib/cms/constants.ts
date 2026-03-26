@@ -8,3 +8,12 @@ export interface CmsUserRecord {
   region: "national" | "northern" | "central" | "southern" | "eastern";
   created_at: string;
 }
+
+export type CmsRegion = "national" | "northern" | "central" | "southern" | "eastern";
+export type ContentStatus = "draft" | "published" | "archived";
+export type CmsTeamType = "management" | "board";
+export type CmsMediaType = "gallery" | "document";
+
+export const CMS_ROLES = ["super_admin", "regional_admin"] as const;
+export const CMS_REGIONS = ["national", "northern", "central", "southern", "eastern"] as const;
+export type CmsRole = typeof CMS_ROLES[number];
