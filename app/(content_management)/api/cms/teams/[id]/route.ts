@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ensureCmsSchema } from "@/lib/cms/db";
+import { initCms } from "@/lib/cms/init";
 import { getSessionUserFromRequest } from "@/lib/cms/auth";
 import { canCreateOrEditContent } from "@/lib/cms/permissions";
 import { getTeamMemberById, updateTeamMember, deleteTeamMember } from "@/lib/cms/service";
@@ -7,7 +7,7 @@ import type { ContentStatus } from "@/lib/cms/service";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    await ensureCmsSchema();
+    await initCms();
   
      const { id } = await params;           // ← await it
   const numericId = parseInt(id);
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    await ensureCmsSchema();
+    await initCms();
     const user = await getSessionUserFromRequest(req);
     if (!user || !canCreateOrEditContent(user)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -51,7 +51,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    await ensureCmsSchema();
+    await initCms();
     const user = await getSessionUserFromRequest(req);
     if (!user || !canCreateOrEditContent(user)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
