@@ -19,9 +19,8 @@ type Member = {
 async function getManagementTeam() {
   try {
     const members = await getTeamMembers({ type: "management", status: "published" });
-    const national = members.find((m) => m.region === "national") ?? null;
-    const team = members.filter((m) => m.region !== "national");
-    console.log("Fetched management team:", { national, team });
+    const national = members.find((m) => m.role.toLowerCase() === "national coordinator") ?? null;
+    const team = members.filter((m) => m.role.toLowerCase() !== "national coordinator");
     return { nationalCoordinator: national, team };
   } catch (err) {
     console.error("Failed to load management team:", err);
@@ -84,7 +83,7 @@ function MemberCard({ member }: { member: Member }) {
       </div>
       <div className="p-5 flex flex-col flex-1 bg-white">
         <h3 className="text-base font-extrabold text-green-950 leading-tight">{member.name}</h3>
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d4a017] mt-1 mb-3">{member.role}</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d4a017] mt-1 mb-3">{member.role}-{member.region}</p>
         <p className="text-sm text-gray-600 leading-relaxed">{member.focus}</p>
       
       </div>
