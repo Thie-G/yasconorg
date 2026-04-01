@@ -1,10 +1,4 @@
-/**
- * CMS Service Layer — Unified Content
- *
- * All content (news, blog, announcement, press_briefing, video) is stored in
- * the single `CmsContent` table, distinguished by `contentType`.
- * No in-process cache — revalidatePath() in API routes handles cache busting.
- */
+
 
 import { getPrismaClient } from "./db";
 
@@ -128,8 +122,8 @@ export async function createContent(data: {
   slug: string;
   excerpt: string;
   richContent: string;
-  coverImage?: string | null;
-  videoUrl?: string | null;
+  coverImage?: { url: string } | string | null;
+  videoUrl?: { url: string } | string | null;
   videoDuration?: number | null;
   contentType: CmsContentType;
   region: ContentRegion;
@@ -138,11 +132,12 @@ export async function createContent(data: {
   createdById: number;
 }) {
   const prisma = getPrismaClient();
+  console.log("Creating content with data:", data);
   return prisma.cmsContent.create({
     data: {
       ...data,
-      coverImage: normalizeNullableStringField(data.coverImage),
-      videoUrl: normalizeNullableStringField(data.videoUrl),
+      coverImage: normalizeNullableStringField(data.coverImage?.url),
+      videoUrl: normalizeNullableStringField(data.videoUrl?.url),
       level: data.level ?? "national",
       publishedAt: data.status === "published" ? new Date() : null,
       updatedById: data.createdById,
@@ -158,8 +153,8 @@ export async function updateContent(
     slug: string;
     excerpt: string;
     richContent: string;
-    coverImage?: string | null;
-    videoUrl?: string | null;
+    coverImage?: { url: string } | string | null;
+    videoUrl?: { url: string } | string | null;
     videoDuration?: number | null;
     region: ContentRegion;
     level: "national" | "regional";
@@ -173,8 +168,8 @@ export async function updateContent(
 
   const normalizedData = {
     ...data,
-    coverImage: normalizeNullableStringField(data.coverImage),
-    videoUrl: normalizeNullableStringField(data.videoUrl),
+    coverImage: normalizeNullableStringField(data.coverImage?.url),
+    videoUrl: normalizeNullableStringField(data.videoUrl?.url),
   };
 
   return prisma.cmsContent.update({
@@ -269,7 +264,7 @@ export async function createTeamMember(data: {
   slug: string;
   role: string;
   joined?: string | null;
-  avatar?: string | null;
+  avatar?: { url: string } | string | null;
   focus: string;
   teamType: "management" | "board";
   region?: ContentRegion | null;
@@ -280,6 +275,7 @@ export async function createTeamMember(data: {
   return prisma.cmsTeamMember.create({
     data: {
       ...data,
+      avatar: typeof data.avatar === "string" ? data.avatar : data.avatar?.url,
       publishedAt: data.status === "published" ? new Date() : null,
       updatedById: data.createdById,
     },
@@ -292,7 +288,7 @@ export async function updateTeamMember(
     name: string;
     role: string;
     joined: string | null;
-    avatar: string | null;
+    avatar: { url: string } | string | null;
     focus: string;
     teamType: "management" | "board";
     region: ContentRegion | null;
@@ -308,6 +304,7 @@ export async function updateTeamMember(
     data: {
       ...data,
       updatedById,
+      avatar: typeof data.avatar === "string" ? data.avatar : data.avatar?.url,
       ...(wasPublished ? { publishedAt: new Date() } : {}),
       updatedAt: new Date(),
     },
