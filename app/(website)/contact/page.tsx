@@ -6,7 +6,6 @@ import { RiMailFill } from "react-icons/ri";
 
 // Contact Us Page
 
-
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50 mt-0.5">
@@ -25,8 +24,8 @@ export default function ContactPage() {
 
           <h1 className="text-4xl font-bold mb-4">Contact YASCON</h1>
           <p className="max-w-2xl mx-auto text-lg text-amber-200">
-            Join us in protecting nature and restoring our environment.
-            Reach out to collaborate, volunteer, or support our initiatives.
+            Join us in protecting nature and restoring our environment. Reach
+            out to collaborate, volunteer, or support our initiatives.
           </p>
         </div>
       </section>
@@ -46,13 +45,13 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-center gap-4">
-              <RiWhatsappFill  className="text-green-600 text-2xl" />
+              <RiWhatsappFill className="text-green-600 text-2xl" />
               <span>WhatsApp: +265 (0) 986818697</span>
             </div>
 
             <div className="flex items-center gap-4">
               <RiMailFill className="text-green-600 text-xl md:text-2xl" />
-              <span>yasconmw@outlook.com</span>
+              <span>info@yascon.org</span>
             </div>
           </div>
         </div>
@@ -73,8 +72,8 @@ export default function ContactPage() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600"
                 placeholder="Your full name"
               />
-                      </div>
-                        <div>
+            </div>
+            <div>
               <label className="block text-sm font-medium mb-2">
                 Phone Number <span className="text-red-500">*</span>
               </label>
@@ -119,4 +118,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
