@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const links = [
   { name: "Board Members", path: "/careers/board" },
-  { name: "Volunteers", path: "/careers/volunteers" },
+ // { name: "Volunteers", path: "/careers/volunteers" },
 ];
 
 export default function Dashboard() {

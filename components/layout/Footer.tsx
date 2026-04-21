@@ -8,9 +8,9 @@ const footerLinks = {
     { label: "Where we work", href: "/about/location" },
     { label: "Our Work", href: "/about/work" },
     { label: "Our Team", href: "/about/management" },
-        { label: "Our Story", href: "/about/our-story" },
-,    { label: "Contact Us", href: "/contact" },
-
+    { label: "Our Story", href: "/about/our-story" },
+    ,
+    { label: "Contact Us", href: "/contact" },
   ],
   "Our Work": [
     { label: "Biodiversity Conservation", href: "/about/work" },
@@ -25,7 +25,10 @@ const footerLinks = {
     { label: "Stakeholder Engagement", href: "/impact/national/programs" },
     { label: "Conservation Campaigns", href: "/impact/national/programs" },
     { label: "Conservation Education", href: "/impact/national/programs" },
-    { label: "Reforestation & Afforestation", href: "/impact/national/programs" },
+    {
+      label: "Reforestation & Afforestation",
+      href: "/impact/national/programs",
+    },
     { label: "Skills Development", href: "/impact/national/programs" },
     { label: "Enterprise Development", href: "/impact/national/programs" },
   ],
@@ -163,6 +166,14 @@ export default function Footer() {
               <div> +265 (0) 986818697</div>
               <div> info@yascon.org</div>
               <div> Blantyre, Malawi</div>
+            </div>
+            <div>
+              <div className="font-bold text-white text-sm mt-7">
+                REGISTRATION NUMBER
+              </div>
+              <div className="space-y-1.5 text-xs text-gray-400">
+                COYG-J7RCGW5
+              </div>
             </div>
           </div>
 
