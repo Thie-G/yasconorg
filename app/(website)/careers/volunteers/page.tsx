@@ -3,6 +3,13 @@ export default function volunteervacancy() {
     /* VOLUNTEERS VACANCY */
   }
   return (
+    <div className="bg-gray-100 p-6 mt-40 text-center rounded-lg">
+      <p className="font-semibold text-red-600">
+        The Application Deadline has Passed
+      </p>
+    </div>
+  );
+  /*return (
     <div className="max-w-5xl mx-auto px-6 py-12">
       <div className="border rounded-lg p-8 shadow-sm bg-white">
         <h2 className="text-2xl font-semibold mb-4">CALL FOR VOLUNTEERS</h2>
@@ -63,5 +70,5 @@ export default function volunteervacancy() {
         </div>
       </div>
     </div>
-  );
+  );*/
 }
