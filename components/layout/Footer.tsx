@@ -168,11 +168,31 @@ export default function Footer() {
               <div> Blantyre, Malawi</div>
             </div>
             <div>
-              <div className="font-bold text-white text-sm mt-7">
-                REGISTRATION NUMBER
+              <div>
+              <h4
+                className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-2 "
+                style={{
+                  // color: "rgba(255,255,255,.75)",
+                  borderBottom: "1px solid rgba(255,255,255,.07)",
+                }}
+              > INCORPORATION NUMBER</h4>
+             
               </div>
               <div className="space-y-1.5 text-xs text-gray-400">
                 COYG-J7RCGW5
+              </div>
+              <div>
+              <h4
+                className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-3 "
+                style={{
+                  // color: "rgba(255,255,255,.75)",
+                  borderBottom: "1px solid rgba(255,255,255,.07)",
+                }}
+              > CONGOMA REGISTRATION NUMBER</h4>
+             
+              </div>
+              <div className="space-y-1.5 text-xs text-gray-400">
+                YASCON-538282-719
               </div>
             </div>
           </div>
