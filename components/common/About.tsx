@@ -36,9 +36,9 @@ export default function About() {
           <div className="w-11 h-[3px] bg-[#d4a017] mb-6 rounded-sm" />
           <p className="text-base text-[#4a5a4a] mb-4 leading-relaxed">
             The Youth Association for Conservation of Nature and Environment
-            (YASCON) is a premier youth-led conservation organization,
-            uniting thousands of young people  in the
-            fight to protect our natural heritage.
+            (YASCON) is a premier youth-led conservation organization, uniting
+            thousands of young people in the fight to protect our natural
+            heritage.
           </p>
           <p className="text-base text-[#4a5a4a] mb-8 leading-relaxed">
             Founded on the belief that young people are not just the leaders of
