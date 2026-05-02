@@ -63,7 +63,7 @@ export default function ContentManagePage() {
       showAlert("Failed to load content", "error");
     } finally {
       setLoading(false);
-    }
+    } 
   }, [typeFilter, statusFilter]);
 
   useEffect(() => { void load(); }, [load]);
@@ -82,6 +82,7 @@ export default function ContentManagePage() {
       setDeleting(null);
     }
   };
+  
 
   const handleToggleStatus = async (item: ContentItem) => {
     const newStatus = item.status === "published" ? "draft" : "published";
