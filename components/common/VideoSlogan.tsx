@@ -22,7 +22,7 @@ const videoData = [
   },
   {
     id: 3,
-    title: "YASCON IN MANGOCHI",
+    title: "YASCON IN BLANTYRE",
     src: "/sloganvids/slogan3.mp4",
     description: "The Change Begins With Us",
     href: "",
@@ -57,7 +57,7 @@ export default function SloganVideo() {
         <p className="text-base text-[#4a5a4a] max-w-2xl mx-auto text-center">
           We believe real change begins when young people take action for the planet. Driven by passion and purpose,
           we are restoring nature and building climate resilient communities. Together with the youth, we have planted
-          trees in Mangochi, Lilongwe, and Mzuzu to protect our environment for future generations.
+          trees in Mangochi,Blantyre, Lilongwe, and Mzuzu to protect our environment for future generations.
         </p>
         <div className="w-11 h-[3px] bg-[#d4a017] mt-5 mx-auto rounded-sm" />
       </div>

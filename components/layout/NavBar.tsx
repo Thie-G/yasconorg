@@ -52,6 +52,7 @@ const navItems: NavItem[] = [
           links: [
             { href: "/about/management", label: "Our Team" },
             { href: "/about/our-story", label: "Our Story" },
+            { href: "/impact/national/partners", label: "Partners" },
             { href: "/contact", label: "Contact Us" },
           ],
         },
@@ -70,13 +71,12 @@ const navItems: NavItem[] = [
           links: [
             { href: "/impact/national/board", label: "Board" },
             { href: "/about/management", label: "Management" },
-            { href: "/impact/national/partners", label: "Partners" },
+            { href: "/impact/national/programs", label: "Programs" },
           ],
         },
         {
           heading: "Impact",
           links: [
-            { href: "/impact/national/programs", label: "Programs" },
             { href: "/impact/national/statistics", label: "Statistics" },
             { href: "/impact/national/reports", label: "Annual Reports" },
           ],

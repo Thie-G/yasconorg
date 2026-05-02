@@ -45,7 +45,7 @@ const locations: Location[] = [
     category: "Market",
     description:
       "we implement waste reduction strategies and awareness campaigns such as cleanup campaigns and proper waste disposal in trading Centers & Markets.",
-    image: "/hero/mission2.jpg",
+    image: "/hero/public1.jpeg",
     area: "Mangochi - Water",
   },
   {
@@ -54,7 +54,7 @@ const locations: Location[] = [
     category: "Water",
     description:
       "Promoting the link between a healthy environment and community wellbeing, often through cleanup campaigns, clean water initiatives or medicinal plant gardens.",
-    image: "/our-work/work5.jpg",
+    image: "/hero/health1.jpeg",
     area: "Chilobwe - WASH",
   },
   {
@@ -63,28 +63,28 @@ const locations: Location[] = [
     category: "Forest",
     description:
       "We Work directly in or around protected areas and buffer zones to mitigate human-wildlife conflicts and support sustainable tourism.",
-    image: "/hero/mission1.jpg",
+    image: "/hero/nature1.jpeg",
     area: "Blantyre - Education",
   },
-    {
+  {
     id: 7,
     name: "Riverbanks and Catchment Areas",
     category: "School",
     description:
       "​  We focus on soil erosion control and protecting water sources through indigenous tree planting and gully reclamation.",
-    image: "/hero/mission1.jpg",
+    image: "/hero/bank1.jpg",
     area: "Blantyre - Education",
   },
-      {
+  {
     id: 8,
     name: "Local Farms",
     category: "School",
     description:
       "​We demonstrate agroforestry, conservation Agriculture and integrated soil fertility management techniques that allow farmers to increase yields while preserving the surrounding ecosystem.",
-    image: "/hero/mission1.jpg",
+    image: "/hero/local1.jpg",
     area: "Blantyre - Education",
   },
-        {
+  {
     id: 9,
     name: "​ Governance & Administrative Hubs ",
     category: "School",
@@ -115,7 +115,7 @@ export default function LocationPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      <section className="relative overflow-hidden bg-[url(/hero/mission2.jpg)] bg-cover bg-center text-white py-8 px-4 text-center">
+      <section className="relative overflow-hidden bg-[url(/hero/nature1.jpeg)] bg-cover bg-center text-white py-8 px-4 text-center">
         <div className="absolute inset-0 bg-black/25 mix-blend-multiply" />
         <div className="absolute inset-0 bg-black/10" />
 
@@ -192,12 +192,10 @@ export default function LocationPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f2610]/85 via-[#0f2610]/45 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                   <div>
-                  
                     <span className="text-white font-bold text-lg tracking-wide drop-shadow">
                       {location.name}
                     </span>
                   </div>
-          
                 </div>
               </div>
               <div className="p-6 border-t-4 border-[#2f9e44]">

@@ -11,7 +11,7 @@ const objectives = [
 export default function ObjectivesPage() {
   return (
     <main className="min-h-screen bg-white mt-0.5">
-      <section className="bg-[url(/team/heavy-forest1.avif)] bg-cover bg-center text-[#1a2e1a]  text-white py-24 px-4 text-center">
+     <section className="bg-[url(/hero/objeBG.jpeg)] bg-cover bg-center text-[#1a2e1a]  text-white py-24 px-4 text-center">
         <span className="text-sm font-bold uppercase tracking-widest text-[#d4a017] bg-[#1a2e1a]/[.8] px-3 py-2 rounded-full">
           — What We Stand For —
         </span>
@@ -22,7 +22,7 @@ export default function ObjectivesPage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 ">
         <div className=" overflow-hidden shadow-lg md:flex bg-white border border-gray-100">
           <div className="md:w-1/3 relative min-h-64">
-            <Image src="/hero/hero1.avif" alt="YASCON in Action" fill className="object-cover brightness-75" />
+            <Image src="/hero/objehero1.jpeg" alt="YASCON in Action" fill className="object-cover brightness-65" />
           </div>
 
           <div className="p-8 md:w-3/4">

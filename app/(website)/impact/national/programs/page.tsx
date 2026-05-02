@@ -44,7 +44,7 @@ const programs: Program[] = [
     id: 3,
     title: "Conservation Campaigns",
     description: "Protecting and preserving our environment.",
-    image: "/programs/Conservation Campaigns.avif",
+    image: "/hero/mission3.jpg",
     activities: [
       { id: 1, name: "Clean-up campaigns" },
       { id: 2, name: "Football bonanza" },
@@ -87,7 +87,7 @@ const programs: Program[] = [
     id: 6,
     title: "Skills Development",
     description: "Learning Technical Skills",
-    image: "/programs/Stakeholder Engagement.avif",
+    image: "/our-work/work4.jpg",
     activities: [
       { id: 1, name: "Eco-Construction" },
       { id: 2, name: "Climate-Smart Livestock Production" },
@@ -142,7 +142,7 @@ const programs: Program[] = [
     id: 10,
     title: "Tourism Development",
     description: "Promoting the Tourism Activities",
-    image: "/programs/Stakeholder Engagement.avif",
+    image: "/hero/nature1.jpeg",
     activities: [
       { id: 1, name: "Ecotourism Camps" },
       { id: 2, name: "Nature Trails" },
