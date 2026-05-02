@@ -4,12 +4,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
-
-// ───────────────────────────────────────────────────────────────────────────
-// Enums
-// ───────────────────────────────────────────────────────────────────────────
 
 enum CmsRole {
   super_admin
@@ -53,9 +51,13 @@ enum CmsMediaType {
   document
 }
 
-// ───────────────────────────────────────────────────────────────────────────
-// Users & Sessions
-// ───────────────────────────────────────────────────────────────────────────
+enum CmsEmploymentType {
+  full_time
+  part_time
+  contract
+  internship
+  volunteer
+}
 
 model CmsUser {
   id           Int       @id @default(autoincrement())
@@ -66,15 +68,15 @@ model CmsUser {
   region       CmsRegion
   createdAt    DateTime  @default(now()) @map("created_at")
 
-  // Single relation for ALL content — clean and scalable
-  createdContent CmsContent[] @relation("CreatedBy")
-  updatedContent CmsContent[] @relation("UpdatedBy")
-
-  sessions     CmsSession[]
-  createdTeams CmsTeamMember[] @relation("CreatedBy")
-  updatedTeams CmsTeamMember[] @relation("UpdatedBy")
-  createdMedia CmsMediaItem[]  @relation("CreatedBy")
-  updatedMedia CmsMediaItem[]  @relation("UpdatedBy")
+  createdContent   CmsContent[]    @relation("CreatedBy")
+  updatedContent   CmsContent[]    @relation("UpdatedBy")
+  sessions         CmsSession[]
+  createdTeams     CmsTeamMember[] @relation("CreatedBy")
+  updatedTeams     CmsTeamMember[] @relation("UpdatedBy")
+  createdMedia     CmsMediaItem[]  @relation("CreatedBy")
+  updatedMedia     CmsMediaItem[]  @relation("UpdatedBy")
+  createdVacancies CmsVacancy[]    @relation("CreatedBy")
+  updatedVacancies CmsVacancy[]    @relation("UpdatedBy")
 
   @@map("cms_users")
 }
@@ -90,48 +92,31 @@ model CmsSession {
   @@map("cms_sessions")
 }
 
-// ───────────────────────────────────────────────────────────────────────────
-// Unified Content Model  (replaces CmsNews, CmsBlog, CmsAnnouncement,
-//                         CmsPressBreifing, CmsVideo)
-// ───────────────────────────────────────────────────────────────────────────
-
 model CmsContent {
-  id          Int            @id @default(autoincrement())
-  // Discriminator — what kind of content this is
-  contentType CmsContentType @map("content_type")
-
-  title       String
-  slug        String  @unique
-  excerpt     String  @default("")
-  richContent String  @default("") @map("rich_content")
-  coverImage  String? @map("cover_image")
-
-  // Video-only fields (null for other types)
-  videoUrl      String? @map("video_url")
-  videoDuration Int?    @map("video_duration")
-
-  region CmsRegion
-  level  CmsLevel  @default(national)
-
-  status      PublishStatus @default(draft)
-  publishedAt DateTime?     @map("published_at")
-
-  createdById Int     @map("created_by")
-  createdBy   CmsUser @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
-  updatedById Int     @map("updated_by")
-  updatedBy   CmsUser @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            Int            @id @default(autoincrement())
+  contentType   CmsContentType @map("content_type")
+  title         String
+  slug          String         @unique
+  excerpt       String         @default("")
+  richContent   String         @default("") @map("rich_content")
+  coverImage    String?        @map("cover_image")
+  videoUrl      String?        @map("video_url")
+  videoDuration Int?           @map("video_duration")
+  region        CmsRegion
+  level         CmsLevel       @default(national)
+  status        PublishStatus  @default(draft)
+  publishedAt   DateTime?      @map("published_at")
+  createdById   Int            @map("created_by")
+  createdBy     CmsUser        @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById   Int            @map("updated_by")
+  updatedBy     CmsUser        @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 
   @@index([contentType, region, status, publishedAt])
   @@index([slug])
   @@map("cms_content")
 }
-
-// ───────────────────────────────────────────────────────────────────────────
-// Team Members
-// ───────────────────────────────────────────────────────────────────────────
 
 model CmsTeamMember {
   id          Int           @id @default(autoincrement())
@@ -156,10 +141,6 @@ model CmsTeamMember {
   @@map("cms_team_members")
 }
 
-// ───────────────────────────────────────────────────────────────────────────
-// Media Items
-// ───────────────────────────────────────────────────────────────────────────
-
 model CmsMediaItem {
   id          Int           @id @default(autoincrement())
   title       String
@@ -180,4 +161,31 @@ model CmsMediaItem {
 
   @@index([region, mediaType, status, publishedAt])
   @@map("cms_media_items")
+}
+
+model CmsVacancy {
+  id             Int               @id @default(autoincrement())
+  title          String
+  slug           String            @unique
+  department     String
+  location       String
+  region         CmsRegion
+  employmentType CmsEmploymentType @map("employment_type")
+  deadline       DateTime?
+  excerpt        String            @default("")
+  richContent    String            @default("") @map("rich_content")
+  coverImage     String?           @map("cover_image")
+  applyUrl       String?           @map("apply_url")
+  status         PublishStatus     @default(draft)
+  publishedAt    DateTime?         @map("published_at")
+  createdById    Int               @map("created_by")
+  updatedById    Int               @map("updated_by")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+  createdBy      CmsUser           @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy      CmsUser           @relation("UpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+
+  @@index([region, status, publishedAt])
+  @@index([slug])
+  @@map("cms_vacancies")
 }

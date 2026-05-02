@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/client.js';
+import * as runtime from './runtime/library.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -38,6 +38,11 @@ export type CmsTeamMember = $Result.DefaultSelection<Prisma.$CmsTeamMemberPayloa
  * 
  */
 export type CmsMediaItem = $Result.DefaultSelection<Prisma.$CmsMediaItemPayload>
+/**
+ * Model CmsVacancy
+ * 
+ */
+export type CmsVacancy = $Result.DefaultSelection<Prisma.$CmsVacancyPayload>
 
 /**
  * Enums
@@ -105,6 +110,17 @@ export const CmsMediaType: {
 
 export type CmsMediaType = (typeof CmsMediaType)[keyof typeof CmsMediaType]
 
+
+export const CmsEmploymentType: {
+  full_time: 'full_time',
+  part_time: 'part_time',
+  contract: 'contract',
+  internship: 'internship',
+  volunteer: 'volunteer'
+};
+
+export type CmsEmploymentType = (typeof CmsEmploymentType)[keyof typeof CmsEmploymentType]
+
 }
 
 export type CmsRole = $Enums.CmsRole
@@ -135,25 +151,27 @@ export type CmsMediaType = $Enums.CmsMediaType
 
 export const CmsMediaType: typeof $Enums.CmsMediaType
 
+export type CmsEmploymentType = $Enums.CmsEmploymentType
+
+export const CmsEmploymentType: typeof $Enums.CmsEmploymentType
+
 /**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient({
- *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
- * })
+ * const prisma = new PrismaClient()
  * // Fetch zero or more CmsUsers
  * const cmsUsers = await prisma.cmsUser.findMany()
  * ```
  *
  *
- * Read more in our [docs](https://pris.ly/d/client).
+ * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -164,15 +182,13 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient({
-   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
-   * })
+   * const prisma = new PrismaClient()
    * // Fetch zero or more CmsUsers
    * const cmsUsers = await prisma.cmsUser.findMany()
    * ```
    *
    *
-   * Read more in our [docs](https://pris.ly/d/client).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
@@ -188,6 +204,13 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
+  /**
+   * Add a middleware
+   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
+   * @see https://pris.ly/d/extensions
+   */
+  $use(cb: Prisma.Middleware): void
+
 /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
@@ -195,7 +218,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -207,7 +230,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -218,7 +241,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -230,7 +253,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -246,11 +269,12 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
+
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
@@ -305,6 +329,16 @@ export class PrismaClient<
     * ```
     */
   get cmsMediaItem(): Prisma.CmsMediaItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cmsVacancy`: Exposes CRUD operations for the **CmsVacancy** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CmsVacancies
+    * const cmsVacancies = await prisma.cmsVacancy.findMany()
+    * ```
+    */
+  get cmsVacancy(): Prisma.CmsVacancyDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -345,6 +379,14 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
+   * Metrics
+   */
+  export type Metrics = runtime.Metrics
+  export type Metric<T> = runtime.Metric<T>
+  export type MetricHistogram = runtime.MetricHistogram
+  export type MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -355,12 +397,11 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.5.0
-   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+   * Prisma Client JS version: 6.12.0
+   * Query Engine version: 8047c96bbd92db98a2abc7c9323ce77c02c89dbc
    */
   export type PrismaVersion = {
     client: string
-    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -370,7 +411,6 @@ export namespace Prisma {
    */
 
 
-  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -743,12 +783,16 @@ export namespace Prisma {
     CmsSession: 'CmsSession',
     CmsContent: 'CmsContent',
     CmsTeamMember: 'CmsTeamMember',
-    CmsMediaItem: 'CmsMediaItem'
+    CmsMediaItem: 'CmsMediaItem',
+    CmsVacancy: 'CmsVacancy'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
+  export type Datasources = {
+    db?: Datasource
+  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -759,7 +803,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "cmsUser" | "cmsSession" | "cmsContent" | "cmsTeamMember" | "cmsMediaItem"
+      modelProps: "cmsUser" | "cmsSession" | "cmsContent" | "cmsTeamMember" | "cmsMediaItem" | "cmsVacancy"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1133,6 +1177,80 @@ export namespace Prisma {
           }
         }
       }
+      CmsVacancy: {
+        payload: Prisma.$CmsVacancyPayload<ExtArgs>
+        fields: Prisma.CmsVacancyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CmsVacancyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CmsVacancyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          findFirst: {
+            args: Prisma.CmsVacancyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CmsVacancyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          findMany: {
+            args: Prisma.CmsVacancyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>[]
+          }
+          create: {
+            args: Prisma.CmsVacancyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          createMany: {
+            args: Prisma.CmsVacancyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CmsVacancyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>[]
+          }
+          delete: {
+            args: Prisma.CmsVacancyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          update: {
+            args: Prisma.CmsVacancyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          deleteMany: {
+            args: Prisma.CmsVacancyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CmsVacancyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CmsVacancyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>[]
+          }
+          upsert: {
+            args: Prisma.CmsVacancyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CmsVacancyPayload>
+          }
+          aggregate: {
+            args: Prisma.CmsVacancyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCmsVacancy>
+          }
+          groupBy: {
+            args: Prisma.CmsVacancyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CmsVacancyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CmsVacancyCountArgs<ExtArgs>
+            result: $Utils.Optional<CmsVacancyCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1162,32 +1280,32 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasources?: Datasources
+    /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasourceUrl?: string
+    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
     /**
      * @example
      * ```
-     * // Shorthand for `emit: 'stdout'`
+     * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events only
+     * // Emit as events
      * log: [
-     *   { emit: 'event', level: 'query' },
-     *   { emit: 'event', level: 'info' },
-     *   { emit: 'event', level: 'warn' }
-     *   { emit: 'event', level: 'error' }
+     *   { emit: 'stdout', level: 'query' },
+     *   { emit: 'stdout', level: 'info' },
+     *   { emit: 'stdout', level: 'warn' }
+     *   { emit: 'stdout', level: 'error' }
      * ]
-     * 
-     * / Emit as events and log to stdout
-     * og: [
-     *  { emit: 'stdout', level: 'query' },
-     *  { emit: 'stdout', level: 'info' },
-     *  { emit: 'stdout', level: 'warn' }
-     *  { emit: 'stdout', level: 'error' }
-     * 
      * ```
-     * Read more in our [docs](https://pris.ly/d/logging).
+     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
     log?: (LogLevel | LogDefinition)[]
     /**
@@ -1200,14 +1318,6 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
-    /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
-     */
-    adapter?: runtime.SqlDriverAdapterFactory
-    /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
-     */
-    accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -1223,22 +1333,6 @@ export namespace Prisma {
      * ```
      */
     omit?: Prisma.GlobalOmitConfig
-    /**
-     * SQL commenter plugins that add metadata to SQL queries as comments.
-     * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     * 
-     * @example
-     * ```
-     * const prisma = new PrismaClient({
-     *   adapter,
-     *   comments: [
-     *     traceContext(),
-     *     queryInsights(),
-     *   ],
-     * })
-     * ```
-     */
-    comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
     cmsUser?: CmsUserOmit
@@ -1246,6 +1340,7 @@ export namespace Prisma {
     cmsContent?: CmsContentOmit
     cmsTeamMember?: CmsTeamMemberOmit
     cmsMediaItem?: CmsMediaItemOmit
+    cmsVacancy?: CmsVacancyOmit
   }
 
   /* Types for Logging */
@@ -1255,15 +1350,10 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
-
-  export type GetLogType<T> = CheckIsLogLevel<
-    T extends LogDefinition ? T['level'] : T
-  >;
-
-  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
-    ? GetLogType<T[number]>
-    : never;
+  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
+  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
+    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
+    : never
 
   export type QueryEvent = {
     timestamp: Date
@@ -1304,6 +1394,25 @@ export namespace Prisma {
     | 'findRaw'
     | 'groupBy'
 
+  /**
+   * These options are being passed into the middleware as "params"
+   */
+  export type MiddlewareParams = {
+    model?: ModelName
+    action: PrismaAction
+    args: any
+    dataPath: string[]
+    runInTransaction: boolean
+  }
+
+  /**
+   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
+   */
+  export type Middleware<T = any> = (
+    params: MiddlewareParams,
+    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
+  ) => $Utils.JsPromise<T>
+
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
@@ -1333,6 +1442,8 @@ export namespace Prisma {
     updatedTeams: number
     createdMedia: number
     updatedMedia: number
+    createdVacancies: number
+    updatedVacancies: number
   }
 
   export type CmsUserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1343,6 +1454,8 @@ export namespace Prisma {
     updatedTeams?: boolean | CmsUserCountOutputTypeCountUpdatedTeamsArgs
     createdMedia?: boolean | CmsUserCountOutputTypeCountCreatedMediaArgs
     updatedMedia?: boolean | CmsUserCountOutputTypeCountUpdatedMediaArgs
+    createdVacancies?: boolean | CmsUserCountOutputTypeCountCreatedVacanciesArgs
+    updatedVacancies?: boolean | CmsUserCountOutputTypeCountUpdatedVacanciesArgs
   }
 
   // Custom InputTypes
@@ -1403,6 +1516,20 @@ export namespace Prisma {
    */
   export type CmsUserCountOutputTypeCountUpdatedMediaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CmsMediaItemWhereInput
+  }
+
+  /**
+   * CmsUserCountOutputType without action
+   */
+  export type CmsUserCountOutputTypeCountCreatedVacanciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CmsVacancyWhereInput
+  }
+
+  /**
+   * CmsUserCountOutputType without action
+   */
+  export type CmsUserCountOutputTypeCountUpdatedVacanciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CmsVacancyWhereInput
   }
 
 
@@ -1631,6 +1758,8 @@ export namespace Prisma {
     updatedTeams?: boolean | CmsUser$updatedTeamsArgs<ExtArgs>
     createdMedia?: boolean | CmsUser$createdMediaArgs<ExtArgs>
     updatedMedia?: boolean | CmsUser$updatedMediaArgs<ExtArgs>
+    createdVacancies?: boolean | CmsUser$createdVacanciesArgs<ExtArgs>
+    updatedVacancies?: boolean | CmsUser$updatedVacanciesArgs<ExtArgs>
     _count?: boolean | CmsUserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["cmsUser"]>
 
@@ -1673,6 +1802,8 @@ export namespace Prisma {
     updatedTeams?: boolean | CmsUser$updatedTeamsArgs<ExtArgs>
     createdMedia?: boolean | CmsUser$createdMediaArgs<ExtArgs>
     updatedMedia?: boolean | CmsUser$updatedMediaArgs<ExtArgs>
+    createdVacancies?: boolean | CmsUser$createdVacanciesArgs<ExtArgs>
+    updatedVacancies?: boolean | CmsUser$updatedVacanciesArgs<ExtArgs>
     _count?: boolean | CmsUserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CmsUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1688,6 +1819,8 @@ export namespace Prisma {
       updatedTeams: Prisma.$CmsTeamMemberPayload<ExtArgs>[]
       createdMedia: Prisma.$CmsMediaItemPayload<ExtArgs>[]
       updatedMedia: Prisma.$CmsMediaItemPayload<ExtArgs>[]
+      createdVacancies: Prisma.$CmsVacancyPayload<ExtArgs>[]
+      updatedVacancies: Prisma.$CmsVacancyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2098,6 +2231,8 @@ export namespace Prisma {
     updatedTeams<T extends CmsUser$updatedTeamsArgs<ExtArgs> = {}>(args?: Subset<T, CmsUser$updatedTeamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsTeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdMedia<T extends CmsUser$createdMediaArgs<ExtArgs> = {}>(args?: Subset<T, CmsUser$createdMediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsMediaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     updatedMedia<T extends CmsUser$updatedMediaArgs<ExtArgs> = {}>(args?: Subset<T, CmsUser$updatedMediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsMediaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdVacancies<T extends CmsUser$createdVacanciesArgs<ExtArgs> = {}>(args?: Subset<T, CmsUser$createdVacanciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    updatedVacancies<T extends CmsUser$updatedVacanciesArgs<ExtArgs> = {}>(args?: Subset<T, CmsUser$updatedVacanciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2330,11 +2465,6 @@ export namespace Prisma {
      * Skip the first `n` CmsUsers.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CmsUsers.
-     */
     distinct?: CmsUserScalarFieldEnum | CmsUserScalarFieldEnum[]
   }
 
@@ -2692,6 +2822,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CmsMediaItemScalarFieldEnum | CmsMediaItemScalarFieldEnum[]
+  }
+
+  /**
+   * CmsUser.createdVacancies
+   */
+  export type CmsUser$createdVacanciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    where?: CmsVacancyWhereInput
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    cursor?: CmsVacancyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CmsVacancyScalarFieldEnum | CmsVacancyScalarFieldEnum[]
+  }
+
+  /**
+   * CmsUser.updatedVacancies
+   */
+  export type CmsUser$updatedVacanciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    where?: CmsVacancyWhereInput
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    cursor?: CmsVacancyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CmsVacancyScalarFieldEnum | CmsVacancyScalarFieldEnum[]
   }
 
   /**
@@ -3591,11 +3769,6 @@ export namespace Prisma {
      * Skip the first `n` CmsSessions.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CmsSessions.
-     */
     distinct?: CmsSessionScalarFieldEnum | CmsSessionScalarFieldEnum[]
   }
 
@@ -4864,11 +5037,6 @@ export namespace Prisma {
      * Skip the first `n` CmsContents.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CmsContents.
-     */
     distinct?: CmsContentScalarFieldEnum | CmsContentScalarFieldEnum[]
   }
 
@@ -6107,11 +6275,6 @@ export namespace Prisma {
      * Skip the first `n` CmsTeamMembers.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CmsTeamMembers.
-     */
     distinct?: CmsTeamMemberScalarFieldEnum | CmsTeamMemberScalarFieldEnum[]
   }
 
@@ -7337,11 +7500,6 @@ export namespace Prisma {
      * Skip the first `n` CmsMediaItems.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CmsMediaItems.
-     */
     distinct?: CmsMediaItemScalarFieldEnum | CmsMediaItemScalarFieldEnum[]
   }
 
@@ -7561,6 +7719,1283 @@ export namespace Prisma {
 
 
   /**
+   * Model CmsVacancy
+   */
+
+  export type AggregateCmsVacancy = {
+    _count: CmsVacancyCountAggregateOutputType | null
+    _avg: CmsVacancyAvgAggregateOutputType | null
+    _sum: CmsVacancySumAggregateOutputType | null
+    _min: CmsVacancyMinAggregateOutputType | null
+    _max: CmsVacancyMaxAggregateOutputType | null
+  }
+
+  export type CmsVacancyAvgAggregateOutputType = {
+    id: number | null
+    createdById: number | null
+    updatedById: number | null
+  }
+
+  export type CmsVacancySumAggregateOutputType = {
+    id: number | null
+    createdById: number | null
+    updatedById: number | null
+  }
+
+  export type CmsVacancyMinAggregateOutputType = {
+    id: number | null
+    title: string | null
+    slug: string | null
+    department: string | null
+    location: string | null
+    region: $Enums.CmsRegion | null
+    employmentType: $Enums.CmsEmploymentType | null
+    deadline: Date | null
+    excerpt: string | null
+    richContent: string | null
+    coverImage: string | null
+    applyUrl: string | null
+    status: $Enums.PublishStatus | null
+    publishedAt: Date | null
+    createdById: number | null
+    updatedById: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CmsVacancyMaxAggregateOutputType = {
+    id: number | null
+    title: string | null
+    slug: string | null
+    department: string | null
+    location: string | null
+    region: $Enums.CmsRegion | null
+    employmentType: $Enums.CmsEmploymentType | null
+    deadline: Date | null
+    excerpt: string | null
+    richContent: string | null
+    coverImage: string | null
+    applyUrl: string | null
+    status: $Enums.PublishStatus | null
+    publishedAt: Date | null
+    createdById: number | null
+    updatedById: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CmsVacancyCountAggregateOutputType = {
+    id: number
+    title: number
+    slug: number
+    department: number
+    location: number
+    region: number
+    employmentType: number
+    deadline: number
+    excerpt: number
+    richContent: number
+    coverImage: number
+    applyUrl: number
+    status: number
+    publishedAt: number
+    createdById: number
+    updatedById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CmsVacancyAvgAggregateInputType = {
+    id?: true
+    createdById?: true
+    updatedById?: true
+  }
+
+  export type CmsVacancySumAggregateInputType = {
+    id?: true
+    createdById?: true
+    updatedById?: true
+  }
+
+  export type CmsVacancyMinAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    department?: true
+    location?: true
+    region?: true
+    employmentType?: true
+    deadline?: true
+    excerpt?: true
+    richContent?: true
+    coverImage?: true
+    applyUrl?: true
+    status?: true
+    publishedAt?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CmsVacancyMaxAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    department?: true
+    location?: true
+    region?: true
+    employmentType?: true
+    deadline?: true
+    excerpt?: true
+    richContent?: true
+    coverImage?: true
+    applyUrl?: true
+    status?: true
+    publishedAt?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CmsVacancyCountAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    department?: true
+    location?: true
+    region?: true
+    employmentType?: true
+    deadline?: true
+    excerpt?: true
+    richContent?: true
+    coverImage?: true
+    applyUrl?: true
+    status?: true
+    publishedAt?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CmsVacancyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CmsVacancy to aggregate.
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CmsVacancies to fetch.
+     */
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CmsVacancyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CmsVacancies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CmsVacancies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CmsVacancies
+    **/
+    _count?: true | CmsVacancyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CmsVacancyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CmsVacancySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CmsVacancyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CmsVacancyMaxAggregateInputType
+  }
+
+  export type GetCmsVacancyAggregateType<T extends CmsVacancyAggregateArgs> = {
+        [P in keyof T & keyof AggregateCmsVacancy]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCmsVacancy[P]>
+      : GetScalarType<T[P], AggregateCmsVacancy[P]>
+  }
+
+
+
+
+  export type CmsVacancyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CmsVacancyWhereInput
+    orderBy?: CmsVacancyOrderByWithAggregationInput | CmsVacancyOrderByWithAggregationInput[]
+    by: CmsVacancyScalarFieldEnum[] | CmsVacancyScalarFieldEnum
+    having?: CmsVacancyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CmsVacancyCountAggregateInputType | true
+    _avg?: CmsVacancyAvgAggregateInputType
+    _sum?: CmsVacancySumAggregateInputType
+    _min?: CmsVacancyMinAggregateInputType
+    _max?: CmsVacancyMaxAggregateInputType
+  }
+
+  export type CmsVacancyGroupByOutputType = {
+    id: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline: Date | null
+    excerpt: string
+    richContent: string
+    coverImage: string | null
+    applyUrl: string | null
+    status: $Enums.PublishStatus
+    publishedAt: Date | null
+    createdById: number
+    updatedById: number
+    createdAt: Date
+    updatedAt: Date
+    _count: CmsVacancyCountAggregateOutputType | null
+    _avg: CmsVacancyAvgAggregateOutputType | null
+    _sum: CmsVacancySumAggregateOutputType | null
+    _min: CmsVacancyMinAggregateOutputType | null
+    _max: CmsVacancyMaxAggregateOutputType | null
+  }
+
+  type GetCmsVacancyGroupByPayload<T extends CmsVacancyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CmsVacancyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CmsVacancyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CmsVacancyGroupByOutputType[P]>
+            : GetScalarType<T[P], CmsVacancyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CmsVacancySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    department?: boolean
+    location?: boolean
+    region?: boolean
+    employmentType?: boolean
+    deadline?: boolean
+    excerpt?: boolean
+    richContent?: boolean
+    coverImage?: boolean
+    applyUrl?: boolean
+    status?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cmsVacancy"]>
+
+  export type CmsVacancySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    department?: boolean
+    location?: boolean
+    region?: boolean
+    employmentType?: boolean
+    deadline?: boolean
+    excerpt?: boolean
+    richContent?: boolean
+    coverImage?: boolean
+    applyUrl?: boolean
+    status?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cmsVacancy"]>
+
+  export type CmsVacancySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    department?: boolean
+    location?: boolean
+    region?: boolean
+    employmentType?: boolean
+    deadline?: boolean
+    excerpt?: boolean
+    richContent?: boolean
+    coverImage?: boolean
+    applyUrl?: boolean
+    status?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cmsVacancy"]>
+
+  export type CmsVacancySelectScalar = {
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    department?: boolean
+    location?: boolean
+    region?: boolean
+    employmentType?: boolean
+    deadline?: boolean
+    excerpt?: boolean
+    richContent?: boolean
+    coverImage?: boolean
+    applyUrl?: boolean
+    status?: boolean
+    publishedAt?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CmsVacancyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "department" | "location" | "region" | "employmentType" | "deadline" | "excerpt" | "richContent" | "coverImage" | "applyUrl" | "status" | "publishedAt" | "createdById" | "updatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["cmsVacancy"]>
+  export type CmsVacancyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }
+  export type CmsVacancyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }
+  export type CmsVacancyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | CmsUserDefaultArgs<ExtArgs>
+  }
+
+  export type $CmsVacancyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CmsVacancy"
+    objects: {
+      createdBy: Prisma.$CmsUserPayload<ExtArgs>
+      updatedBy: Prisma.$CmsUserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      title: string
+      slug: string
+      department: string
+      location: string
+      region: $Enums.CmsRegion
+      employmentType: $Enums.CmsEmploymentType
+      deadline: Date | null
+      excerpt: string
+      richContent: string
+      coverImage: string | null
+      applyUrl: string | null
+      status: $Enums.PublishStatus
+      publishedAt: Date | null
+      createdById: number
+      updatedById: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cmsVacancy"]>
+    composites: {}
+  }
+
+  type CmsVacancyGetPayload<S extends boolean | null | undefined | CmsVacancyDefaultArgs> = $Result.GetResult<Prisma.$CmsVacancyPayload, S>
+
+  type CmsVacancyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CmsVacancyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CmsVacancyCountAggregateInputType | true
+    }
+
+  export interface CmsVacancyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CmsVacancy'], meta: { name: 'CmsVacancy' } }
+    /**
+     * Find zero or one CmsVacancy that matches the filter.
+     * @param {CmsVacancyFindUniqueArgs} args - Arguments to find a CmsVacancy
+     * @example
+     * // Get one CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CmsVacancyFindUniqueArgs>(args: SelectSubset<T, CmsVacancyFindUniqueArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CmsVacancy that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CmsVacancyFindUniqueOrThrowArgs} args - Arguments to find a CmsVacancy
+     * @example
+     * // Get one CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CmsVacancyFindUniqueOrThrowArgs>(args: SelectSubset<T, CmsVacancyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CmsVacancy that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyFindFirstArgs} args - Arguments to find a CmsVacancy
+     * @example
+     * // Get one CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CmsVacancyFindFirstArgs>(args?: SelectSubset<T, CmsVacancyFindFirstArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CmsVacancy that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyFindFirstOrThrowArgs} args - Arguments to find a CmsVacancy
+     * @example
+     * // Get one CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CmsVacancyFindFirstOrThrowArgs>(args?: SelectSubset<T, CmsVacancyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CmsVacancies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CmsVacancies
+     * const cmsVacancies = await prisma.cmsVacancy.findMany()
+     * 
+     * // Get first 10 CmsVacancies
+     * const cmsVacancies = await prisma.cmsVacancy.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cmsVacancyWithIdOnly = await prisma.cmsVacancy.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CmsVacancyFindManyArgs>(args?: SelectSubset<T, CmsVacancyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CmsVacancy.
+     * @param {CmsVacancyCreateArgs} args - Arguments to create a CmsVacancy.
+     * @example
+     * // Create one CmsVacancy
+     * const CmsVacancy = await prisma.cmsVacancy.create({
+     *   data: {
+     *     // ... data to create a CmsVacancy
+     *   }
+     * })
+     * 
+     */
+    create<T extends CmsVacancyCreateArgs>(args: SelectSubset<T, CmsVacancyCreateArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CmsVacancies.
+     * @param {CmsVacancyCreateManyArgs} args - Arguments to create many CmsVacancies.
+     * @example
+     * // Create many CmsVacancies
+     * const cmsVacancy = await prisma.cmsVacancy.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CmsVacancyCreateManyArgs>(args?: SelectSubset<T, CmsVacancyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CmsVacancies and returns the data saved in the database.
+     * @param {CmsVacancyCreateManyAndReturnArgs} args - Arguments to create many CmsVacancies.
+     * @example
+     * // Create many CmsVacancies
+     * const cmsVacancy = await prisma.cmsVacancy.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CmsVacancies and only return the `id`
+     * const cmsVacancyWithIdOnly = await prisma.cmsVacancy.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CmsVacancyCreateManyAndReturnArgs>(args?: SelectSubset<T, CmsVacancyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CmsVacancy.
+     * @param {CmsVacancyDeleteArgs} args - Arguments to delete one CmsVacancy.
+     * @example
+     * // Delete one CmsVacancy
+     * const CmsVacancy = await prisma.cmsVacancy.delete({
+     *   where: {
+     *     // ... filter to delete one CmsVacancy
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CmsVacancyDeleteArgs>(args: SelectSubset<T, CmsVacancyDeleteArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CmsVacancy.
+     * @param {CmsVacancyUpdateArgs} args - Arguments to update one CmsVacancy.
+     * @example
+     * // Update one CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CmsVacancyUpdateArgs>(args: SelectSubset<T, CmsVacancyUpdateArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CmsVacancies.
+     * @param {CmsVacancyDeleteManyArgs} args - Arguments to filter CmsVacancies to delete.
+     * @example
+     * // Delete a few CmsVacancies
+     * const { count } = await prisma.cmsVacancy.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CmsVacancyDeleteManyArgs>(args?: SelectSubset<T, CmsVacancyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CmsVacancies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CmsVacancies
+     * const cmsVacancy = await prisma.cmsVacancy.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CmsVacancyUpdateManyArgs>(args: SelectSubset<T, CmsVacancyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CmsVacancies and returns the data updated in the database.
+     * @param {CmsVacancyUpdateManyAndReturnArgs} args - Arguments to update many CmsVacancies.
+     * @example
+     * // Update many CmsVacancies
+     * const cmsVacancy = await prisma.cmsVacancy.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CmsVacancies and only return the `id`
+     * const cmsVacancyWithIdOnly = await prisma.cmsVacancy.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CmsVacancyUpdateManyAndReturnArgs>(args: SelectSubset<T, CmsVacancyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CmsVacancy.
+     * @param {CmsVacancyUpsertArgs} args - Arguments to update or create a CmsVacancy.
+     * @example
+     * // Update or create a CmsVacancy
+     * const cmsVacancy = await prisma.cmsVacancy.upsert({
+     *   create: {
+     *     // ... data to create a CmsVacancy
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CmsVacancy we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CmsVacancyUpsertArgs>(args: SelectSubset<T, CmsVacancyUpsertArgs<ExtArgs>>): Prisma__CmsVacancyClient<$Result.GetResult<Prisma.$CmsVacancyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CmsVacancies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyCountArgs} args - Arguments to filter CmsVacancies to count.
+     * @example
+     * // Count the number of CmsVacancies
+     * const count = await prisma.cmsVacancy.count({
+     *   where: {
+     *     // ... the filter for the CmsVacancies we want to count
+     *   }
+     * })
+    **/
+    count<T extends CmsVacancyCountArgs>(
+      args?: Subset<T, CmsVacancyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CmsVacancyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CmsVacancy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CmsVacancyAggregateArgs>(args: Subset<T, CmsVacancyAggregateArgs>): Prisma.PrismaPromise<GetCmsVacancyAggregateType<T>>
+
+    /**
+     * Group by CmsVacancy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CmsVacancyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CmsVacancyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CmsVacancyGroupByArgs['orderBy'] }
+        : { orderBy?: CmsVacancyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CmsVacancyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCmsVacancyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CmsVacancy model
+   */
+  readonly fields: CmsVacancyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CmsVacancy.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CmsVacancyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends CmsUserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CmsUserDefaultArgs<ExtArgs>>): Prisma__CmsUserClient<$Result.GetResult<Prisma.$CmsUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    updatedBy<T extends CmsUserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CmsUserDefaultArgs<ExtArgs>>): Prisma__CmsUserClient<$Result.GetResult<Prisma.$CmsUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CmsVacancy model
+   */
+  interface CmsVacancyFieldRefs {
+    readonly id: FieldRef<"CmsVacancy", 'Int'>
+    readonly title: FieldRef<"CmsVacancy", 'String'>
+    readonly slug: FieldRef<"CmsVacancy", 'String'>
+    readonly department: FieldRef<"CmsVacancy", 'String'>
+    readonly location: FieldRef<"CmsVacancy", 'String'>
+    readonly region: FieldRef<"CmsVacancy", 'CmsRegion'>
+    readonly employmentType: FieldRef<"CmsVacancy", 'CmsEmploymentType'>
+    readonly deadline: FieldRef<"CmsVacancy", 'DateTime'>
+    readonly excerpt: FieldRef<"CmsVacancy", 'String'>
+    readonly richContent: FieldRef<"CmsVacancy", 'String'>
+    readonly coverImage: FieldRef<"CmsVacancy", 'String'>
+    readonly applyUrl: FieldRef<"CmsVacancy", 'String'>
+    readonly status: FieldRef<"CmsVacancy", 'PublishStatus'>
+    readonly publishedAt: FieldRef<"CmsVacancy", 'DateTime'>
+    readonly createdById: FieldRef<"CmsVacancy", 'Int'>
+    readonly updatedById: FieldRef<"CmsVacancy", 'Int'>
+    readonly createdAt: FieldRef<"CmsVacancy", 'DateTime'>
+    readonly updatedAt: FieldRef<"CmsVacancy", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CmsVacancy findUnique
+   */
+  export type CmsVacancyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter, which CmsVacancy to fetch.
+     */
+    where: CmsVacancyWhereUniqueInput
+  }
+
+  /**
+   * CmsVacancy findUniqueOrThrow
+   */
+  export type CmsVacancyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter, which CmsVacancy to fetch.
+     */
+    where: CmsVacancyWhereUniqueInput
+  }
+
+  /**
+   * CmsVacancy findFirst
+   */
+  export type CmsVacancyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter, which CmsVacancy to fetch.
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CmsVacancies to fetch.
+     */
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CmsVacancies.
+     */
+    cursor?: CmsVacancyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CmsVacancies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CmsVacancies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CmsVacancies.
+     */
+    distinct?: CmsVacancyScalarFieldEnum | CmsVacancyScalarFieldEnum[]
+  }
+
+  /**
+   * CmsVacancy findFirstOrThrow
+   */
+  export type CmsVacancyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter, which CmsVacancy to fetch.
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CmsVacancies to fetch.
+     */
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CmsVacancies.
+     */
+    cursor?: CmsVacancyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CmsVacancies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CmsVacancies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CmsVacancies.
+     */
+    distinct?: CmsVacancyScalarFieldEnum | CmsVacancyScalarFieldEnum[]
+  }
+
+  /**
+   * CmsVacancy findMany
+   */
+  export type CmsVacancyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter, which CmsVacancies to fetch.
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CmsVacancies to fetch.
+     */
+    orderBy?: CmsVacancyOrderByWithRelationInput | CmsVacancyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CmsVacancies.
+     */
+    cursor?: CmsVacancyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CmsVacancies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CmsVacancies.
+     */
+    skip?: number
+    distinct?: CmsVacancyScalarFieldEnum | CmsVacancyScalarFieldEnum[]
+  }
+
+  /**
+   * CmsVacancy create
+   */
+  export type CmsVacancyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CmsVacancy.
+     */
+    data: XOR<CmsVacancyCreateInput, CmsVacancyUncheckedCreateInput>
+  }
+
+  /**
+   * CmsVacancy createMany
+   */
+  export type CmsVacancyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CmsVacancies.
+     */
+    data: CmsVacancyCreateManyInput | CmsVacancyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CmsVacancy createManyAndReturn
+   */
+  export type CmsVacancyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * The data used to create many CmsVacancies.
+     */
+    data: CmsVacancyCreateManyInput | CmsVacancyCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CmsVacancy update
+   */
+  export type CmsVacancyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CmsVacancy.
+     */
+    data: XOR<CmsVacancyUpdateInput, CmsVacancyUncheckedUpdateInput>
+    /**
+     * Choose, which CmsVacancy to update.
+     */
+    where: CmsVacancyWhereUniqueInput
+  }
+
+  /**
+   * CmsVacancy updateMany
+   */
+  export type CmsVacancyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CmsVacancies.
+     */
+    data: XOR<CmsVacancyUpdateManyMutationInput, CmsVacancyUncheckedUpdateManyInput>
+    /**
+     * Filter which CmsVacancies to update
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * Limit how many CmsVacancies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CmsVacancy updateManyAndReturn
+   */
+  export type CmsVacancyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * The data used to update CmsVacancies.
+     */
+    data: XOR<CmsVacancyUpdateManyMutationInput, CmsVacancyUncheckedUpdateManyInput>
+    /**
+     * Filter which CmsVacancies to update
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * Limit how many CmsVacancies to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CmsVacancy upsert
+   */
+  export type CmsVacancyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CmsVacancy to update in case it exists.
+     */
+    where: CmsVacancyWhereUniqueInput
+    /**
+     * In case the CmsVacancy found by the `where` argument doesn't exist, create a new CmsVacancy with this data.
+     */
+    create: XOR<CmsVacancyCreateInput, CmsVacancyUncheckedCreateInput>
+    /**
+     * In case the CmsVacancy was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CmsVacancyUpdateInput, CmsVacancyUncheckedUpdateInput>
+  }
+
+  /**
+   * CmsVacancy delete
+   */
+  export type CmsVacancyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+    /**
+     * Filter which CmsVacancy to delete.
+     */
+    where: CmsVacancyWhereUniqueInput
+  }
+
+  /**
+   * CmsVacancy deleteMany
+   */
+  export type CmsVacancyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CmsVacancies to delete
+     */
+    where?: CmsVacancyWhereInput
+    /**
+     * Limit how many CmsVacancies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CmsVacancy without action
+   */
+  export type CmsVacancyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CmsVacancy
+     */
+    select?: CmsVacancySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CmsVacancy
+     */
+    omit?: CmsVacancyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CmsVacancyInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -7660,6 +9095,30 @@ export namespace Prisma {
   };
 
   export type CmsMediaItemScalarFieldEnum = (typeof CmsMediaItemScalarFieldEnum)[keyof typeof CmsMediaItemScalarFieldEnum]
+
+
+  export const CmsVacancyScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    slug: 'slug',
+    department: 'department',
+    location: 'location',
+    region: 'region',
+    employmentType: 'employmentType',
+    deadline: 'deadline',
+    excerpt: 'excerpt',
+    richContent: 'richContent',
+    coverImage: 'coverImage',
+    applyUrl: 'applyUrl',
+    status: 'status',
+    publishedAt: 'publishedAt',
+    createdById: 'createdById',
+    updatedById: 'updatedById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CmsVacancyScalarFieldEnum = (typeof CmsVacancyScalarFieldEnum)[keyof typeof CmsVacancyScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7832,6 +9291,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CmsEmploymentType'
+   */
+  export type EnumCmsEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CmsEmploymentType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CmsEmploymentType[]'
+   */
+  export type ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CmsEmploymentType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7866,6 +9339,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberListRelationFilter
     createdMedia?: CmsMediaItemListRelationFilter
     updatedMedia?: CmsMediaItemListRelationFilter
+    createdVacancies?: CmsVacancyListRelationFilter
+    updatedVacancies?: CmsVacancyListRelationFilter
   }
 
   export type CmsUserOrderByWithRelationInput = {
@@ -7883,6 +9358,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberOrderByRelationAggregateInput
     createdMedia?: CmsMediaItemOrderByRelationAggregateInput
     updatedMedia?: CmsMediaItemOrderByRelationAggregateInput
+    createdVacancies?: CmsVacancyOrderByRelationAggregateInput
+    updatedVacancies?: CmsVacancyOrderByRelationAggregateInput
   }
 
   export type CmsUserWhereUniqueInput = Prisma.AtLeast<{
@@ -7903,6 +9380,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberListRelationFilter
     createdMedia?: CmsMediaItemListRelationFilter
     updatedMedia?: CmsMediaItemListRelationFilter
+    createdVacancies?: CmsVacancyListRelationFilter
+    updatedVacancies?: CmsVacancyListRelationFilter
   }, "id" | "email">
 
   export type CmsUserOrderByWithAggregationInput = {
@@ -8325,6 +9804,131 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"CmsMediaItem"> | Date | string
   }
 
+  export type CmsVacancyWhereInput = {
+    AND?: CmsVacancyWhereInput | CmsVacancyWhereInput[]
+    OR?: CmsVacancyWhereInput[]
+    NOT?: CmsVacancyWhereInput | CmsVacancyWhereInput[]
+    id?: IntFilter<"CmsVacancy"> | number
+    title?: StringFilter<"CmsVacancy"> | string
+    slug?: StringFilter<"CmsVacancy"> | string
+    department?: StringFilter<"CmsVacancy"> | string
+    location?: StringFilter<"CmsVacancy"> | string
+    region?: EnumCmsRegionFilter<"CmsVacancy"> | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFilter<"CmsVacancy"> | $Enums.CmsEmploymentType
+    deadline?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    excerpt?: StringFilter<"CmsVacancy"> | string
+    richContent?: StringFilter<"CmsVacancy"> | string
+    coverImage?: StringNullableFilter<"CmsVacancy"> | string | null
+    applyUrl?: StringNullableFilter<"CmsVacancy"> | string | null
+    status?: EnumPublishStatusFilter<"CmsVacancy"> | $Enums.PublishStatus
+    publishedAt?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    createdById?: IntFilter<"CmsVacancy"> | number
+    updatedById?: IntFilter<"CmsVacancy"> | number
+    createdAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+    updatedAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+    createdBy?: XOR<CmsUserScalarRelationFilter, CmsUserWhereInput>
+    updatedBy?: XOR<CmsUserScalarRelationFilter, CmsUserWhereInput>
+  }
+
+  export type CmsVacancyOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    department?: SortOrder
+    location?: SortOrder
+    region?: SortOrder
+    employmentType?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    excerpt?: SortOrder
+    richContent?: SortOrder
+    coverImage?: SortOrderInput | SortOrder
+    applyUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: CmsUserOrderByWithRelationInput
+    updatedBy?: CmsUserOrderByWithRelationInput
+  }
+
+  export type CmsVacancyWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    slug?: string
+    AND?: CmsVacancyWhereInput | CmsVacancyWhereInput[]
+    OR?: CmsVacancyWhereInput[]
+    NOT?: CmsVacancyWhereInput | CmsVacancyWhereInput[]
+    title?: StringFilter<"CmsVacancy"> | string
+    department?: StringFilter<"CmsVacancy"> | string
+    location?: StringFilter<"CmsVacancy"> | string
+    region?: EnumCmsRegionFilter<"CmsVacancy"> | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFilter<"CmsVacancy"> | $Enums.CmsEmploymentType
+    deadline?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    excerpt?: StringFilter<"CmsVacancy"> | string
+    richContent?: StringFilter<"CmsVacancy"> | string
+    coverImage?: StringNullableFilter<"CmsVacancy"> | string | null
+    applyUrl?: StringNullableFilter<"CmsVacancy"> | string | null
+    status?: EnumPublishStatusFilter<"CmsVacancy"> | $Enums.PublishStatus
+    publishedAt?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    createdById?: IntFilter<"CmsVacancy"> | number
+    updatedById?: IntFilter<"CmsVacancy"> | number
+    createdAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+    updatedAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+    createdBy?: XOR<CmsUserScalarRelationFilter, CmsUserWhereInput>
+    updatedBy?: XOR<CmsUserScalarRelationFilter, CmsUserWhereInput>
+  }, "id" | "slug">
+
+  export type CmsVacancyOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    department?: SortOrder
+    location?: SortOrder
+    region?: SortOrder
+    employmentType?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    excerpt?: SortOrder
+    richContent?: SortOrder
+    coverImage?: SortOrderInput | SortOrder
+    applyUrl?: SortOrderInput | SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CmsVacancyCountOrderByAggregateInput
+    _avg?: CmsVacancyAvgOrderByAggregateInput
+    _max?: CmsVacancyMaxOrderByAggregateInput
+    _min?: CmsVacancyMinOrderByAggregateInput
+    _sum?: CmsVacancySumOrderByAggregateInput
+  }
+
+  export type CmsVacancyScalarWhereWithAggregatesInput = {
+    AND?: CmsVacancyScalarWhereWithAggregatesInput | CmsVacancyScalarWhereWithAggregatesInput[]
+    OR?: CmsVacancyScalarWhereWithAggregatesInput[]
+    NOT?: CmsVacancyScalarWhereWithAggregatesInput | CmsVacancyScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"CmsVacancy"> | number
+    title?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    slug?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    department?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    location?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    region?: EnumCmsRegionWithAggregatesFilter<"CmsVacancy"> | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeWithAggregatesFilter<"CmsVacancy"> | $Enums.CmsEmploymentType
+    deadline?: DateTimeNullableWithAggregatesFilter<"CmsVacancy"> | Date | string | null
+    excerpt?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    richContent?: StringWithAggregatesFilter<"CmsVacancy"> | string
+    coverImage?: StringNullableWithAggregatesFilter<"CmsVacancy"> | string | null
+    applyUrl?: StringNullableWithAggregatesFilter<"CmsVacancy"> | string | null
+    status?: EnumPublishStatusWithAggregatesFilter<"CmsVacancy"> | $Enums.PublishStatus
+    publishedAt?: DateTimeNullableWithAggregatesFilter<"CmsVacancy"> | Date | string | null
+    createdById?: IntWithAggregatesFilter<"CmsVacancy"> | number
+    updatedById?: IntWithAggregatesFilter<"CmsVacancy"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CmsVacancy"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CmsVacancy"> | Date | string
+  }
+
   export type CmsUserCreateInput = {
     name: string
     email: string
@@ -8339,6 +9943,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateInput = {
@@ -8356,6 +9962,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUpdateInput = {
@@ -8372,6 +9980,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateInput = {
@@ -8389,6 +9999,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserCreateManyInput = {
@@ -8842,6 +10454,148 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CmsVacancyCreateInput = {
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: CmsUserCreateNestedOneWithoutCreatedVacanciesInput
+    updatedBy: CmsUserCreateNestedOneWithoutUpdatedVacanciesInput
+  }
+
+  export type CmsVacancyUncheckedCreateInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdById: number
+    updatedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: CmsUserUpdateOneRequiredWithoutCreatedVacanciesNestedInput
+    updatedBy?: CmsUserUpdateOneRequiredWithoutUpdatedVacanciesNestedInput
+  }
+
+  export type CmsVacancyUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    updatedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyCreateManyInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdById: number
+    updatedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    updatedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -8917,6 +10671,12 @@ export namespace Prisma {
     none?: CmsMediaItemWhereInput
   }
 
+  export type CmsVacancyListRelationFilter = {
+    every?: CmsVacancyWhereInput
+    some?: CmsVacancyWhereInput
+    none?: CmsVacancyWhereInput
+  }
+
   export type CmsContentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -8930,6 +10690,10 @@ export namespace Prisma {
   }
 
   export type CmsMediaItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CmsVacancyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9473,6 +11237,98 @@ export namespace Prisma {
     _max?: NestedEnumCmsMediaTypeFilter<$PrismaModel>
   }
 
+  export type EnumCmsEmploymentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CmsEmploymentType | EnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel> | $Enums.CmsEmploymentType
+  }
+
+  export type CmsVacancyCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    department?: SortOrder
+    location?: SortOrder
+    region?: SortOrder
+    employmentType?: SortOrder
+    deadline?: SortOrder
+    excerpt?: SortOrder
+    richContent?: SortOrder
+    coverImage?: SortOrder
+    applyUrl?: SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CmsVacancyAvgOrderByAggregateInput = {
+    id?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+  }
+
+  export type CmsVacancyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    department?: SortOrder
+    location?: SortOrder
+    region?: SortOrder
+    employmentType?: SortOrder
+    deadline?: SortOrder
+    excerpt?: SortOrder
+    richContent?: SortOrder
+    coverImage?: SortOrder
+    applyUrl?: SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CmsVacancyMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    department?: SortOrder
+    location?: SortOrder
+    region?: SortOrder
+    employmentType?: SortOrder
+    deadline?: SortOrder
+    excerpt?: SortOrder
+    richContent?: SortOrder
+    coverImage?: SortOrder
+    applyUrl?: SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CmsVacancySumOrderByAggregateInput = {
+    id?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+  }
+
+  export type EnumCmsEmploymentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CmsEmploymentType | EnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCmsEmploymentTypeWithAggregatesFilter<$PrismaModel> | $Enums.CmsEmploymentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel>
+    _max?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel>
+  }
+
   export type CmsContentCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<CmsContentCreateWithoutCreatedByInput, CmsContentUncheckedCreateWithoutCreatedByInput> | CmsContentCreateWithoutCreatedByInput[] | CmsContentUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CmsContentCreateOrConnectWithoutCreatedByInput | CmsContentCreateOrConnectWithoutCreatedByInput[]
@@ -9522,6 +11378,20 @@ export namespace Prisma {
     connect?: CmsMediaItemWhereUniqueInput | CmsMediaItemWhereUniqueInput[]
   }
 
+  export type CmsVacancyCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput> | CmsVacancyCreateWithoutCreatedByInput[] | CmsVacancyUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutCreatedByInput | CmsVacancyCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CmsVacancyCreateManyCreatedByInputEnvelope
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+  }
+
+  export type CmsVacancyCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput> | CmsVacancyCreateWithoutUpdatedByInput[] | CmsVacancyUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutUpdatedByInput | CmsVacancyCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: CmsVacancyCreateManyUpdatedByInputEnvelope
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+  }
+
   export type CmsContentUncheckedCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<CmsContentCreateWithoutCreatedByInput, CmsContentUncheckedCreateWithoutCreatedByInput> | CmsContentCreateWithoutCreatedByInput[] | CmsContentUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CmsContentCreateOrConnectWithoutCreatedByInput | CmsContentCreateOrConnectWithoutCreatedByInput[]
@@ -9569,6 +11439,20 @@ export namespace Prisma {
     connectOrCreate?: CmsMediaItemCreateOrConnectWithoutUpdatedByInput | CmsMediaItemCreateOrConnectWithoutUpdatedByInput[]
     createMany?: CmsMediaItemCreateManyUpdatedByInputEnvelope
     connect?: CmsMediaItemWhereUniqueInput | CmsMediaItemWhereUniqueInput[]
+  }
+
+  export type CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput> | CmsVacancyCreateWithoutCreatedByInput[] | CmsVacancyUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutCreatedByInput | CmsVacancyCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CmsVacancyCreateManyCreatedByInputEnvelope
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+  }
+
+  export type CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput> | CmsVacancyCreateWithoutUpdatedByInput[] | CmsVacancyUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutUpdatedByInput | CmsVacancyCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: CmsVacancyCreateManyUpdatedByInputEnvelope
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9685,6 +11569,34 @@ export namespace Prisma {
     deleteMany?: CmsMediaItemScalarWhereInput | CmsMediaItemScalarWhereInput[]
   }
 
+  export type CmsVacancyUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput> | CmsVacancyCreateWithoutCreatedByInput[] | CmsVacancyUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutCreatedByInput | CmsVacancyCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CmsVacancyUpsertWithWhereUniqueWithoutCreatedByInput | CmsVacancyUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CmsVacancyCreateManyCreatedByInputEnvelope
+    set?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    disconnect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    delete?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    update?: CmsVacancyUpdateWithWhereUniqueWithoutCreatedByInput | CmsVacancyUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CmsVacancyUpdateManyWithWhereWithoutCreatedByInput | CmsVacancyUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
+  }
+
+  export type CmsVacancyUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput> | CmsVacancyCreateWithoutUpdatedByInput[] | CmsVacancyUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutUpdatedByInput | CmsVacancyCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: CmsVacancyUpsertWithWhereUniqueWithoutUpdatedByInput | CmsVacancyUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: CmsVacancyCreateManyUpdatedByInputEnvelope
+    set?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    disconnect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    delete?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    update?: CmsVacancyUpdateWithWhereUniqueWithoutUpdatedByInput | CmsVacancyUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: CmsVacancyUpdateManyWithWhereWithoutUpdatedByInput | CmsVacancyUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -9789,6 +11701,34 @@ export namespace Prisma {
     update?: CmsMediaItemUpdateWithWhereUniqueWithoutUpdatedByInput | CmsMediaItemUpdateWithWhereUniqueWithoutUpdatedByInput[]
     updateMany?: CmsMediaItemUpdateManyWithWhereWithoutUpdatedByInput | CmsMediaItemUpdateManyWithWhereWithoutUpdatedByInput[]
     deleteMany?: CmsMediaItemScalarWhereInput | CmsMediaItemScalarWhereInput[]
+  }
+
+  export type CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput> | CmsVacancyCreateWithoutCreatedByInput[] | CmsVacancyUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutCreatedByInput | CmsVacancyCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CmsVacancyUpsertWithWhereUniqueWithoutCreatedByInput | CmsVacancyUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CmsVacancyCreateManyCreatedByInputEnvelope
+    set?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    disconnect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    delete?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    update?: CmsVacancyUpdateWithWhereUniqueWithoutCreatedByInput | CmsVacancyUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CmsVacancyUpdateManyWithWhereWithoutCreatedByInput | CmsVacancyUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
+  }
+
+  export type CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput> | CmsVacancyCreateWithoutUpdatedByInput[] | CmsVacancyUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: CmsVacancyCreateOrConnectWithoutUpdatedByInput | CmsVacancyCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: CmsVacancyUpsertWithWhereUniqueWithoutUpdatedByInput | CmsVacancyUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: CmsVacancyCreateManyUpdatedByInputEnvelope
+    set?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    disconnect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    delete?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    connect?: CmsVacancyWhereUniqueInput | CmsVacancyWhereUniqueInput[]
+    update?: CmsVacancyUpdateWithWhereUniqueWithoutUpdatedByInput | CmsVacancyUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: CmsVacancyUpdateManyWithWhereWithoutUpdatedByInput | CmsVacancyUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
   }
 
   export type CmsUserCreateNestedOneWithoutSessionsInput = {
@@ -9927,6 +11867,38 @@ export namespace Prisma {
     upsert?: CmsUserUpsertWithoutUpdatedMediaInput
     connect?: CmsUserWhereUniqueInput
     update?: XOR<XOR<CmsUserUpdateToOneWithWhereWithoutUpdatedMediaInput, CmsUserUpdateWithoutUpdatedMediaInput>, CmsUserUncheckedUpdateWithoutUpdatedMediaInput>
+  }
+
+  export type CmsUserCreateNestedOneWithoutCreatedVacanciesInput = {
+    create?: XOR<CmsUserCreateWithoutCreatedVacanciesInput, CmsUserUncheckedCreateWithoutCreatedVacanciesInput>
+    connectOrCreate?: CmsUserCreateOrConnectWithoutCreatedVacanciesInput
+    connect?: CmsUserWhereUniqueInput
+  }
+
+  export type CmsUserCreateNestedOneWithoutUpdatedVacanciesInput = {
+    create?: XOR<CmsUserCreateWithoutUpdatedVacanciesInput, CmsUserUncheckedCreateWithoutUpdatedVacanciesInput>
+    connectOrCreate?: CmsUserCreateOrConnectWithoutUpdatedVacanciesInput
+    connect?: CmsUserWhereUniqueInput
+  }
+
+  export type EnumCmsEmploymentTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CmsEmploymentType
+  }
+
+  export type CmsUserUpdateOneRequiredWithoutCreatedVacanciesNestedInput = {
+    create?: XOR<CmsUserCreateWithoutCreatedVacanciesInput, CmsUserUncheckedCreateWithoutCreatedVacanciesInput>
+    connectOrCreate?: CmsUserCreateOrConnectWithoutCreatedVacanciesInput
+    upsert?: CmsUserUpsertWithoutCreatedVacanciesInput
+    connect?: CmsUserWhereUniqueInput
+    update?: XOR<XOR<CmsUserUpdateToOneWithWhereWithoutCreatedVacanciesInput, CmsUserUpdateWithoutCreatedVacanciesInput>, CmsUserUncheckedUpdateWithoutCreatedVacanciesInput>
+  }
+
+  export type CmsUserUpdateOneRequiredWithoutUpdatedVacanciesNestedInput = {
+    create?: XOR<CmsUserCreateWithoutUpdatedVacanciesInput, CmsUserUncheckedCreateWithoutUpdatedVacanciesInput>
+    connectOrCreate?: CmsUserCreateOrConnectWithoutUpdatedVacanciesInput
+    upsert?: CmsUserUpsertWithoutUpdatedVacanciesInput
+    connect?: CmsUserWhereUniqueInput
+    update?: XOR<XOR<CmsUserUpdateToOneWithWhereWithoutUpdatedVacanciesInput, CmsUserUpdateWithoutUpdatedVacanciesInput>, CmsUserUncheckedUpdateWithoutUpdatedVacanciesInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -10253,6 +12225,23 @@ export namespace Prisma {
     _max?: NestedEnumCmsMediaTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumCmsEmploymentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CmsEmploymentType | EnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel> | $Enums.CmsEmploymentType
+  }
+
+  export type NestedEnumCmsEmploymentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CmsEmploymentType | EnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CmsEmploymentType[] | ListEnumCmsEmploymentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCmsEmploymentTypeWithAggregatesFilter<$PrismaModel> | $Enums.CmsEmploymentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel>
+    _max?: NestedEnumCmsEmploymentTypeFilter<$PrismaModel>
+  }
+
   export type CmsContentCreateWithoutCreatedByInput = {
     contentType: $Enums.CmsContentType
     title: string
@@ -10538,6 +12527,104 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CmsVacancyCreateWithoutCreatedByInput = {
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: CmsUserCreateNestedOneWithoutUpdatedVacanciesInput
+  }
+
+  export type CmsVacancyUncheckedCreateWithoutCreatedByInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    updatedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyCreateOrConnectWithoutCreatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    create: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CmsVacancyCreateManyCreatedByInputEnvelope = {
+    data: CmsVacancyCreateManyCreatedByInput | CmsVacancyCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CmsVacancyCreateWithoutUpdatedByInput = {
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: CmsUserCreateNestedOneWithoutCreatedVacanciesInput
+  }
+
+  export type CmsVacancyUncheckedCreateWithoutUpdatedByInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyCreateOrConnectWithoutUpdatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    create: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type CmsVacancyCreateManyUpdatedByInputEnvelope = {
+    data: CmsVacancyCreateManyUpdatedByInput | CmsVacancyCreateManyUpdatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CmsContentUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: CmsContentWhereUniqueInput
     update: XOR<CmsContentUpdateWithoutCreatedByInput, CmsContentUncheckedUpdateWithoutCreatedByInput>
@@ -10725,6 +12812,62 @@ export namespace Prisma {
     data: XOR<CmsMediaItemUpdateManyMutationInput, CmsMediaItemUncheckedUpdateManyWithoutUpdatedByInput>
   }
 
+  export type CmsVacancyUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    update: XOR<CmsVacancyUpdateWithoutCreatedByInput, CmsVacancyUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<CmsVacancyCreateWithoutCreatedByInput, CmsVacancyUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CmsVacancyUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    data: XOR<CmsVacancyUpdateWithoutCreatedByInput, CmsVacancyUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type CmsVacancyUpdateManyWithWhereWithoutCreatedByInput = {
+    where: CmsVacancyScalarWhereInput
+    data: XOR<CmsVacancyUpdateManyMutationInput, CmsVacancyUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type CmsVacancyScalarWhereInput = {
+    AND?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
+    OR?: CmsVacancyScalarWhereInput[]
+    NOT?: CmsVacancyScalarWhereInput | CmsVacancyScalarWhereInput[]
+    id?: IntFilter<"CmsVacancy"> | number
+    title?: StringFilter<"CmsVacancy"> | string
+    slug?: StringFilter<"CmsVacancy"> | string
+    department?: StringFilter<"CmsVacancy"> | string
+    location?: StringFilter<"CmsVacancy"> | string
+    region?: EnumCmsRegionFilter<"CmsVacancy"> | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFilter<"CmsVacancy"> | $Enums.CmsEmploymentType
+    deadline?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    excerpt?: StringFilter<"CmsVacancy"> | string
+    richContent?: StringFilter<"CmsVacancy"> | string
+    coverImage?: StringNullableFilter<"CmsVacancy"> | string | null
+    applyUrl?: StringNullableFilter<"CmsVacancy"> | string | null
+    status?: EnumPublishStatusFilter<"CmsVacancy"> | $Enums.PublishStatus
+    publishedAt?: DateTimeNullableFilter<"CmsVacancy"> | Date | string | null
+    createdById?: IntFilter<"CmsVacancy"> | number
+    updatedById?: IntFilter<"CmsVacancy"> | number
+    createdAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+    updatedAt?: DateTimeFilter<"CmsVacancy"> | Date | string
+  }
+
+  export type CmsVacancyUpsertWithWhereUniqueWithoutUpdatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    update: XOR<CmsVacancyUpdateWithoutUpdatedByInput, CmsVacancyUncheckedUpdateWithoutUpdatedByInput>
+    create: XOR<CmsVacancyCreateWithoutUpdatedByInput, CmsVacancyUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type CmsVacancyUpdateWithWhereUniqueWithoutUpdatedByInput = {
+    where: CmsVacancyWhereUniqueInput
+    data: XOR<CmsVacancyUpdateWithoutUpdatedByInput, CmsVacancyUncheckedUpdateWithoutUpdatedByInput>
+  }
+
+  export type CmsVacancyUpdateManyWithWhereWithoutUpdatedByInput = {
+    where: CmsVacancyScalarWhereInput
+    data: XOR<CmsVacancyUpdateManyMutationInput, CmsVacancyUncheckedUpdateManyWithoutUpdatedByInput>
+  }
+
   export type CmsUserCreateWithoutSessionsInput = {
     name: string
     email: string
@@ -10738,6 +12881,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutSessionsInput = {
@@ -10754,6 +12899,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutSessionsInput = {
@@ -10785,6 +12932,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutSessionsInput = {
@@ -10801,6 +12950,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserCreateWithoutCreatedContentInput = {
@@ -10816,6 +12967,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutCreatedContentInput = {
@@ -10832,6 +12985,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutCreatedContentInput = {
@@ -10852,6 +13007,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutUpdatedContentInput = {
@@ -10868,6 +13025,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutUpdatedContentInput = {
@@ -10899,6 +13058,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutCreatedContentInput = {
@@ -10915,6 +13076,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUpsertWithoutUpdatedContentInput = {
@@ -10941,6 +13104,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutUpdatedContentInput = {
@@ -10957,6 +13122,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserCreateWithoutCreatedTeamsInput = {
@@ -10972,6 +13139,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutCreatedTeamsInput = {
@@ -10988,6 +13157,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutCreatedTeamsInput = {
@@ -11008,6 +13179,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberCreateNestedManyWithoutCreatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutUpdatedTeamsInput = {
@@ -11024,6 +13197,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutCreatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutUpdatedTeamsInput = {
@@ -11055,6 +13230,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutCreatedTeamsInput = {
@@ -11071,6 +13248,8 @@ export namespace Prisma {
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUpsertWithoutUpdatedTeamsInput = {
@@ -11097,6 +13276,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUpdateManyWithoutCreatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutUpdatedTeamsInput = {
@@ -11113,6 +13294,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedUpdateManyWithoutCreatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserCreateWithoutCreatedMediaInput = {
@@ -11128,6 +13311,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberCreateNestedManyWithoutCreatedByInput
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutCreatedMediaInput = {
@@ -11144,6 +13329,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutCreatedByInput
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutCreatedMediaInput = {
@@ -11164,6 +13351,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberCreateNestedManyWithoutCreatedByInput
     updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserUncheckedCreateWithoutUpdatedMediaInput = {
@@ -11180,6 +13369,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutCreatedByInput
     updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
     createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type CmsUserCreateOrConnectWithoutUpdatedMediaInput = {
@@ -11211,6 +13402,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUpdateManyWithoutCreatedByNestedInput
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutCreatedMediaInput = {
@@ -11227,6 +13420,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUpsertWithoutUpdatedMediaInput = {
@@ -11253,6 +13448,8 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUpdateManyWithoutCreatedByNestedInput
     updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type CmsUserUncheckedUpdateWithoutUpdatedMediaInput = {
@@ -11269,6 +13466,180 @@ export namespace Prisma {
     createdTeams?: CmsTeamMemberUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
     createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
+  }
+
+  export type CmsUserCreateWithoutCreatedVacanciesInput = {
+    name: string
+    email: string
+    passwordHash: string
+    role: $Enums.CmsRole
+    region: $Enums.CmsRegion
+    createdAt?: Date | string
+    createdContent?: CmsContentCreateNestedManyWithoutCreatedByInput
+    updatedContent?: CmsContentCreateNestedManyWithoutUpdatedByInput
+    sessions?: CmsSessionCreateNestedManyWithoutUserInput
+    createdTeams?: CmsTeamMemberCreateNestedManyWithoutCreatedByInput
+    updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
+    createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
+    updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    updatedVacancies?: CmsVacancyCreateNestedManyWithoutUpdatedByInput
+  }
+
+  export type CmsUserUncheckedCreateWithoutCreatedVacanciesInput = {
+    id?: number
+    name: string
+    email: string
+    passwordHash: string
+    role: $Enums.CmsRole
+    region: $Enums.CmsRegion
+    createdAt?: Date | string
+    createdContent?: CmsContentUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedContent?: CmsContentUncheckedCreateNestedManyWithoutUpdatedByInput
+    sessions?: CmsSessionUncheckedCreateNestedManyWithoutUserInput
+    createdTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    updatedVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutUpdatedByInput
+  }
+
+  export type CmsUserCreateOrConnectWithoutCreatedVacanciesInput = {
+    where: CmsUserWhereUniqueInput
+    create: XOR<CmsUserCreateWithoutCreatedVacanciesInput, CmsUserUncheckedCreateWithoutCreatedVacanciesInput>
+  }
+
+  export type CmsUserCreateWithoutUpdatedVacanciesInput = {
+    name: string
+    email: string
+    passwordHash: string
+    role: $Enums.CmsRole
+    region: $Enums.CmsRegion
+    createdAt?: Date | string
+    createdContent?: CmsContentCreateNestedManyWithoutCreatedByInput
+    updatedContent?: CmsContentCreateNestedManyWithoutUpdatedByInput
+    sessions?: CmsSessionCreateNestedManyWithoutUserInput
+    createdTeams?: CmsTeamMemberCreateNestedManyWithoutCreatedByInput
+    updatedTeams?: CmsTeamMemberCreateNestedManyWithoutUpdatedByInput
+    createdMedia?: CmsMediaItemCreateNestedManyWithoutCreatedByInput
+    updatedMedia?: CmsMediaItemCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type CmsUserUncheckedCreateWithoutUpdatedVacanciesInput = {
+    id?: number
+    name: string
+    email: string
+    passwordHash: string
+    role: $Enums.CmsRole
+    region: $Enums.CmsRegion
+    createdAt?: Date | string
+    createdContent?: CmsContentUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedContent?: CmsContentUncheckedCreateNestedManyWithoutUpdatedByInput
+    sessions?: CmsSessionUncheckedCreateNestedManyWithoutUserInput
+    createdTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedTeams?: CmsTeamMemberUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedMedia?: CmsMediaItemUncheckedCreateNestedManyWithoutUpdatedByInput
+    createdVacancies?: CmsVacancyUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type CmsUserCreateOrConnectWithoutUpdatedVacanciesInput = {
+    where: CmsUserWhereUniqueInput
+    create: XOR<CmsUserCreateWithoutUpdatedVacanciesInput, CmsUserUncheckedCreateWithoutUpdatedVacanciesInput>
+  }
+
+  export type CmsUserUpsertWithoutCreatedVacanciesInput = {
+    update: XOR<CmsUserUpdateWithoutCreatedVacanciesInput, CmsUserUncheckedUpdateWithoutCreatedVacanciesInput>
+    create: XOR<CmsUserCreateWithoutCreatedVacanciesInput, CmsUserUncheckedCreateWithoutCreatedVacanciesInput>
+    where?: CmsUserWhereInput
+  }
+
+  export type CmsUserUpdateToOneWithWhereWithoutCreatedVacanciesInput = {
+    where?: CmsUserWhereInput
+    data: XOR<CmsUserUpdateWithoutCreatedVacanciesInput, CmsUserUncheckedUpdateWithoutCreatedVacanciesInput>
+  }
+
+  export type CmsUserUpdateWithoutCreatedVacanciesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumCmsRoleFieldUpdateOperationsInput | $Enums.CmsRole
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdContent?: CmsContentUpdateManyWithoutCreatedByNestedInput
+    updatedContent?: CmsContentUpdateManyWithoutUpdatedByNestedInput
+    sessions?: CmsSessionUpdateManyWithoutUserNestedInput
+    createdTeams?: CmsTeamMemberUpdateManyWithoutCreatedByNestedInput
+    updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
+    createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
+    updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    updatedVacancies?: CmsVacancyUpdateManyWithoutUpdatedByNestedInput
+  }
+
+  export type CmsUserUncheckedUpdateWithoutCreatedVacanciesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumCmsRoleFieldUpdateOperationsInput | $Enums.CmsRole
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdContent?: CmsContentUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedContent?: CmsContentUncheckedUpdateManyWithoutUpdatedByNestedInput
+    sessions?: CmsSessionUncheckedUpdateManyWithoutUserNestedInput
+    createdTeams?: CmsTeamMemberUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    updatedVacancies?: CmsVacancyUncheckedUpdateManyWithoutUpdatedByNestedInput
+  }
+
+  export type CmsUserUpsertWithoutUpdatedVacanciesInput = {
+    update: XOR<CmsUserUpdateWithoutUpdatedVacanciesInput, CmsUserUncheckedUpdateWithoutUpdatedVacanciesInput>
+    create: XOR<CmsUserCreateWithoutUpdatedVacanciesInput, CmsUserUncheckedCreateWithoutUpdatedVacanciesInput>
+    where?: CmsUserWhereInput
+  }
+
+  export type CmsUserUpdateToOneWithWhereWithoutUpdatedVacanciesInput = {
+    where?: CmsUserWhereInput
+    data: XOR<CmsUserUpdateWithoutUpdatedVacanciesInput, CmsUserUncheckedUpdateWithoutUpdatedVacanciesInput>
+  }
+
+  export type CmsUserUpdateWithoutUpdatedVacanciesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumCmsRoleFieldUpdateOperationsInput | $Enums.CmsRole
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdContent?: CmsContentUpdateManyWithoutCreatedByNestedInput
+    updatedContent?: CmsContentUpdateManyWithoutUpdatedByNestedInput
+    sessions?: CmsSessionUpdateManyWithoutUserNestedInput
+    createdTeams?: CmsTeamMemberUpdateManyWithoutCreatedByNestedInput
+    updatedTeams?: CmsTeamMemberUpdateManyWithoutUpdatedByNestedInput
+    createdMedia?: CmsMediaItemUpdateManyWithoutCreatedByNestedInput
+    updatedMedia?: CmsMediaItemUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type CmsUserUncheckedUpdateWithoutUpdatedVacanciesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumCmsRoleFieldUpdateOperationsInput | $Enums.CmsRole
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdContent?: CmsContentUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedContent?: CmsContentUncheckedUpdateManyWithoutUpdatedByNestedInput
+    sessions?: CmsSessionUncheckedUpdateManyWithoutUserNestedInput
+    createdTeams?: CmsTeamMemberUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedTeams?: CmsTeamMemberUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdMedia?: CmsMediaItemUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedMedia?: CmsMediaItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+    createdVacancies?: CmsVacancyUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CmsContentCreateManyCreatedByInput = {
@@ -11375,6 +13746,46 @@ export namespace Prisma {
     fileUrl: string
     coverImage?: string | null
     region?: $Enums.CmsRegion | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    createdById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyCreateManyCreatedByInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
+    status?: $Enums.PublishStatus
+    publishedAt?: Date | string | null
+    updatedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CmsVacancyCreateManyUpdatedByInput = {
+    id?: number
+    title: string
+    slug: string
+    department: string
+    location: string
+    region: $Enums.CmsRegion
+    employmentType: $Enums.CmsEmploymentType
+    deadline?: Date | string | null
+    excerpt?: string
+    richContent?: string
+    coverImage?: string | null
+    applyUrl?: string | null
     status?: $Enums.PublishStatus
     publishedAt?: Date | string | null
     createdById: number
@@ -11701,6 +14112,124 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableEnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyUpdateWithoutCreatedByInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: CmsUserUpdateOneRequiredWithoutUpdatedVacanciesNestedInput
+  }
+
+  export type CmsVacancyUncheckedUpdateWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyUpdateWithoutUpdatedByInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: CmsUserUpdateOneRequiredWithoutCreatedVacanciesNestedInput
+  }
+
+  export type CmsVacancyUncheckedUpdateWithoutUpdatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CmsVacancyUncheckedUpdateManyWithoutUpdatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    region?: EnumCmsRegionFieldUpdateOperationsInput | $Enums.CmsRegion
+    employmentType?: EnumCmsEmploymentTypeFieldUpdateOperationsInput | $Enums.CmsEmploymentType
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    excerpt?: StringFieldUpdateOperationsInput | string
+    richContent?: StringFieldUpdateOperationsInput | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    applyUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdById?: IntFieldUpdateOperationsInput | number

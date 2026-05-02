@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.*
-.vscode*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -40,8 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-/prisma/migrations
-package-lock.json
-yarn.lock
