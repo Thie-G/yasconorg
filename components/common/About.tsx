@@ -31,7 +31,7 @@ export default function About() {
             Who We Are
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-[#1a2e1a] mt-3 mb-5 leading-tight">
-            Youth Leading the Charge for a Greener Malawi
+            Youth Leading the Charge for a Greener Future
           </h2>
           <div className="w-11 h-[3px] bg-[#d4a017] mb-6 rounded-sm" />
           <p className="text-base text-[#4a5a4a] mb-4 leading-relaxed">

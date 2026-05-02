@@ -53,7 +53,7 @@ export default function SloganVideo() {
     <div className="container mx-auto p-4" ref={containerRef}>
       <div className="mb-12 text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-[#d4a017]">- Activities -</span>
-        <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-4">SLOGAN VIDEOS OF OUR TEAM</h2>
+        <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-4">VIDEOS OF OUR TEAM</h2>
         <p className="text-base text-[#4a5a4a] max-w-2xl mx-auto text-center">
           We believe real change begins when young people take action for the planet. Driven by passion and purpose,
           we are restoring nature and building climate resilient communities. Together with the youth, we have planted

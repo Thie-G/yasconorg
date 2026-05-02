@@ -141,8 +141,8 @@ export default function Footer() {
               className="text-sm leading-relaxed mb-5 max-w-xs"
               style={{ color: "rgba(255,255,255,.45)" }}
             >
-              Mobilizing Malawian youth to protect nature, restore ecosystems,
-              and build a sustainable future for generations to come.
+              Mobilizing youth to protect nature, restore ecosystems, and build
+              a sustainable future for generations to come.
             </p>
 
             {/* Social links — hover handled by CSS class */}
@@ -169,27 +169,31 @@ export default function Footer() {
             </div>
             <div>
               <div>
-              <h4
-                className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-2 "
-                style={{
-                  // color: "rgba(255,255,255,.75)",
-                  borderBottom: "1px solid rgba(255,255,255,.07)",
-                }}
-              > INCORPORATION NUMBER</h4>
-             
+                <h4
+                  className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-5 "
+                  style={{
+                    // color: "rgba(255,255,255,.75)",
+                    borderBottom: "1px solid rgba(255,255,255,.07)",
+                  }}
+                >
+                  {" "}
+                  INCORPORATION NUMBER
+                </h4>
               </div>
               <div className="space-y-1.5 text-xs text-gray-400">
                 COYG-J7RCGW5
               </div>
               <div>
-              <h4
-                className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-3 "
-                style={{
-                  // color: "rgba(255,255,255,.75)",
-                  borderBottom: "1px solid rgba(255,255,255,.07)",
-                }}
-              > CONGOMA REGISTRATION NUMBER</h4>
-             
+                <h4
+                  className="text-xs font-bold uppercase tracking-widest mb-2 pb-2 mt-3 "
+                  style={{
+                    // color: "rgba(255,255,255,.75)",
+                    borderBottom: "1px solid rgba(255,255,255,.07)",
+                  }}
+                >
+                  {" "}
+                  CONGOMA REGISTRATION NUMBER
+                </h4>
               </div>
               <div className="space-y-1.5 text-xs text-gray-400">
                 YASCON-538282-719
