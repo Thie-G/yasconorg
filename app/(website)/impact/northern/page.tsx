@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 const ACCENT = "#b8860b";
 const heroImages = [
@@ -135,17 +136,6 @@ const districts = [
     members: 80,
   },
 ];
-
-/*const partners = [
-  { name: "Mzuzu City Council",            type: "Government",          image: "/Images/Eastern1.png", desc: "Urban greening and roadside tree planting across Mzuzu city, targeting all major arterial roads and public spaces." },
-  { name: "Mzuzu University",              type: "Academic",            image: "/Images/Eastern2.png", desc: "Joint research on indigenous Miombo woodland restoration and carbon sequestration potential across Northern Region landscapes." },
-  { name: "Wildlife Conservation Society", type: "International NGO",   image: "/Images/Eastern333.jpg", desc: "Biodiversity corridor protection linking Nyika National Park and Vwaza Marsh Wildlife Reserve through community buffer zones." },
-  { name: "SNV Malawi",                    type: "Development Partner", image: "/Images/Eastern1.png", desc: "Sustainable land management and agroforestry integration for smallholder farmers in Rumphi and Chitipa highlands." },
-  { name: "Department of Forestry – North",type: "Government",          image: "/Images/Eastern2.png", desc: "Seedling nursery operations and technical guidance for Miombo woodland restoration across Mzimba and Rumphi." },
-  { name: "Nature Conservancy Malawi",     type: "NGO",                 image: "/Images/Eastern33.jpg", desc: "Lake Malawi shoreline and lakebed ecosystem conservation with focus on Nkhata Bay's critical coral and fish habitats." },
-  { name: "GIZ Malawi – Northern Office",  type: "Development Partner", image: "/Images/Eastern1.png", desc: "Climate-smart agriculture and land restoration training for youth coordinators in Karonga and Chitipa border districts." },
-  { name: "Heifer International Malawi",   type: "NGO",                 image: "/Images/Eastern2.png", desc: "Integrating tree planting with livestock management to reduce overgrazing and restore pastureland in Mzimba district." },
-];*/
 
 const team = [
   {
@@ -349,32 +339,45 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   );
 }
 
+// ✅ UPDATED PartnersPanel with real partner data
 function PartnersPanel() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-6 mt-20">
-      Partners page coming soon!
-    </div>
-  );
-  /*return (
     <div>
       <SectionHeader title="Our Regional Partners" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {partners.map((p, i) => (
-          <div key={i} className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
-              <img src={p.image} alt={p.name} className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; (e.target as HTMLImageElement).parentElement!.innerHTML = `<div style="width:64px;height:64px;border-radius:50%;background:${ACCENT}22;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:${ACCENT}">${p.name.charAt(0)}</div>`; }} />
-            </div>
-            <div className="p-6">
-              <Badge text={p.type} color={ACCENT} />
-              <h3 className="font-bold text-[#0f1a0f] text-lg mt-3 mb-2">{p.name}</h3>
-              <p className="text-sm text-[#2e3d35] leading-relaxed">{p.desc}</p>
-            </div>
+      <p className="text-[#2e3d35] mb-8">
+        Partners supporting Nature and Environmental conservation in the Northern Region.
+      </p>
+      <div className="flex flex-wrap gap-6">
+        <Link
+          href="https://janemphambafoundation.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block w-72"
+        >
+          <div className="h-48 bg-black flex items-center justify-center overflow-hidden">
+            <img
+              src="/Images/JaneFundation.png"
+              alt="Jane Mphamba Foundation"
+              className="w-full h-full object-contain p-4"
+            />
           </div>
-        ))}
+          <div className="p-4">
+            <h3 className="font-bold text-[#0f1a0f] text-base mb-1">
+              Jane Mphamba Foundation
+            </h3>
+            <p className="text-xs font-semibold tracking-widest text-[#d4a017] uppercase mb-2">
+              Featured Partner
+            </p>
+            <p className="text-sm text-gray-600 leading-relaxed mb-3">
+              Empowering communities through sustainable environmental programs
+              and conservation initiatives across Malawi.
+            </p>
+            <span className="text-xs text-blue-600">Visit website →</span>
+          </div>
+        </Link>
       </div>
     </div>
-  ); */
+  );
 }
 
 function TeamPanel() {
