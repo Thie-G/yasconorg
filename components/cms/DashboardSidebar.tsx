@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CmsUserRecord } from "@/lib/cms/constants";
-import { Menu, X, BarChart3, Plus, FileText, Users, LogOut, Image, Users2, Image as ImageIcon, FileText as FileTextIcon, Briefcase } from "lucide-react";
+import { Menu, X, BarChart3, Plus, FileText, Users, LogOut, Image, Users2, Image as ImageIcon, FileText as FileTextIcon } from "lucide-react";
 
 interface SidebarProps {
   user: CmsUserRecord;
@@ -29,7 +29,6 @@ export default function DashboardSidebar({ user, activeTab, onTabChange, onLogou
     teams: "/dashboard/cms/teams/manage",
     media: "/dashboard/cms/media/manage",
     users: "/dashboard/cms?tab=users",
-    vacancies: "/dashboard/cms/vacancy/manage",
   };
 
   const handleTabChange = async (tab: string) => {
@@ -62,7 +61,6 @@ export default function DashboardSidebar({ user, activeTab, onTabChange, onLogou
     // { id: "blogs", label: "Blogs", icon: FileTextIcon },
     // { id: "press_briefings", label: "Press Briefings", icon: FileTextIcon },
     { id: "media", label: "Gallery & Documents", icon: ImageIcon },
-    { id: "vacancies", label: "Vacancies", icon: FileText },
     ...(canManageUsers ? [{ id: "users", label: "Users", icon: Users }] : []),
   ];
 
@@ -104,5 +102,3 @@ export default function DashboardSidebar({ user, activeTab, onTabChange, onLogou
     </section>
   );
 }
-
-
