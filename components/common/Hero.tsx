@@ -11,6 +11,14 @@ type Slide = {
 
 const slides: Slide[] = [
   {
+    bg: "/hero/objeBG.jpeg",
+    fallback: "/hero/objeBG.jpeg",
+    heading: "YASCON, a not-for-profit conservation organisation,",
+    sub: "Is a network of youths with strong interest and passion in nature and environment conservation. YASCON unites youths in grassroots conservation, planting trees, restoring ecosystems, and championing environmental stewardship for future generations.",
+    cta1: { label: "Join the Movement", href: "/get-involved" },
+    cta2: { label: "Learn More →", href: "/about" },
+  },
+  {
     bg: "/hero/hero1.avif",
     fallback: "/hero/hero1.avif",
     heading: "Protecting Nature,Empowering Youth",
