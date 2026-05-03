@@ -119,10 +119,14 @@ export default function BoardVacancy() {
         </p>
 
         <p className="text-gray-700 mb-6">
-
+<<<<<<< ours
           We are seeking visionary leaders committed to strengthening governance
           and advancing environmental conservation efforts in Malawi.Those with
           Masters or PhD are encouraged to express interest.
+=======
+          We are seeking visionary leaders committed to strengthening governance and advancing
+          environmental conservation efforts in Malawi.
+>>>>>>> theirs
         </p>
 
         <h3 className="text-xl font-semibold mb-3">Key Qualities</h3>
